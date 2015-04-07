@@ -4,6 +4,12 @@
 * All of these want SELinux
 * All of these commands should be run from the host where you want the change to occur.
 
+
+## To install these tools
+
+Clone this repository and add it to your path. 
+
+
 ## To initize a new Drupal site
 
 ```
