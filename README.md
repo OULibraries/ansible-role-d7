@@ -1,46 +1,44 @@
 # Drupal 7 Ops Scripts, Makefiles, and Docs
 
-# NB
+## NB
 * All of these want SELinux
+* All of these commands should be run from the host where you want the change to occur.
 
-## Initializing a new Drupal site
- 
-This script will install a new clean drupal install on the box you are on in the directory you indicate.
-- Log into the box you want the clean install
-- Run the script below. You need to indicate what the name of the directory should be. To do this, change the part after /srv/____ to the new directory name. A directory with the same name cannot exist.
- 
+## To initize a new Drupal site
+
 ```
 d7_init.sh /srv/$site
 ```
 
-- You will need the MYSQL password in Lastpass.
-- In the end you will find your site at: http://____.webdev.libraries.ou.edu (lib-75 example)
-- You will need to enable all the relevent modules and set the theme.
+This script will install a fresh Drupal site.
+* This command path as it's single argument and will install the site at that location. 
+* You will need the MYSQL password in Lastpass.
+* In the end you will find your site at: http://____.$hostname
+* You will need to enable all the relevent modules and set the theme.
 
-## Applying a Drush Makefile to sync code
- 
-Running this script will install the make script with our special drupal recipe. That includes the modules and libraries we use. This is the script you want to run to pull git updates down onto a site.
- - Log into box where you want to push our vesion of Drupal too.
- - Run the script below. Each library site will have its OWN make script. Use the notes below so that you run the right script. You must indicate the proper directory by changing the part after /srv/_____ to the directory you want to push the latest changes to.
- 
- ```
+## To apply a Drush Makefile to sync code
+
+```
 d7_make.sh /srv/$site $makefile
 ```
+This script will apply a Drush Makefile.
+* You will need to specify the path to an existing Drupal site and the path or url of a Drush Makefile.
+* Libraries and Drupal modules and themes will be replaced with those specified in the Makefile, but neither database content, nor your `sites/default` folder will be modified.
+
+The `make` fol
 
 
 
 
-## Syncing content (files and database) between sites
-This will allow all content to be synced between sites.
-- Log into the box you want to update
-- Run the script below. Change the directory after /srv/_____ to the site you want to update.And change the box name at the end to the box you want to pull the changes from.
- 
+## To sync content (files and database) between sites
+
+```
 d7_sync.sh /srv/$site $remotehost
- 
-Example to update lib (document registry) so that it matches the content on Lib-75 
+```
 
-```
-d7_sync.sh /srv/lib $lib-75
-```
+This scrypt will sync content *to* a local site *from* a remote host
+* you will need to specify a path and a remote host. 
+* Sites on both the local and remote host be at the same path. 
+
 
 
