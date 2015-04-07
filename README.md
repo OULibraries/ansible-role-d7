@@ -31,7 +31,7 @@ This script will apply a Drush Makefile.
 * You will need to specify the path to an existing Drupal site and the path or url of a Drush Makefile.
 * Libraries and Drupal modules and themes will be replaced with those specified in the Makefile, but neither database content, nor your `sites/default` folder will be modified.
 
-The `make` directory of this repository contains our Makefiles. 
+The [`make`](./make) directory of this repository contains our Makefiles. 
 
 
 
