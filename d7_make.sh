@@ -72,7 +72,7 @@ mv $SITEPATH/drupal $SITEPATH/drupal_bak
 mv $SITEPATH/drupal_build $SITEPATH/drupal
 
 ## Apply security updates
-$SUDO drush up -y --security-only -r $SITEPATH || exit 1;
+$SUDO drush up -y --security-only -r $SITEPATH/drupal || exit 1;
 ## Clear the caches
 drush -y cc all -r $SITEPATH/drupal || exit 1;
 
