@@ -1,6 +1,6 @@
 #!/bin/sh
 ## Bootstrap an empty drupal site
-PATH=/usr/local/bin:/usr/bin:/bin:/sbin
+PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 SITESOWNER=apache:apache                        # unix owner and group of /srv.
 
