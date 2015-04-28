@@ -1,6 +1,6 @@
 #!/bin/sh
 ## Sync Drupal files & DB from source host
-PATH=/usr/local/bin:/usr/bin:/bin:/sbin
+PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 # Owner and group for site path
 SITESOWNER=apache:apache
