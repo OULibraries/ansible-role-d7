@@ -1,6 +1,6 @@
 #!/bin/sh
 ## Deploy drupal site from drush make
-PATH=/usr/local/bin:/usr/bin:/bin:/sbin
+PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 ## Unix owner and group of site path
 SITESOWNER=apache:apache
