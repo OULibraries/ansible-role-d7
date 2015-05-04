@@ -47,4 +47,10 @@ This scrypt will sync content *to* a local site *from* a remote host
 * Sites on both the local and remote host be at the same path. 
 
 
+## To delete site (files and database)
 
+```
+d7_clean.sh /srv/$site
+```
+
+Don't do this accidentally.
