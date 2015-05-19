@@ -52,3 +52,8 @@ $SUDO chown -R $SITESOWNER $SITEPATH/default
 $SUDO find $SITEPATH/default -type d -exec chmod u=rwx,g=rwx,o= '{}' \;
 $SUDO find $SITEPATH/default -type f -exec chmod u=rw,g=rw,o= '{}' \;
 $SUDO chmod 444 $SITEPATH/default/settings.php
+
+## Apply security updates
+$SUDO drush up -y --security-only -r $SITEPATH/drupal || exit 1;
+## Clear the caches
+drush -y cc all -r $SITEPATH/drupal || exit 1;
