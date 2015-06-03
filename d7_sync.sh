@@ -54,7 +54,7 @@ $SUDO find $SITEPATH/default -type f -exec chmod u=rw,g=rw,o= '{}' \;
 $SUDO chmod 444 $SITEPATH/default/settings.php
 
 ## Disable update manager, since we're handling those ourselves
-drush -y dis update
+drush -y dis update -r $SITEPATH/drupal || exit 1;
 
 ## Apply security updates
 drush up -y --security-only -r $SITEPATH/drupal || exit 1;
