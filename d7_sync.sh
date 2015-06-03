@@ -53,7 +53,14 @@ $SUDO find $SITEPATH/default -type d -exec chmod u=rwx,g=rwx,o= '{}' \;
 $SUDO find $SITEPATH/default -type f -exec chmod u=rw,g=rw,o= '{}' \;
 $SUDO chmod 444 $SITEPATH/default/settings.php
 
+## Disable update manager, since we're handling those ourselves
+drush -y dis update
+
 ## Apply security updates
-$SUDO drush up -y --security-only -r $SITEPATH/drupal || exit 1;
+drush up -y --security-only -r $SITEPATH/drupal || exit 1;
+
 ## Clear the caches
 drush -y cc all -r $SITEPATH/drupal || exit 1;
+
+## Avoid a known performance-crusher in our environment
+drush eval 'variable_set('drupal_http_request_fails', 0)' -r $SITEPATH/drupal || exit 1;
