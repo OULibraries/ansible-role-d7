@@ -71,11 +71,14 @@ $SUDO rm -rf $SITEPATH/drupal_bak
 mv $SITEPATH/drupal $SITEPATH/drupal_bak
 mv $SITEPATH/drupal_build $SITEPATH/drupal
 
-## Disable update manager, since we're handling those ourselves
-drush -y dis update -r $SITEPATH/drupal || exit 1;
+## Enable update manager.
+drush -y en update -r $SITEPATH/drupal || exit 1;
 
-## Apply security updates
+## Apply security updates.
 drush up -y --security-only -r $SITEPATH/drupal || exit 1;
+
+## Disable update manager; no need to leave it phoning home.
+drush -y dis update -r $SITEPATH/drupal || exit 1;
 
 ## Clear the caches
 drush -y cc all -r $SITEPATH/drupal || exit 1;
