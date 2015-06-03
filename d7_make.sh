@@ -72,7 +72,7 @@ mv $SITEPATH/drupal $SITEPATH/drupal_bak
 mv $SITEPATH/drupal_build $SITEPATH/drupal
 
 ## Disable update manager, since we're handling those ourselves
-drush -y dis update
+drush -y dis update -r $SITEPATH/drupal || exit 1;
 
 ## Apply security updates
 drush up -y --security-only -r $SITEPATH/drupal || exit 1;
