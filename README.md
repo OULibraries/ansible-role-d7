@@ -1,8 +1,9 @@
 # Drupal 7 Ops Scripts, Makefiles, and Docs
 
 ## NB
-* All of these want SELinux
-* All of these commands should be run from the host where you want the change to occur.
+* All of these want SELinux, MySQL, and Apache
+* All of these commands should be run on the host where you want the change to occur.
+* The Apache config magic that we use isn't included here.
 
 
 ## To install these tools
@@ -17,9 +18,9 @@ d7_init.sh /srv/$site
 ```
 
 This script will install a fresh Drupal site.
-* This command path as it's single argument and will install the site at that location. 
-* You will need the MYSQL password in Lastpass.
-* In the end you will find your site at: http://____.$hostname
+* Accepts a path as its sole argument and will install the site at that location. 
+* You will be prompted for MySQL root credentials.
+* You will find your site at: http://____.$hostname
 * You will need to enable all the relevent modules and set the theme.
 
 ## To apply a Drush Makefile to sync code
@@ -42,7 +43,7 @@ The [`make`](./make) directory of this repository contains our Makefiles.
 d7_sync.sh /srv/$site $remotehost
 ```
 
-This scrypt will sync content *to* a local site *from* a remote host
+This script will sync content *to* a local site *from* a remote host
 * you will need to specify a path and a remote host. 
 * Sites on both the local and remote host be at the same path. 
 
