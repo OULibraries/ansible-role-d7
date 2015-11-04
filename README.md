@@ -1,7 +1,7 @@
 # Drupal 7 Ops Scripts, Makefiles, and Docs
 
 ## NB
-* All of these want SELinux, MySQL, and Apache
+* All of these want SELinux, MySQL, Apache, and Drush
 * All of these commands should be run on the host where you want the change to occur.
 * The Apache config magic that we use isn't included here.
 
