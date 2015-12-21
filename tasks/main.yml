@@ -60,24 +60,24 @@
   lineinfile: dest=/etc/httpd/conf/httpd.conf state=present regexp='^Listen(.*)' line='#Listen\1' backrefs='yes'
 - name: Set environment variables for apache
   template:
-    src: ./assets/sysconfig-httpd.j2
+    src: templates/sysconfig-httpd.j2
     dest: /etc/sysconfig/httpd
 - name: Copy ssl config
   copy:
-    src: ./assets/ssl.conf
+    src: files/ssl.conf
     dest: /etc/httpd/conf.d/ssl.conf
     mode: 0644
     owner: root
     group: root
   copy:
-    src: ./assets/00ssl.include
+    src: files/00ssl.include
     dest: /etc/httpd/conf.d/00ssl.include
     mode: 0644
     owner: root
     group: root
 - name: Copy apache config template
   copy:
-    src: ./assets/d7_init_httpd_template
+    src: files/d7_init_httpd_template
     dest: /etc/httpd/conf.d/d7_init_httpd_template
 - name: Comment out the welcome conf
   command: sed -i "s/^[^#]/#&/" /etc/httpd/conf.d/welcome.conf
