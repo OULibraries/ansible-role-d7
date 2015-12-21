@@ -1,57 +1,38 @@
-# Drupal 7 Ops Scripts, Makefiles, and Docs
+Role Name
+=========
 
-## NB
-* All of these want SELinux, MySQL, Apache, and Drush
-* All of these commands should be run on the host where you want the change to occur.
-* The Apache config magic that we use isn't included here.
+A brief description of the role goes here.
 
+Requirements
+------------
 
-## To install these tools
+Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
-Clone this repository and add it to your path. 
+Role Variables
+--------------
 
+A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
 
-## To initize a new Drupal site
+Dependencies
+------------
 
-```
-d7_init.sh /srv/$site
-```
+A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
-This script will install a fresh Drupal site.
-* Accepts a path as its sole argument and will install the site at that location. 
-* You will be prompted for MySQL root credentials.
-* You will find your site at: http://____.$hostname
-* You will need to enable all the relevent modules and set the theme.
+Example Playbook
+----------------
 
-## To apply a Drush Makefile to sync code
+Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-```
-d7_make.sh /srv/$site $makefile
-```
-This script will apply a Drush Makefile.
-* You will need to specify the path to an existing Drupal site and the path or url of a Drush Makefile.
-* Libraries and Drupal modules and themes will be replaced with those specified in the Makefile, but neither database content, nor your `sites/default` folder will be modified.
+    - hosts: servers
+      roles:
+         - { role: username.rolename, x: 42 }
 
-The [`make`](./make) directory of this repository contains our Makefiles. 
+License
+-------
 
+BSD
 
+Author Information
+------------------
 
-
-## To sync content (files and database) between sites
-
-```
-d7_sync.sh /srv/$site $remotehost
-```
-
-This script will sync content *to* a local site *from* a remote host
-* you will need to specify a path and a remote host. 
-* Sites on both the local and remote host be at the same path. 
-
-
-## To delete site (files and database)
-
-```
-d7_clean.sh /srv/$site
-```
-
-Don't do this accidentally.
+An optional section for the role authors to include contact information, or a website (HTML is not allowed).

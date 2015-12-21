@@ -1,0 +1,20 @@
+---
+## The configuration below would get you a server ready to run
+## d7_init.sh /srv/drupal-dev1 and d7_init.sh /srv/drupal-dev2
+## the sites would then be accessible at:
+## drupal-dev1.example.com and drupal-dev2.example.com
+## the domain or subdomain where the sites you build will be accessed
+## For this to be accessed by others, you need one of:
+#  1) proper DNS entries
+#  2) a service like ngrok
+httpd_dn_suffix: 'example.com'
+## Your email address
+email: 'user@example.com'
+## The hostnames of the sites you will build.
+sites: ['drupal-dev1', 'drupal-dev2']
+## Let's encrypt cert paths
+#httpd_cert_path: '/vagrant/letsencrypt/etc/live/'
+#httpd_key_path: '/vagrant/letsencrypt/etc/live/'
+## Self-signed cert paths
+httpd_cert_path: '/etc/pki/tls/certs/'
+httpd_key_path: '/etc/pki/tls/private/'

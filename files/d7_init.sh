@@ -103,6 +103,6 @@ drush -y -r $SITEPATH/drupal site-install --site-name=$SITE || exit 1;
 ## Make the apache config
 echo "Generating Apache Config."
 #$SUDO rm /etc/httpd/conf.d/srv_$SITE.conf
-$SUDO sh -c " sed "s/__SITE_DIR__/$SITE/g" /etc/httpd/conf.d/template_init_oulib_drupal > /etc/httpd/conf.d/srv_$SITE.conf" || exit 1;
-$SUDO service httpd configtest || exit 1;
-$SUDO service httpd reload || exit 1;
+$SUDO sh -c " sed "s/__SITE_DIR__/$SITE/g" /etc/httpd/conf.d/d7_init_httpd_template > /etc/httpd/conf.d/srv_$SITE.conf" || exit 1;
+$SUDO sh -c " sed -i "s/__SITE_NAME__/$SITE/g" /etc/httpd/conf.d/srv_$SITE.conf" || exit 1;
+$SUDO systemctl reload httpd || exit 1;

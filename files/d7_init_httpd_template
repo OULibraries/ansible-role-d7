@@ -1,0 +1,19 @@
+<VirtualHost *:443>
+
+  Include /etc/httpd/conf.d/00ssl.include
+  SSLCertificateFile ${HTTPD_CERT_PATH}/__SITE_NAME__.${HTTPD_DN_SUFFIX}/cert.pem
+  SSLCertificateKeyFile ${HTTPD_KEY_PATH}/__SITE_NAME__.${HTTPD_DN_SUFFIX}/privkey.pem
+  SSLCertificateChainFile ${HTTPD_CERT_PATH}/__SITE_NAME__.${HTTPD_DN_SUFFIX}/chain.pem
+
+  ServerName __SITE_NAME__.${HTTPD_DN_SUFFIX}
+  DocumentRoot /srv/__SITE_DIR__/drupal
+
+  <Directory "/srv/__SITE_DIR__/drupal">
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+    Require all granted
+  </Directory>
+
+</VirtualHost>

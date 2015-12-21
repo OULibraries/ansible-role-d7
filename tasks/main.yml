@@ -1,0 +1,94 @@
+---
+- name: Install packages necessary to run Drupal
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+  - net-tools
+  - bind-utils
+  - httpd
+  - mod_ssl
+  - mariadb
+  - mariadb-server
+  - MySQL-python
+  - php
+  - mod_php
+  - php-mysql
+  - php-ldap
+  - php-pear
+  - php-gd
+  - php-drush-drush
+- name: Git d7-ops.
+  sudo_user: vagrant
+  git: repo=https://github.com/OULibraries/d7-ops.git
+       dest=/opt/d7-ops force=yes version=dev-ansible
+- name: Ensure /etc/profile.d/d7-ops.sh exists
+  file: path=/etc/profile.d/d7-ops.sh state=touch mode=0644 owner=root group=root
+- name: Add d7-ops scripts to path
+  lineinfile: "dest=/etc/profile.d/d7-ops.sh line='export PATH=/opt/d7-ops/bin/:$PATH'"
+- name: Start database server on boot
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+# Equivilant to mysql_secure_installation
+- name: delete anonymous MySQL server user for *
+  action: mysql_user user="" host="*" state="absent"
+  ignore_errors: yes
+- name: delete anonymous MySQL server user for localhost
+  action: mysql_user user="" state="absent"
+  ignore_errors: yes
+- name: remove the MySQL test database
+  action: mysql_db db=test state=absent
+  ignore_errors: yes
+# 'localhost' needs to be the last item for idempotency, see
+# http://ansible.cc/docs/modules.html#mysql-user  
+- name: Change root user password on first run
+  mysql_user: login_user=root
+              login_password=''
+              name=root
+              password={{ hostvars['localhost']['mariadb_root'] }}
+              priv=*.*:ALL,GRANT
+              host={{ item }}
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+  ignore_errors: yes
+# Apache config
+- name: Remove default apache listeners
+  lineinfile: dest=/etc/httpd/conf/httpd.conf state=present regexp='^Listen(.*)' line='#Listen\1' backrefs='yes'
+- name: Set environment variables for apache
+  template:
+    src: ./assets/sysconfig-httpd.j2
+    dest: /etc/sysconfig/httpd
+- name: Copy ssl config
+  copy:
+    src: ./assets/ssl.conf
+    dest: /etc/httpd/conf.d/ssl.conf
+    mode: 0644
+    owner: root
+    group: root
+  copy:
+    src: ./assets/00ssl.include
+    dest: /etc/httpd/conf.d/00ssl.include
+    mode: 0644
+    owner: root
+    group: root
+- name: Copy apache config template
+  copy:
+    src: ./assets/d7_init_httpd_template
+    dest: /etc/httpd/conf.d/d7_init_httpd_template
+- name: Comment out the welcome conf
+  command: sed -i "s/^[^#]/#&/" /etc/httpd/conf.d/welcome.conf
+- name: Add vagrant user to apache group
+  command: usermod -a -G apache vagrant
+- name: Set ownership of service directory
+  command: chown apache:apache /srv
+- name: Allow apache users to write to service directory
+  command: chmod g+wt /srv
+- name: Run Apache httpd on boot
+  service:
+    name: httpd
+    state: started
+    enabled: yes
