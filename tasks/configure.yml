@@ -1,8 +1,22 @@
 ---
+- name: MariaDB - max allowed packet
+  ini_file:
+    dest: /etc/my.cnf
+    section: mysqld
+    option: max_allowed_packet
+    value: 24M
+    backup: yes
+- name: MariaDB - max connections
+  ini_file:
+    dest: /etc/my.cnf
+    section: mysqld
+    option: max_connections
+    value: 500
+    backup: yes
 - name: Start database server on boot
   service:
     name: mariadb
-    state: started
+    state: restarted
     enabled: yes
 # Equivilant to mysql_secure_installation
 - name: delete anonymous MySQL server user for *
