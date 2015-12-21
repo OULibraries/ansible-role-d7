@@ -22,7 +22,7 @@
   file:
     path: /opt/d7/bin
     state: directory
-    mode: 0644
+    mode: 0655
     owner: root
     group: wheel
     recurse: yes
