@@ -33,7 +33,7 @@
   lineinfile: dest=/etc/httpd/conf/httpd.conf state=present regexp='^Listen(.*)' line='#Listen\1' backrefs='yes'
 - name: Set environment variables for apache
   template:
-    src: templates/sysconfig-httpd.j2
+    src: sysconfig-httpd.j2
     dest: /etc/sysconfig/httpd
 - name: Copy ssl config
   copy:
@@ -50,7 +50,7 @@
     group: root
 - name: Copy apache config template
   copy:
-    src: files/d7_init_httpd_template
+    src: d7_init_httpd_template
     dest: /etc/httpd/conf.d/d7_init_httpd_template
 - name: Comment out the welcome conf
   command: sed -i "s/^[^#]/#&/" /etc/httpd/conf.d/welcome.conf

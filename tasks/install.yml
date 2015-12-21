@@ -28,28 +28,28 @@
     recurse: yes
 - name: Add init script to /opt/d7/bin
   copy:
-    src: files/d7_init.sh
+    src: d7_init.sh
     dest: /opt/d7/bin/
     mode: 0754
     owner: root
     group: wheel
 - name: Add make script to /opt/d7/bin
   copy:
-    src: files/d7_make.sh
+    src: d7_make.sh
     dest: /opt/d7/bin/
     mode: 0754
     owner: root
     group: wheel
 - name: Add sync script to /opt/d7/bin
   copy:
-    src: files/d7_sync.sh
+    src: d7_sync.sh
     dest: /opt/d7/bin/
     mode: 0754
     owner: root
     group: wheel
 - name: Add clean script to /opt/d7/bin
   copy:
-    src: files/d7_clean.sh
+    src: d7_clean.sh
     dest: /opt/d7/bin/
     mode: 0754
     owner: root
