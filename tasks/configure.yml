@@ -37,13 +37,13 @@
     dest: /etc/sysconfig/httpd
 - name: Copy ssl config
   copy:
-    src: files/ssl.conf
+    src: ssl.conf
     dest: /etc/httpd/conf.d/ssl.conf
     mode: 0644
     owner: root
     group: root
   copy:
-    src: files/00ssl.include
+    src: 00ssl.include
     dest: /etc/httpd/conf.d/00ssl.include
     mode: 0644
     owner: root
