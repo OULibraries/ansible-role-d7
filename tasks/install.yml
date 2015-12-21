@@ -1,0 +1,65 @@
+---
+- name: Install packages necessary to run Drupal
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+  - net-tools
+  - bind-utils
+  - httpd
+  - mod_ssl
+  - mariadb
+  - mariadb-server
+  - MySQL-python
+  - php
+  - mod_php
+  - php-mysql
+  - php-ldap
+  - php-pear
+  - php-gd
+  - php-drush-drush
+- name: Ensure /opt/d7 exists
+  file:
+    path: /opt/d7/bin
+    state: directory
+    mode: 0644
+    owner: root
+    group: wheel
+    recurse: yes
+- name: Add init script to /opt/d7/bin
+  copy:
+    src: files/d7_init.sh
+    dest: /opt/d7/bin/
+    mode: 0754
+    owner: root
+    group: wheel
+- name: Add make script to /opt/d7/bin
+  copy:
+    src: files/d7_make.sh
+    dest: /opt/d7/bin/
+    mode: 0754
+    owner: root
+    group: wheel
+- name: Add sync script to /opt/d7/bin
+  copy:
+    src: files/d7_sync.sh
+    dest: /opt/d7/bin/
+    mode: 0754
+    owner: root
+    group: wheel
+- name: Add clean script to /opt/d7/bin
+  copy:
+    src: files/d7_clean.sh
+    dest: /opt/d7/bin/
+    mode: 0754
+    owner: root
+    group: wheel
+- name: Ensure /etc/profile.d/d7-ops.sh exists
+  file:
+    path: /etc/profile.d/d7-ops.sh
+    state: touch
+    mode: 0644
+    owner: root
+    group: root
+- name: Add ops scripts to path
+  lineinfile: "dest=/etc/profile.d/d7-ops.sh line='export PATH=/opt/d7/bin/:$PATH'"
