@@ -1,4 +1,6 @@
 ---
+- include: ssl-selfsign.yml
+  sudo: yes
 - include: install.yml
   sudo: yes
 - include: configure.yml
