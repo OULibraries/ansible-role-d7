@@ -4,13 +4,6 @@
     name: "{{ item }}"
     state: latest
   with_items:
-  - net-tools
-  - bind-utils
-  - httpd
-  - mod_ssl
-  - mariadb
-  - mariadb-server
-  - MySQL-python
   - php
   - mod_php
   - php-mysql

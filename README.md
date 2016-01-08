@@ -16,7 +16,7 @@ A description of the settable variables for this role should go here, including 
 Dependencies
 ------------
 
-Requires OU Libraries centos7 role. To install:
+Requires OU Libraries centos7, mariadb, and apache2 roles. To install:
 ```
 ansible-galaxy install -r requirements.yml
 ```
