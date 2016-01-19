@@ -11,6 +11,10 @@
   - php-pear
   - php-gd
   - php-drush-drush
+- name: Add httpd template file
+  copy:
+    src: d7_init_httpd_template
+    dest: /etc/httpd/conf.d
 - name: Ensure /opt/d7 exists
   file:
     path: /opt/d7/bin
