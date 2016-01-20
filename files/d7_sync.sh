@@ -36,6 +36,12 @@ echo "Setting SELinux for synced files."
 sudo semanage fcontext -a -t httpd_sys_rw_content_t  "$SITEPATH/default/files_sync(/.*)?" || exit 1
 sudo restorecon -R $SITEPATH/default || exit 1;
 
+## Now that everything is ready, swap in the synced files
+echo "Placing synced files."
+sudo rm -rf $SITEPATH/default/files_bak
+mv $SITEPATH/default/files $SITEPATH/default/files_bak
+mv $SITEPATH/default/files_sync $SITEPATH/default/files
+
 ## Perform sql-dump on source host
 ssh -A $SRCHOST drush -r $SITEPATH/drupal sql-dump --result-file=$TEMPDIR/drupal_$SITE.sql
 
