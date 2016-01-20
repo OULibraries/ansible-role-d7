@@ -30,4 +30,6 @@ then
   ## Remove the content
   echo "Deleting site files."
   sudo rm -rf $SITEPATH
+
+  $SUDO systemctl restart httpd
 fi
