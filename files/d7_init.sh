@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 ## Bootstrap an empty drupal site
 PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 

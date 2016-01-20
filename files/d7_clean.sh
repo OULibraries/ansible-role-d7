@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 ## Clean out an existing Drupal site
 PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 

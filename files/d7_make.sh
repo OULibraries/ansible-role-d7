@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 ## Deploy drupal site from drush make
 PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
