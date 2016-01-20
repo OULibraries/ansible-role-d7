@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ## Sync Drupal files & DB from source host
-PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
+PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 # Writable dir on both local and souce hosts
 TEMPDIR=/var/local/backups/drupal/temp

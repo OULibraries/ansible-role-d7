@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ## Bootstrap an empty drupal site
-PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
+PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 ## Require arguments
 if [ ! -z "$1" ]
