@@ -28,10 +28,13 @@ rsync -a --ignore-times --omit-dir-times --no-perms $SRCHOST:$SITEPATH/default/f
 echo "Files synced."
 
 ## Set perms for sync directory
+echo "Setting permissions for synced files."
 sudo find $SITEPATH/default/files_sync -type d -exec chmod u=rwx,g=rx,o= '{}' \;
 sudo find $SITEPATH/default/files_sync -type f -exec chmod u=rw,g=r,o= '{}' \;
 sudo chown -R apache:apache $SITEPATH/default/files_sync
-
+echo "Setting SELinux for synced files."
+sudo semanage fcontext -a -t httpd_sys_rw_content_t  "$SITEPATH/default/files_sync(/.*)?" || exit 1
+sudo restorecon -R $SITEPATH/default || exit 1;
 
 ## Perform sql-dump on source host
 ssh -A $SRCHOST drush -r $SITEPATH/drupal sql-dump --result-file=$TEMPDIR/drupal_$SITE.sql

@@ -41,6 +41,7 @@ sudo find $SITEPATH/default -type f -exec chmod u=rw,g=r,o= '{}' \;
 # Set SELinux or die
 echo "Setting SELinux policy of the default site."
 sudo semanage fcontext -a -t httpd_sys_content_t  "$SITEPATH/default(/.*)?" || exit 1;
+sudo semanage fcontext -a -t httpd_sys_rw_content_t  "$SITEPATH/default/files(/.*)?" || exit 1
 sudo restorecon -R $SITEPATH/default || exit 1;
 
 ## Link default site folder. Doing this last ensures that our earlier recursive
