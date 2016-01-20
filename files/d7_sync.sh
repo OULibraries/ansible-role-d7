@@ -56,17 +56,5 @@ ssh -A $SRCHOST rm $TEMPDIR/drupal_$SITE.sql
 rm $TEMPDIR/drupal_$SITE.sql
 echo "Database synced."
 
-## Enable update manager.
-sudo -u apache drush -y en update -r $SITEPATH/drupal || exit 1;
-
-## Apply security updates.
-sudo -u apache drush up -y --security-only -r $SITEPATH/drupal || exit 1;
-
-## Disable update manager; no need to leave it phoning home.
-sudo -u apache drush -y dis update -r $SITEPATH/drupal || exit 1;
-
-## Clear the caches
-sudo -u apache drush -y cc all -r $SITEPATH/drupal || exit 1;
-
-## Avoid a known performance-crusher in our environment
-sudo -u apache drush eval 'variable_set('drupal_http_request_fails', 0)' -r $SITEPATH/drupal || exit 1;
+## Apply security updates and clear caches.
+sudo d7_update.sh $SITEPATH || exit 1;

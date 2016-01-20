@@ -51,6 +51,13 @@
     mode: 0754
     owner: root
     group: wheel
+- name: Add update script to /opt/d7/bin
+  copy:
+    src: d7_update.sh
+    dest: /opt/d7/bin/
+    mode: 0754
+    owner: root
+    group: wheel
 - name: Ensure /etc/profile.d/d7-ops.sh exists
   file:
     path: /etc/profile.d/d7-ops.sh
