@@ -2,8 +2,6 @@
 ## Bootstrap an empty drupal site
 PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
-SITESOWNER=apache:apache                        # unix owner and group of /srv.
-
 ## Require arguments
 if [ ! -z "$1" ]
 then
@@ -12,12 +10,6 @@ then
 else
   echo "Requires site path (eg. /srv/sample) as argument"
   exit 1;
-fi
-
-## Set sudo if user isn't root
-SUDO=''
-if (( $EUID != 0 )); then
-    SUDO='sudo'
 fi
 
 ## Don't blow away existing sites
@@ -38,25 +30,25 @@ done
 DBPSSWD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 
 ## Make the parent directory
-$SUDO mkdir -p $SITEPATH
-$SUDO chown $SITESOWNER $SITEPATH
-$SUDO chmod 775 $SITEPATH
+sudo mkdir -p $SITEPATH
+sudo chmod 775 $SITEPATH
+sudo chown apache:apache $SITEPATH
 
 ## Grab the basename of the site to use in a few places.
 SITE=`basename $SITEPATH`
 
 ## Build from drush make
-drush -y dl drupal --drupal-project-rename=drupal --destination=$SITEPATH || exit 1;
+sudo -u apache drush -y dl drupal --drupal-project-rename=drupal --destination=$SITEPATH || exit 1;
 
-## Set perms- allows group write
+## Set perms
 echo "Setting permissions."
-find $SITEPATH/drupal -type d -exec chmod u=rwx,g=rwx,o= '{}' \;
-find $SITEPATH/drupal -type f -exec chmod u=rw,g=rw,o= '{}' \;
+find $SITEPATH/drupal -type d -exec chmod u=rwx,g=rx,o= '{}' \;
+find $SITEPATH/drupal -type f -exec chmod u=rw,g=r,o= '{}' \;
 
 # Set SELinux or die
 echo "Setting SELinux policy."
-$SUDO semanage fcontext -a -t httpd_sys_content_t  "$SITEPATH/drupal(/.*)?" || exit 1;
-$SUDO restorecon -R $SITEPATH/drupal || exit 1;
+sudo semanage fcontext -a -t httpd_sys_content_t  "$SITEPATH/drupal(/.*)?" || exit 1;
+sudo restorecon -R $SITEPATH/drupal || exit 1;
 
 ##  Move the default site out of the build. This makes updates easier later.
 echo "Moving default site out of build."
@@ -65,7 +57,7 @@ mv $SITEPATH/drupal/sites/default $SITEPATH/
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.
 echo "Linking default site into build."
-ln -s $SITEPATH/default $SITEPATH/drupal/sites/default
+sudo -u apache ln -s $SITEPATH/default $SITEPATH/drupal/sites/default
 
 echo "Generating settings.php."
 read -d '' SETTINGSPHP <<- EOF
@@ -86,23 +78,19 @@ read -d '' SETTINGSPHP <<- EOF
 );
 EOF
 
-cp $SITEPATH/default/default.settings.php $SITEPATH/default/settings.php
-echo "$SETTINGSPHP" >> $SITEPATH/default/settings.php
-$SUDO chmod 444 $SITEPATH/default/settings.php
-
-# Set owner
-echo "Changing owner."
-$SUDO chown -R $SITESOWNER $SITEPATH
+sudo -u apache cp $SITEPATH/default/default.settings.php $SITEPATH/default/settings.php
+sudo -u apache echo "$SETTINGSPHP" >> $SITEPATH/default/settings.php
+sudo chmod 444 $SITEPATH/default/settings.php
 
 ## Create the Drupal database
-drush -y sql-create --db-su=root --db-su-pw=$ROOTDBPSSWD -r $SITEPATH/drupal || exit 1;
+sudo -u apache drush -y sql-create --db-su=root --db-su-pw=$ROOTDBPSSWD -r $SITEPATH/drupal || exit 1;
 
 ## Do the Drupal install
-drush -y -r $SITEPATH/drupal site-install --site-name=$SITE || exit 1;
+sudo -u apache drush -y -r $SITEPATH/drupal site-install --site-name=$SITE || exit 1;
 
 ## Make the apache config
 echo "Generating Apache Config."
-#$SUDO rm /etc/httpd/conf.d/srv_$SITE.conf
-$SUDO sh -c " sed "s/__SITE_DIR__/$SITE/g" /etc/httpd/conf.d/d7_init_httpd_template > /etc/httpd/conf.d/srv_$SITE.conf" || exit 1;
-$SUDO sh -c " sed -i "s/__SITE_NAME__/$SITE/g" /etc/httpd/conf.d/srv_$SITE.conf" || exit 1;
-$SUDO systemctl restart httpd || exit 1;
+#sudo rm /etc/httpd/conf.d/srv_$SITE.conf
+sudo sh -c "sed "s/__SITE_DIR__/$SITE/g" /etc/httpd/conf.d/d7_init_httpd_template > /etc/httpd/conf.d/srv_$SITE.conf" || exit 1;
+sudo sh -c "sed -i "s/__SITE_NAME__/$SITE/g" /etc/httpd/conf.d/srv_$SITE.conf" || exit 1;
+sudo systemctl restart httpd || exit 1;

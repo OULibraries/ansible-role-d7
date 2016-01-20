@@ -19,9 +19,12 @@ then
   ## Grab the basename of the site to use in a few places.
   SITE=`basename $SITEPATH`
 
+  ## Get sudo password if needed because first sudo use is behind a pipe.
+  sudo ls > /dev/null
+
   ## Drop the database
   echo "Dropping database."
-  echo "DROP DATABASE \`drupal_$SITE\`" | drush sql-cli -r $SITEPATH/drupal
+  echo "DROP DATABASE \`drupal_$SITE\`" | sudo -u apache drush sql-cli -r $SITEPATH/drupal
 
   ## Remove apache config
   echo "Deleting apache config."
@@ -29,7 +32,7 @@ then
 
   ## Remove the content
   echo "Deleting site files."
-  sudo rm -rf $SITEPATH
+  sudo -u apache rm -rf $SITEPATH
 
-  $SUDO systemctl restart httpd
+  sudo systemctl restart httpd
 fi

@@ -2,9 +2,6 @@
 ## Sync Drupal files & DB from source host
 PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
-# Owner and group for site path
-SITESOWNER=apache:apache
-
 # Writable dir on both local and souce hosts
 TEMPDIR=/var/local/backups/drupal/temp
 
@@ -19,18 +16,22 @@ else
   exit 1;
 fi
 
-## Set sudo if user isn't root
-SUDO=''
-if (( $EUID != 0 )); then
-    SUDO='sudo'
-fi
-
 ## Grab the basename of the site to use in a few places.
 SITE=`basename $SITEPATH`
 
-## Sync Files
-rsync -a --ignore-times --omit-dir-times --no-perms $SRCHOST:$SITEPATH/default/files $SITEPATH/default/ || exit 1;
+## Make the sync directory
+sudo mkdir -p $SITEPATH/default/files_sync
+sudo chmod 777 $SITEPATH/default/files_sync
+
+## Sync Files to sync directory
+rsync -a --ignore-times --omit-dir-times --no-perms $SRCHOST:$SITEPATH/default/files/ $SITEPATH/default/files_sync || exit 1;
 echo "Files synced."
+
+## Set perms for sync directory
+sudo find $SITEPATH/default/files_sync -type d -exec chmod u=rwx,g=rx,o= '{}' \;
+sudo find $SITEPATH/default/files_sync -type f -exec chmod u=rw,g=r,o= '{}' \;
+sudo chown -R apache:apache $SITEPATH/default/files_sync
+
 
 ## Perform sql-dump on source host
 ssh -A $SRCHOST drush -r $SITEPATH/drupal sql-dump --result-file=$TEMPDIR/drupal_$SITE.sql
@@ -39,31 +40,24 @@ ssh -A $SRCHOST drush -r $SITEPATH/drupal sql-dump --result-file=$TEMPDIR/drupal
 rsync --omit-dir-times $SRCHOST:$TEMPDIR/drupal_$SITE.sql $TEMPDIR/
 
 ## Load sql-dump to local DB
-drush sql-cli -r $SITEPATH/drupal < $TEMPDIR/drupal_$SITE.sql || exit 1;
+sudo -u apache drush sql-cli -r $SITEPATH/drupal < $TEMPDIR/drupal_$SITE.sql || exit 1;
 
 ## Cleanup sql-dumps
 ssh -A $SRCHOST rm $TEMPDIR/drupal_$SITE.sql
 rm $TEMPDIR/drupal_$SITE.sql
 echo "Database synced."
 
-## Set perms of default site dir
-$SUDO chcon -R -t  httpd_sys_content_t $SITEPATH/default
-$SUDO chown -R $SITESOWNER $SITEPATH/default
-$SUDO find $SITEPATH/default -type d -exec chmod u=rwx,g=rwx,o= '{}' \;
-$SUDO find $SITEPATH/default -type f -exec chmod u=rw,g=rw,o= '{}' \;
-$SUDO chmod 444 $SITEPATH/default/settings.php
-
 ## Enable update manager.
-drush -y en update -r $SITEPATH/drupal || exit 1;
+sudo -u apache drush -y en update -r $SITEPATH/drupal || exit 1;
 
 ## Apply security updates.
-drush up -y --security-only -r $SITEPATH/drupal || exit 1;
+sudo -u apache drush up -y --security-only -r $SITEPATH/drupal || exit 1;
 
 ## Disable update manager; no need to leave it phoning home.
-drush -y dis update -r $SITEPATH/drupal || exit 1;
+sudo -u apache drush -y dis update -r $SITEPATH/drupal || exit 1;
 
 ## Clear the caches
-drush -y cc all -r $SITEPATH/drupal || exit 1;
+sudo -u apache drush -y cc all -r $SITEPATH/drupal || exit 1;
 
 ## Avoid a known performance-crusher in our environment
-drush eval 'variable_set('drupal_http_request_fails', 0)' -r $SITEPATH/drupal || exit 1;
+sudo -u apache drush eval 'variable_set('drupal_http_request_fails', 0)' -r $SITEPATH/drupal || exit 1;
