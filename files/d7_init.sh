@@ -42,8 +42,8 @@ sudo -u apache drush -y dl drupal --drupal-project-rename=drupal --destination=$
 
 ## Set perms
 echo "Setting permissions."
-find $SITEPATH/drupal -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-find $SITEPATH/drupal -type f -exec chmod u=rw,g=r,o= '{}' \;
+sudo find $SITEPATH/drupal -type d -exec chmod u=rwx,g=rx,o= '{}' \;
+sudo find $SITEPATH/drupal -type f -exec chmod u=rw,g=r,o= '{}' \;
 
 # Set SELinux or die
 echo "Setting SELinux policy."
@@ -53,7 +53,7 @@ sudo restorecon -R $SITEPATH/drupal || exit 1;
 
 ##  Move the default site out of the build. This makes updates easier later.
 echo "Moving default site out of build."
-mv $SITEPATH/drupal/sites/default $SITEPATH/
+sudo mv $SITEPATH/drupal/sites/default $SITEPATH/
 
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.
@@ -80,7 +80,7 @@ read -d '' SETTINGSPHP <<- EOF
 EOF
 
 sudo -u apache cp $SITEPATH/default/default.settings.php $SITEPATH/default/settings.php
-sudo -u apache echo "$SETTINGSPHP" >> $SITEPATH/default/settings.php
+sudo -u apache echo "$SETTINGSPHP"| sudo tee -a $SITEPATH/default/settings.php
 sudo chmod 444 $SITEPATH/default/settings.php
 
 ## Create the Drupal database
