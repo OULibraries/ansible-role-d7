@@ -42,8 +42,8 @@ sudo -u apache drush -y dl drupal --drupal-project-rename=drupal --destination=$
 
 ## Set perms
 echo "Setting permissions."
-sudo -u apache find $SITEPATH/drupal -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-sudo -u apache find $SITEPATH/drupal -type f -exec chmod u=rw,g=r,o= '{}' \;
+find $SITEPATH/drupal -type d -exec sudo -u apache chmod u=rwx,g=rx,o= '{}' \;
+find $SITEPATH/drupal -type f -exec sudo -u apache chmod u=rw,g=r,o= '{}' \;
 
 # Set SELinux or die
 echo "Setting SELinux policy."
