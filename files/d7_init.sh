@@ -42,6 +42,9 @@ sudo -u apache drush -y dl drupal --drupal-project-rename=drupal --destination=$
 
 ## Set perms
 echo "Setting permissions."
+
+## Get sudo password if needed because first sudo use is behind a pipe.
+sudo ls > /dev/null
 find $SITEPATH/drupal -type d -exec sudo -u apache chmod u=rwx,g=rx,o= '{}' \;
 find $SITEPATH/drupal -type f -exec sudo -u apache chmod u=rw,g=r,o= '{}' \;
 
