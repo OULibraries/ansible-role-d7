@@ -30,6 +30,10 @@ then
   echo "Deleting apache config."
   sudo rm /etc/httpd/conf.d/srv_$SITE.conf
 
+  ## Change 444 files to 644
+  sudo chmod 644 $SITEPATH/default/settings.php
+  sudo chmod 644 $SITEPATH/default/files/.htaccess
+
   ## Remove the content
   echo "Deleting site files."
   sudo -u apache rm -rf $SITEPATH
