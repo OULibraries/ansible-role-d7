@@ -58,6 +58,13 @@
     mode: 0754
     owner: root
     group: wheel
+- name: Add DB dump script to /opt/d7/bin
+  copy:
+    src: d7_dump.sh
+    dest: /opt/d7/bin/
+    mode: 0754
+    owner: root
+    group: wheel
 - name: Ensure /etc/profile.d/d7-ops.sh exists
   file:
     path: /etc/profile.d/d7-ops.sh
