@@ -19,6 +19,8 @@ if [[ ! -e $SITEPATH ]]; then
     sudo d7_init.sh $SITEPATH || exit 1;
 fi
 
+## Dump DB before touching anything
+sudo d7_dump.sh $SITEPATH || exit 1;
 
 ## Delete build dir if it's there
 sudo -u apache rm -rf $SITEPATH/drupal_build
