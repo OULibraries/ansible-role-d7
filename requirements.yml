@@ -1,13 +1,13 @@
 ---
-# fetch jsnshrmn.centos7 from github
+# fetch OULibraries.centos7 from github
 - src: https://github.com/OULibraries/ansible-role-centos7
   version: master
-  name: jsnshrmn.centos7
-# fetch jsnshrmn.mariadb from github
+  name: OULibraries.centos7
+# fetch OULibraries.mariadb from github
 - src: https://github.com/OULibraries/ansible-role-mariadb
   version: master
-  name: jsnshrmn.mariadb
-# fetch jsnshrmn.apache2 from github
+  name: OULibraries.mariadb
+# fetch OULibraries.apache2 from github
 - src: https://github.com/OULibraries/ansible-role-apache2
   version: master
-  name: jsnshrmn.apache2
+  name: OULibraries.apache2

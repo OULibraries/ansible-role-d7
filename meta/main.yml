@@ -133,6 +133,6 @@ galaxy_info:
   #- system
   - web
 dependencies:
-  - jsnshrmn.centos7
-  - jsnshrmn.mariadb
-  - jsnshrmn.apache2
+  - OULibraries.centos7
+  - OULibraries.mariadb
+  - OULibraries.apache2
