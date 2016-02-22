@@ -92,13 +92,8 @@ sudo -u apache drush -y sql-create --db-su=root --db-su-pw=$ROOTDBPSSWD -r $SITE
 ## Do the Drupal install
 sudo -u apache drush -y -r $SITEPATH/drupal site-install --site-name=$SITE || exit 1;
 
-## Make the apache config
-echo "Generating Apache Config."
-#sudo rm /etc/httpd/conf.d/srv_$SITE.conf
-sudo sh -c "sed "s/__SITE_DIR__/$SITE/g" /etc/httpd/conf.d/d7_init_httpd_template > /etc/httpd/conf.d/srv_$SITE.conf" || exit 1;
-sudo sh -c "sed -i "s/__SITE_NAME__/$SITE/g" /etc/httpd/conf.d/srv_$SITE.conf" || exit 1;
-sudo systemctl restart httpd || exit 1;
-
+## Apply the apache config
+sudo d7_httpd_conf.sh $SITEPATH || exit 1;
 
 ## Apply security updates and clear caches.
 sudo d7_update.sh $SITEPATH || exit 1;

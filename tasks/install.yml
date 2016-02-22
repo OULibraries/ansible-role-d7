@@ -51,6 +51,13 @@
     mode: 0754
     owner: root
     group: wheel
+- name: Add httpd config script to /opt/d7/bin
+  copy:
+    src: d7_httpd_conf.sh
+    dest: /opt/d7/bin/
+    mode: 0754
+    owner: root
+    group: wheel
 - name: Add update script to /opt/d7/bin
   copy:
     src: d7_update.sh

@@ -50,6 +50,13 @@ d7_dump.sh /srv/$site
 
 This script will dump the db in /srv/$site/db. Some of the other scripts also call this script to allow you to revert changes should something go wrong.
 
+## To create the site-specific Apache config file
+
+```
+d7_httpd_conf.sh /srv/$site
+```
+
+This script writes a site-specific apache config file. d7_init.sh uses this script internally to create sites in the first place.
 
 ## To sync content (files and database) between sites
 
