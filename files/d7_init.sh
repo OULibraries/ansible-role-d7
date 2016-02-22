@@ -38,7 +38,7 @@ sudo chown apache:apache $SITEPATH
 SITE=`basename $SITEPATH`
 
 ## Build from drush make
-sudo -u apache drush -y dl drupal --drupal-project-rename=drupal --destination=$SITEPATH || exit 1;
+sudo -u apache drush @none -y dl drupal --drupal-project-rename=drupal --destination=$SITEPATH || exit 1;
 
 ## Set perms
 echo "Setting permissions."
