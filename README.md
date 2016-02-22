@@ -3,12 +3,6 @@ OULibraries.d7
 
 OU Libraries Drupal Ops.
 
-Requirements
-------------
-
-NA
-
-
 Role Variables
 --------------
 
@@ -48,7 +42,13 @@ This script will apply a Drush Makefile.
 
 The [`make`](./make) directory of this repository contains our Makefiles. 
 
+## To dump the DB of a Drupal site
 
+```
+d7_dump.sh /srv/$site
+```
+
+This script will dump the db in /srv/$site/db. Some of the other scripts also call this script to allow you to revert changes should something go wrong.
 
 
 ## To sync content (files and database) between sites
@@ -78,4 +78,4 @@ TBD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Jason Sherman
