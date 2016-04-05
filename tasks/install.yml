@@ -11,6 +11,7 @@
   - php-pear
   - php-gd
   - php-drush-drush
+  - mariadb
 - name: Add httpd template file
   copy:
     src: d7_init_httpd_template
