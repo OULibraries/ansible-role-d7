@@ -18,6 +18,17 @@ if [[ -e $SITEPATH ]]; then
     exit 1
 fi
 
+# Get mysql host
+DEFAULT_DBHOST="localhost"
+read -e -p "Enter MYSQL host name: " -i "$DEFAULT_DBHOST" DBHOST
+echo
+
+# Get mysql host
+DEFAULT_DBPORT="3306"
+read -e -p "Enter MYSQL host port: " -i "$DEFAULT_DBPORT" DBPORT
+echo 
+
+
 # Get root DB password
 read -s -p "Enter MYSQL root password: " ROOTDBPSSWD
 echo
@@ -73,7 +84,7 @@ read -d '' SETTINGSPHP <<- EOF
       'database' => 'drupal_$SITE',
       'username' => '$SITE',
       'password' => '$DBPSSWD',
-      'host' => 'localhost',
+      'host' => '$DBHOST',
       'port' => '',
       'driver' => 'mysql',
       'prefix' => '',
