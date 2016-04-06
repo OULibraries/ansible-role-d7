@@ -2,6 +2,8 @@
 ## Clean out an existing Drupal site
 PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
+source /opt/d7/etc/d7-conf.sh
+
 ## Require arguments
 if [ ! -z "$1" ]
 then
@@ -24,7 +26,7 @@ then
 
   ## Drop the database
   echo "Dropping database."
-  echo "DROP DATABASE \`drupal_$SITE\`" | sudo -u apache drush sql-cli -r $SITEPATH/drupal
+  echo "DROP DATABASE \`drupal_${SITE}_${D7_ENV_NAME}\`" | sudo -u apache drush sql-cli -r $SITEPATH/drupal
 
   ## Remove apache config
   echo "Deleting apache config."
