@@ -18,3 +18,7 @@ email: 'user@example.com'
 ## Self-signed cert paths
 httpd_cert_path: '/etc/pki/tls/certs/'
 httpd_key_path: '/etc/pki/tls/private/'
+
+environment_name: vagrant
+db_host: localhost
+db_port: 3306

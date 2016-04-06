@@ -2,6 +2,8 @@
 ## Bootstrap an empty drupal site
 PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
+source /opt/d7/etc/d7-conf.sh
+
 ## Require arguments
 if [ ! -z "$1" ]
 then
@@ -19,12 +21,10 @@ if [[ -e $SITEPATH ]]; then
 fi
 
 # Get mysql host
-DEFAULT_DBHOST="localhost"
 read -e -p "Enter MYSQL host name: " -i "$DEFAULT_DBHOST" DBHOST
 echo
 
 # Get mysql host
-DEFAULT_DBPORT="3306"
 read -e -p "Enter MYSQL host port: " -i "$DEFAULT_DBPORT" DBPORT
 echo 
 
@@ -81,7 +81,7 @@ read -d '' SETTINGSPHP <<- EOF
   array (
     'default' =>
     array (
-      'database' => 'drupal_$SITE',
+      'database' => 'drupal_${SITE}_${D7_ENV_NAME}',
       'username' => '$SITE',
       'password' => '$DBPSSWD',
       'host' => '$DBHOST',

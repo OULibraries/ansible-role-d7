@@ -42,6 +42,23 @@
       - d7_update.sh
       - d7_dump.sh
 
+- name: Ensure /opt/d7/etc exists
+  file:
+    path: /opt/d7/etc
+    state: directory
+    mode: 0655
+    owner: root
+    group: wheel
+    recurse: yes
+
+- name: Add ops config
+  template:
+    src: d7-conf.sh.j2
+    dest: /opt/d7/etc/d7-conf.sh
+    owner: root
+    group: wheel
+    mode: 0444
+    
 - name: Ensure /etc/profile.d/d7-ops.sh exists
   file:
     path: /etc/profile.d/d7-ops.sh
