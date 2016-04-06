@@ -16,7 +16,8 @@
   copy:
     src: d7_init_httpd_template
     dest: /etc/httpd/conf.d
-- name: Ensure /opt/d7 exists
+
+- name: Ensure /opt/d7/bin exists
   file:
     path: /opt/d7/bin
     state: directory
@@ -24,55 +25,23 @@
     owner: root
     group: wheel
     recurse: yes
-- name: Add init script to /opt/d7/bin
+
+- name: scripts to /opt/d7/bin
   copy:
-    src: d7_init.sh
+    src: "{{ item }}"
     dest: /opt/d7/bin/
     mode: 0754
     owner: root
     group: wheel
-- name: Add make script to /opt/d7/bin
-  copy:
-    src: d7_make.sh
-    dest: /opt/d7/bin/
-    mode: 0754
-    owner: root
-    group: wheel
-- name: Add sync script to /opt/d7/bin
-  copy:
-    src: d7_sync.sh
-    dest: /opt/d7/bin/
-    mode: 0754
-    owner: root
-    group: wheel
-- name: Add clean script to /opt/d7/bin
-  copy:
-    src: d7_clean.sh
-    dest: /opt/d7/bin/
-    mode: 0754
-    owner: root
-    group: wheel
-- name: Add httpd config script to /opt/d7/bin
-  copy:
-    src: d7_httpd_conf.sh
-    dest: /opt/d7/bin/
-    mode: 0754
-    owner: root
-    group: wheel
-- name: Add update script to /opt/d7/bin
-  copy:
-    src: d7_update.sh
-    dest: /opt/d7/bin/
-    mode: 0754
-    owner: root
-    group: wheel
-- name: Add DB dump script to /opt/d7/bin
-  copy:
-    src: d7_dump.sh
-    dest: /opt/d7/bin/
-    mode: 0754
-    owner: root
-    group: wheel
+  with_items:
+      - d7_init.sh
+      - d7_make.sh
+      - d7_sync.sh
+      - d7_clean.sh
+      - d7_httpd_conf.sh
+      - d7_update.sh
+      - d7_dump.sh
+
 - name: Ensure /etc/profile.d/d7-ops.sh exists
   file:
     path: /etc/profile.d/d7-ops.sh
