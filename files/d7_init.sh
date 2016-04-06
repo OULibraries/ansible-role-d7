@@ -80,7 +80,7 @@ read -d '' SETTINGSPHP <<- EOF
       'username' => '$SITE',
       'password' => '$DBPSSWD',
       'host' => '$DBHOST',
-      'port' => '',
+      'port' => '$DBPORT',
       'driver' => 'mysql',
       'prefix' => '',
     ),
