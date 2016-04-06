@@ -22,13 +22,8 @@ fi
 
 # Get mysql host
 read -e -p "Enter MYSQL host name: " -i "$DEFAULT_DBHOST" DBHOST
-echo
-
 # Get mysql host
 read -e -p "Enter MYSQL host port: " -i "$DEFAULT_DBPORT" DBPORT
-echo 
-
-
 # Get root DB password
 read -s -p "Enter MYSQL root password: " ROOTDBPSSWD
 echo
