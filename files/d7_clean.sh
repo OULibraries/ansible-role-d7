@@ -19,26 +19,26 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
   ## Grab the basename of the site to use in a few places.
-  SITE=`basename $SITEPATH`
+  SITE=$(basename "$SITEPATH")
 
   ## Get sudo password if needed because first sudo use is behind a pipe.
   sudo ls > /dev/null
 
   ## Drop the database
   echo "Dropping database."
-  echo "DROP DATABASE \`drupal_${SITE}_${D7_ENV_NAME}\`" | sudo -u apache drush sql-cli -r $SITEPATH/drupal
+  echo "DROP DATABASE \`drupal_${SITE}_${D7_ENV_NAME}\`" | sudo -u apache drush sql-cli -r "$SITEPATH/drupal"
 
   ## Remove apache config
   echo "Deleting apache config."
-  sudo rm /etc/httpd/conf.d/srv_$SITE.conf
+  sudo rm "/etc/httpd/conf.d/srv_$SITE.conf"
 
   ## Change 444 files to 644
-  sudo chmod 644 $SITEPATH/default/settings.php
-  sudo chmod 644 $SITEPATH/default/files/.htaccess
+  sudo chmod 644 "$SITEPATH/default/settings.php"
+  sudo chmod 644 "$SITEPATH/default/files/.htaccess"
 
   ## Remove the content
   echo "Deleting site files."
-  sudo -u apache rm -rf $SITEPATH
+  sudo -u apache rm -rf "$SITEPATH"
 
   sudo systemctl restart httpd
 fi
