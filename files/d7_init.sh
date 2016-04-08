@@ -76,7 +76,7 @@ read -r -d '' SETTINGSPHP <<- EOF
   array (
     'default' =>
     array (
-      'database' => 'drupal_${SITE}_${D7_ENV_NAME}',
+      'database' => 'drupal_${SITE}_${ENV_NAME}',
       'username' => '$SITE',
       'password' => '$DBPSSWD',
       'host' => '$DBHOST',
