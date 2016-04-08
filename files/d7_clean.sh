@@ -14,13 +14,14 @@ else
   exit 1;
 fi
 
+## Grab the basename of the site to use in a few places.
+SITE=$(basename "$SITEPATH")
+
+
 read -p "You would cry if you did this on accident. Are you sure? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  ## Grab the basename of the site to use in a few places.
-  SITE=$(basename "$SITEPATH")
-
   ## Get sudo password if needed because first sudo use is behind a pipe.
   sudo ls > /dev/null
 
