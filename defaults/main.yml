@@ -19,6 +19,7 @@ email: 'user@example.com'
 httpd_cert_path: '/etc/pki/tls/certs/'
 httpd_key_path: '/etc/pki/tls/private/'
 
-environment_name: vagrant
-db_host: localhost
-db_port: 3306
+environment_name: "vagrant"
+db_host: "localhost"
+db_port: "3306"
+temp_dir: "/var/local/backups/drupal/temp"

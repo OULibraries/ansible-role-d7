@@ -77,7 +77,7 @@
 
 - name: Ensure temp dir exists
   file:
-    path: " {{ temp_dir }}"
+    path: "{{ temp_dir }}"
     state: directory
     mode: 0655
     owner: root
