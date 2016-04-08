@@ -59,9 +59,9 @@ sudo -u apache ln -s $SITEPATH/default $SITEPATH/drupal_build/sites/default
 
 ## Now that everything is ready, do the swap
 echo "Placing new build."
-sudo rm -rf $SITEPATH/drupal_bak
-mv $SITEPATH/drupal $SITEPATH/drupal_bak
-mv $SITEPATH/drupal_build $SITEPATH/drupal
+sudo -u apache rm -rf $SITEPATH/drupal_bak
+sudo -u apache mv $SITEPATH/drupal $SITEPATH/drupal_bak
+sudo -u apache mv $SITEPATH/drupal_build $SITEPATH/drupal
 
 ## Apply security updates and clear caches.
 sudo d7_update.sh $SITEPATH || exit 1;
