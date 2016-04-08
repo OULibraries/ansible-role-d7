@@ -42,6 +42,8 @@
       - d7_httpd_conf.sh
       - d7_update.sh
       - d7_dump.sh
+  tags:
+    scripts
 
 - name: Ensure /opt/d7/etc exists
   file:
@@ -72,3 +74,12 @@
 - name: Add ops scripts to sudo secure_path
   lineinfile: "dest=/etc/sudoers state=present regexp='^Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin$' line='Defaults    secure_path = /opt/d7/bin:/sbin:/bin:/usr/sbin:/usr/bin' validate='visudo -cf %s'"
 
+
+- name: Ensure temp dir exists
+  file:
+    path: " {{ temp_dir }}"
+    state: directory
+    mode: 0655
+    owner: root
+    group: wheel
+    recurse: yes
