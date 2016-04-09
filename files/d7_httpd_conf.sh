@@ -19,7 +19,7 @@ if [[ ! -e $SITEPATH ]]; then
 fi
 
 ## Grab the basename of the site to use in conf.
-SITE=`basename $SITEPATH`
+SITE=$(basename "$SITEPATH")
 
 ## Make the apache config
 echo "Generating Apache Config."

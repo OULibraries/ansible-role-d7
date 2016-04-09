@@ -17,12 +17,12 @@ else
 fi
 
 ## Grab the basename of the NEW site to use in a few places.
-SITE=`basename $SITEPATH`
+SITE=$(basename "$SITEPATH")
 
 
 ## Init site if it doesn't exist
 if [[ ! -e $SITEPATH ]]; then
-    sudo d7_init.sh $SITEPATH || exit 1;
+    sudo d7_init.sh "$SITEPATH" || exit 1;
 fi
 
 ## Make the sync directory
@@ -36,35 +36,35 @@ echo "Files synced."
 
 ## Set perms for sync directory
 echo "Setting permissions for synced files."
-sudo find $SITEPATH/default/files_sync -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-sudo find $SITEPATH/default/files_sync -type f -exec chmod u=rw,g=r,o= '{}' \;
-sudo chown -R apache:apache $SITEPATH/default/files_sync
+sudo find "$SITEPATH/default/files_sync" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
+sudo find "$SITEPATH/default/files_sync" -type f -exec chmod u=rw,g=r,o= '{}' \;
+sudo chown -R apache:apache "$SITEPATH/default/files_sync"
 echo "Setting SELinux for synced files."
 sudo semanage fcontext -a -t httpd_sys_rw_content_t  "$SITEPATH/default/files_sync(/.*)?" || exit 1
-sudo restorecon -R $SITEPATH/default || exit 1;
+sudo restorecon -R "$SITEPATH/default" || exit 1;
 
 ## Now that everything is ready, swap in the synced files
 echo "Placing synced files."
-sudo rm -rf $SITEPATH/default/files_bak
-sudo mv $SITEPATH/default/files $SITEPATH/default/files_bak
-sudo mv $SITEPATH/default/files_sync $SITEPATH/default/files
+sudo rm -rf "$SITEPATH/default/files_bak"
+sudo mv "$SITEPATH/default/files" "$SITEPATH/default/files_bak"
+sudo mv "$SITEPATH/default/files_sync" "$SITEPATH/default/files"
 
 ## Perform sql-dump on source host
-ssh -A $SRCHOST drush -r $ORIGIN_SITEPATH/drupal sql-dump --result-file=$TEMPDIR/drupal_$SITE.sql
+ssh -A "$SRCHOST" drush -r "$ORIGIN_SITEPATH/drupal" sql-dump --result-file="$TEMPDIR/drupal_$SITE.sql"
 
 ## Sync sql-dump
-rsync --omit-dir-times $SRCHOST:$TEMPDIR/drupal_$SITE.sql $TEMPDIR/
+rsync --omit-dir-times "$SRCHOST:$TEMPDIR/drupal_$SITE.sql" "$TEMPDIR/"
 
 ## Load sql-dump to local DB
-sudo -u apache drush sql-cli -r $SITEPATH/drupal < $TEMPDIR/drupal_$SITE.sql || exit 1;
+sudo -u apache drush sql-cli -r "$SITEPATH/drupal" < "$TEMPDIR/drupal_$SITE.sql" || exit 1;
 
 ## Cleanup sql-dumps
 if [ "localhost" != "$SRCHOST" ]; then 
-    ssh -A $SRCHOST rm $TEMPDIR/drupal_$SITE.sql
+    ssh -A "$SRCHOST" rm "$TEMPDIR/drupal_$SITE.sql"
 fi
 
-rm $TEMPDIR/drupal_$SITE.sql
+rm "$TEMPDIR/drupal_$SITE.sql"
 echo "Database synced."
 
 ## Apply security updates and clear caches.
-sudo d7_update.sh $SITEPATH || exit 1;
+sudo d7_update.sh "$SITEPATH" || exit 1;
