@@ -61,6 +61,12 @@
     owner: root
     group: wheel
     mode: 0444
+
+- name: Add config include to http.conf
+  lineinfile:
+    dest: /etc/httpd/conf/httpd.conf
+    line: "IncludeOptional \"/srv/*/etc/*.conf\""
+    
     
 - name: Ensure /etc/profile.d/d7-ops.sh exists
   file:
