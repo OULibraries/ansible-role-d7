@@ -29,10 +29,6 @@ then
   echo "Dropping database."
   echo "DROP DATABASE \`drupal_${SITE}_${D7_ENV_NAME}\`" | sudo -u apache drush sql-cli -r "$SITEPATH/drupal"
 
-  ## Remove apache config
-  echo "Deleting apache config."
-  sudo rm "/etc/httpd/conf.d/srv_$SITE.conf"
-
   ## Change 444 files to 644
   sudo chmod 644 "$SITEPATH/default/settings.php"
   sudo chmod 644 "$SITEPATH/default/files/.htaccess"

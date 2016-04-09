@@ -16,7 +16,7 @@
 - name: Add httpd template file
   copy:
     src: d7_init_httpd_template
-    dest: /etc/httpd/conf.d
+    dest: /opt/d7/etc
 
 - name: Ensure /opt/d7/bin exists
   file:
