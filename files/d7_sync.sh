@@ -9,7 +9,7 @@ if [ ! -z "$1" ] && [ ! -z "$2" ] && [ ! -z "$3" ]
 then
   ORIGIN_SITEPATH=$1
   SRCHOST=$2
-  NEWSITEPATH=$3
+  SITEPATH=$3
   echo "Syncing $ORIGIN_SITEPATH content from $SRCHOST to local $SITEPATH"
 else
   echo "Requires site path (eg. /srv/sample), source host, and new site path as arguments"
