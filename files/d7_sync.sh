@@ -2,7 +2,7 @@
 ## Sync Drupal files & DB from source host
 PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
-source /opt/d7/etc/d7-conf.sh
+source /opt/d7/etc/d7_conf.sh
 
 ## Require arguments
 if [ ! -z "$1" ] && [ ! -z "$2" ] && [ ! -z "$3" ]
