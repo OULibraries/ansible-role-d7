@@ -26,7 +26,7 @@ if [[ ! -e $SITEPATH ]]; then
 fi
 
 ## Make the sync directory
-sudo mkdir -v  -p "$SITEPATH/default/files_sync"
+sudo mkdir -p "$SITEPATH/default/files_sync"
 sudo chmod 777 "$SITEPATH/default/files_sync"
 
 ## Sync Files to writable directory (sudo would break ssh)
