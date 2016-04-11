@@ -45,9 +45,9 @@ sudo restorecon -R "$SITEPATH/default" || exit 1;
 
 ## Now that everything is ready, swap in the synced files
 echo "Placing synced files."
-sudo rm -rf "$SITEPATH/default/files_bak"
-sudo mv "$SITEPATH/default/files" "$SITEPATH/default/files_bak"
-sudo mv "$SITEPATH/default/files_sync" "$SITEPATH/default/files"
+sudo -u apache rm -rf "$SITEPATH/default/files_bak"
+sudo -u apache mv "$SITEPATH/default/files" "$SITEPATH/default/files_bak"
+sudo -u apache mv "$SITEPATH/default/files_sync" "$SITEPATH/default/files"
 
 ## Perform sql-dump on source host
 ssh -A "$SRCHOST" drush -r "$ORIGIN_SITEPATH/drupal" sql-dump --result-file="$TEMPDIR/drupal_$SITE.sql"
