@@ -2,7 +2,7 @@
 ## Deploy drupal site from drush make
 PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
-source /opt/d7/etc/d7-conf.sh
+source /opt/d7/etc/d7_conf.sh
 
 ## Don't edit below here.
 # Require arguments

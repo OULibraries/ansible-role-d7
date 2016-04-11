@@ -2,7 +2,7 @@
 ## Sync Drupal files & DB from source host
 PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
-source /opt/d7/etc/d7-conf.sh
+source /opt/d7/etc/d7_conf.sh
 
 ## Require arguments
 if [ ! -z "$1" ] && [ ! -z "$2" ] && [ ! -z "$3" ]
@@ -26,7 +26,7 @@ if [[ ! -e $SITEPATH ]]; then
 fi
 
 ## Make the sync directory
-sudo mkdir -v  -p "$SITEPATH/default/files_sync"
+sudo mkdir -p "$SITEPATH/default/files_sync"
 sudo chmod 777 "$SITEPATH/default/files_sync"
 
 ## Sync Files to writable directory (sudo would break ssh)
@@ -45,9 +45,9 @@ sudo restorecon -R "$SITEPATH/default" || exit 1;
 
 ## Now that everything is ready, swap in the synced files
 echo "Placing synced files."
-sudo rm -rf "$SITEPATH/default/files_bak"
-sudo mv "$SITEPATH/default/files" "$SITEPATH/default/files_bak"
-sudo mv "$SITEPATH/default/files_sync" "$SITEPATH/default/files"
+sudo -u apache rm -rf "$SITEPATH/default/files_bak"
+sudo -u apache mv "$SITEPATH/default/files" "$SITEPATH/default/files_bak"
+sudo -u apache mv "$SITEPATH/default/files_sync" "$SITEPATH/default/files"
 
 ## Perform sql-dump on source host
 ssh -A "$SRCHOST" drush -r "$ORIGIN_SITEPATH/drupal" sql-dump --result-file="$TEMPDIR/drupal_$SITE.sql"

@@ -56,8 +56,8 @@
 
 - name: Add ops config
   template:
-    src: d7-conf.sh.j2
-    dest: /opt/d7/etc/d7-conf.sh
+    src: d7_conf.sh.j2
+    dest: /opt/d7/etc/d7_conf.sh
     owner: root
     group: wheel
     mode: 0444
