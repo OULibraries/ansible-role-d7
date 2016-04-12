@@ -18,7 +18,7 @@ fi
 
 ## Init site if it doesn't exist
 if [[ ! -e $SITEPATH ]]; then
-    sudo d7_init.sh "$SITEPATH" || exit 1;
+    d7_init.sh "$SITEPATH" || exit 1;
 fi
 
 ## Dump DB before touching anything
