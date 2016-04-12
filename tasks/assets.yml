@@ -1,0 +1,52 @@
+---
+- name: Ensure /opt/d7/bin exists
+  file:
+    path: /opt/d7/bin
+    state: directory
+    mode: 0655
+    owner: root
+    group: wheel
+    recurse: yes
+
+- name: scripts to /opt/d7/bin
+  copy:
+    src: "{{ item }}"
+    dest: /opt/d7/bin/
+    mode: 0754
+    owner: root
+    group: wheel
+  with_items:
+      - d7_init.sh
+      - d7_make.sh
+      - d7_sync.sh
+      - d7_clean.sh
+      - d7_httpd_conf.sh
+      - d7_update.sh
+      - d7_dump.sh
+  tags:
+    scripts
+
+- name: Ensure /opt/d7/etc exists
+  file:
+    path: /opt/d7/etc
+    state: directory
+    mode: 0655
+    owner: root
+    group: wheel
+    recurse: yes
+
+
+- name: Install httpd template file
+  copy:
+    mode: 0444
+    src: d7_init_httpd_template
+    dest: /opt/d7/etc
+
+
+- name: Install d7  config
+  template:
+    src: d7_conf.sh.j2
+    dest: /opt/d7/etc/d7_conf.sh
+    owner: root
+    group: wheel
+    mode: 0444
