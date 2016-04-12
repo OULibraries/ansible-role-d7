@@ -11,11 +11,14 @@
   - php-pear
   - php-gd
   - php-drush-drush
+  - mariadb
+
 - name: Add httpd template file
   copy:
     src: d7_init_httpd_template
     dest: /etc/httpd/conf.d
-- name: Ensure /opt/d7 exists
+
+- name: Ensure /opt/d7/bin exists
   file:
     path: /opt/d7/bin
     state: directory
@@ -23,55 +26,42 @@
     owner: root
     group: wheel
     recurse: yes
-- name: Add init script to /opt/d7/bin
+
+- name: scripts to /opt/d7/bin
   copy:
-    src: d7_init.sh
+    src: "{{ item }}"
     dest: /opt/d7/bin/
     mode: 0754
     owner: root
     group: wheel
-- name: Add make script to /opt/d7/bin
-  copy:
-    src: d7_make.sh
-    dest: /opt/d7/bin/
-    mode: 0754
+  with_items:
+      - d7_init.sh
+      - d7_make.sh
+      - d7_sync.sh
+      - d7_clean.sh
+      - d7_httpd_conf.sh
+      - d7_update.sh
+      - d7_dump.sh
+  tags:
+    scripts
+
+- name: Ensure /opt/d7/etc exists
+  file:
+    path: /opt/d7/etc
+    state: directory
+    mode: 0655
     owner: root
     group: wheel
-- name: Add sync script to /opt/d7/bin
-  copy:
-    src: d7_sync.sh
-    dest: /opt/d7/bin/
-    mode: 0754
+    recurse: yes
+
+- name: Add ops config
+  template:
+    src: d7_conf.sh.j2
+    dest: /opt/d7/etc/d7_conf.sh
     owner: root
     group: wheel
-- name: Add clean script to /opt/d7/bin
-  copy:
-    src: d7_clean.sh
-    dest: /opt/d7/bin/
-    mode: 0754
-    owner: root
-    group: wheel
-- name: Add httpd config script to /opt/d7/bin
-  copy:
-    src: d7_httpd_conf.sh
-    dest: /opt/d7/bin/
-    mode: 0754
-    owner: root
-    group: wheel
-- name: Add update script to /opt/d7/bin
-  copy:
-    src: d7_update.sh
-    dest: /opt/d7/bin/
-    mode: 0754
-    owner: root
-    group: wheel
-- name: Add DB dump script to /opt/d7/bin
-  copy:
-    src: d7_dump.sh
-    dest: /opt/d7/bin/
-    mode: 0754
-    owner: root
-    group: wheel
+    mode: 0444
+    
 - name: Ensure /etc/profile.d/d7-ops.sh exists
   file:
     path: /etc/profile.d/d7-ops.sh
@@ -84,3 +74,11 @@
 - name: Add ops scripts to sudo secure_path
   lineinfile: "dest=/etc/sudoers state=present regexp='^Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin$' line='Defaults    secure_path = /opt/d7/bin:/sbin:/bin:/usr/sbin:/usr/bin' validate='visudo -cf %s'"
 
+- name: Ensure temp dir exists
+  file:
+    path: "{{ temp_dir }}"
+    state: directory
+    mode: 0770
+    owner: root
+    group: wheel
+    recurse: yes

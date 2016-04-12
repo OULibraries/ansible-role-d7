@@ -13,19 +13,19 @@ else
 fi
 
 ## Dump DB before touching anything
-sudo d7_dump.sh $SITEPATH || exit 1;
+sudo d7_dump.sh "$SITEPATH" || exit 1;
 
 ## Enable update manager.
-sudo -u apache drush -y en update -r $SITEPATH/drupal || exit 1;
+sudo -u apache drush -y en update -r "$SITEPATH/drupal" || exit 1;
 
 ## Apply security updates.
-sudo -u apache drush up -y --security-only -r $SITEPATH/drupal || exit 1;
+sudo -u apache drush up -y --security-only -r "$SITEPATH/drupal"  --backup-dir="$SITEPATH/drush-backups/" || exit 1;
 
 ## Disable update manager; no need to leave it phoning home.
-sudo -u apache drush -y dis update -r $SITEPATH/drupal || exit 1;
+sudo -u apache drush -y dis update -r "$SITEPATH/drupal" || exit 1;
 
 ## Clear the caches
-sudo -u apache drush -y cc all -r $SITEPATH/drupal || exit 1;
+sudo -u apache drush -y cc all -r "$SITEPATH/drupal" || exit 1;
 
 ## Avoid a known performance-crusher in our environment
-sudo -u apache drush eval 'variable_set('drupal_http_request_fails', 0)' -r $SITEPATH/drupal || exit 1;
+sudo -u apache drush eval 'variable_set('drupal_http_request_fails', 0)' -r "$SITEPATH/drupal" || exit 1;

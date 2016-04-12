@@ -134,5 +134,4 @@ galaxy_info:
   - web
 dependencies:
   - OULibraries.centos7
-  - OULibraries.mariadb
   - OULibraries.apache2
