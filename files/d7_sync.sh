@@ -44,10 +44,12 @@ sudo semanage fcontext -a -t httpd_sys_rw_content_t  "$SITEPATH/default/files_sy
 sudo restorecon -R "$SITEPATH/default" || exit 1;
 
 ## Now that everything is ready, swap in the synced files
+## /srv/libraries1/default isn't supposed to be writeable, so we need
+## to do some things as root.
 echo "Placing synced files."
-sudo -u apache rm -rf "$SITEPATH/default/files_bak"
-sudo -u apache mv "$SITEPATH/default/files" "$SITEPATH/default/files_bak"
-sudo -u apache mv "$SITEPATH/default/files_sync" "$SITEPATH/default/files"
+sudo rm -rf "$SITEPATH/default/files_bak"
+sudo mv "$SITEPATH/default/files" "$SITEPATH/default/files_bak"
+sudo mv "$SITEPATH/default/files_sync" "$SITEPATH/default/files"
 
 ## Perform sql-dump on source host
 ssh -A "$SRCHOST" drush -r "$ORIGIN_SITEPATH/drupal" sql-dump --result-file="$TEMPDIR/drupal_$SITE.sql"
