@@ -22,7 +22,7 @@ if [[ ! -e $SITEPATH ]]; then
 fi
 
 ## Dump DB before touching anything
-sudo d7_dump.sh "$SITEPATH" || exit 1;
+d7_dump.sh "$SITEPATH" || exit 1;
 
 ## Delete build dir if it's there
 sudo -u apache rm -rf "$SITEPATH/drupal_build"
@@ -66,4 +66,4 @@ sudo -u apache mv "$SITEPATH/drupal" "$SITEPATH/drupal_bak"
 sudo -u apache mv "$SITEPATH/drupal_build" "$SITEPATH/drupal"
 
 ## Apply security updates and clear caches.
-sudo d7_update.sh "$SITEPATH" || exit 1;
+d7_update.sh "$SITEPATH" || exit 1;

@@ -13,7 +13,7 @@ else
 fi
 
 ## Dump DB before touching anything
-sudo d7_dump.sh "$SITEPATH" || exit 1;
+d7_dump.sh "$SITEPATH" || exit 1;
 
 ## Enable update manager.
 sudo -u apache drush -y en update -r "$SITEPATH/drupal" || exit 1;

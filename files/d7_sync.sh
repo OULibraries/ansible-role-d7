@@ -69,4 +69,4 @@ rm "$TEMPDIR/drupal_$SITE.sql"
 echo "Database synced."
 
 ## Apply security updates and clear caches.
-sudo d7_update.sh "$SITEPATH" || exit 1;
+d7_update.sh "$SITEPATH" || exit 1;
