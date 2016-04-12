@@ -24,6 +24,6 @@ SITE=$(basename "$SITEPATH")
 ## Make the apache config
 echo "Generating Apache Config."
 sudo -u apache mkdir "/srv/$SITE/etc"
-sudo sh -c "sed "s/__SITE_DIR__/$SITE/g" /opt/d7/etc/d7_init_httpd_template > /srv/$SITE/etc/srv_$SITE.conf" || exit 1;
-sudo sh -c "sed -i "s/__SITE_NAME__/$SITE/g" /srv/$SITE/etc/srv_$SITE.conf" || exit 1;
+sudo -u apache sh -c "sed "s/__SITE_DIR__/$SITE/g" /opt/d7/etc/d7_init_httpd_template > /srv/$SITE/etc/srv_$SITE.conf" || exit 1;
+sudo -u apache sh -c "sed -i "s/__SITE_NAME__/$SITE/g" /srv/$SITE/etc/srv_$SITE.conf" || exit 1;
 sudo systemctl restart httpd || exit 1;
