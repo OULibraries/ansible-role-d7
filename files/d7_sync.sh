@@ -57,9 +57,6 @@ ssh -A "$SRCHOST" drush -r "$ORIGIN_SITEPATH/drupal" sql-dump --result-file="$OR
 ## Sync sql-dump
 rsync --omit-dir-times "$SRCHOST:$ORIGIN_SITEPATH/db/drupal_${ORIGIN_SITE}_sync.sql" "$SITEPATH/db/"
 
-## Load sql-dump to local DB
-sudo -u apache drush sql-cli -r "$SITEPATH/drupal" < "$SITEPATH/db/drupal_${ORIGIN_SITE}_sync.sql" || exit 1;
-echo "Database synced."
 
-## Apply security updates and clear caches.
-d7_update.sh "$SITEPATH" || exit 1;
+## Import sql dump
+d7_importdb.sh "$SITEPATH" "$SITEPATH/db/drupal_${ORIGIN_SITE}_sync.sql" || exit 1;
