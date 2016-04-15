@@ -3,10 +3,6 @@
 - src: https://github.com/OULibraries/ansible-role-centos7
   version: master
   name: OULibraries.centos7
-# fetch OULibraries.mariadb from github
-- src: https://github.com/OULibraries/ansible-role-mariadb
-  version: master
-  name: OULibraries.mariadb
 # fetch OULibraries.apache2 from github
 - src: https://github.com/OULibraries/ansible-role-apache2
   version: master
