@@ -18,7 +18,7 @@ fi
 
 ## Grab the basename of the NEW site to use in a few places.
 SITE=$(basename "$SITEPATH")
-
+ORIGIN_SITE=$(basename "$ORIGIN_SITEPATH")
 
 ## Init site if it doesn't exist
 if [[ ! -e $SITEPATH ]]; then
@@ -52,13 +52,13 @@ sudo mv "$SITEPATH/default/files" "$SITEPATH/default/files_bak"
 sudo mv "$SITEPATH/default/files_sync" "$SITEPATH/default/files"
 
 ## Perform sql-dump on source host
-ssh -A "$SRCHOST" drush -r "$ORIGIN_SITEPATH/drupal" sql-dump --result-file="$ORIGIN_SITEPATH/db/drupal_${SITE}_sync.sql"
+ssh -A "$SRCHOST" drush -r "$ORIGIN_SITEPATH/drupal" sql-dump --result-file="$ORIGIN_SITEPATH/db/drupal_${ORIGIN_SITE}_sync.sql"
 
 ## Sync sql-dump
-rsync --omit-dir-times "$SRCHOST:$SITEPATH/db/drupal_${SITE}_sync.sql" "$SITEPATH/db/"
+rsync --omit-dir-times "$SRCHOST:$ORIGIN_SITEPATH/db/drupal_${ORIGIN_SITE}_sync.sql" "$SITEPATH/db/"
 
 ## Load sql-dump to local DB
-sudo -u apache drush sql-cli -r "$SITEPATH/drupal" < "$SITEPATH/db/drupal_${SITE}_sync.sql" || exit 1;
+sudo -u apache drush sql-cli -r "$SITEPATH/drupal" < "$SITEPATH/db/drupal_${ORIGIN_SITE}_sync.sql" || exit 1;
 echo "Database synced."
 
 ## Apply security updates and clear caches.
