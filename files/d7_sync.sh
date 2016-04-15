@@ -59,13 +59,6 @@ rsync --omit-dir-times "$SRCHOST:$TEMPDIR/drupal_$SITE.sql" "$TEMPDIR/"
 
 ## Load sql-dump to local DB
 sudo -u apache drush sql-cli -r "$SITEPATH/drupal" < "$TEMPDIR/drupal_$SITE.sql" || exit 1;
-
-## Cleanup sql-dumps
-if [ "localhost" != "$SRCHOST" ]; then 
-    ssh -A "$SRCHOST" rm "$TEMPDIR/drupal_$SITE.sql"
-fi
-
-rm "$TEMPDIR/drupal_$SITE.sql"
 echo "Database synced."
 
 ## Apply security updates and clear caches.
