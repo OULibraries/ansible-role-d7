@@ -1,3 +1,7 @@
 ---
 - include: install.yml
   sudo: yes
+
+- include: assets.yml
+  sudo: yes
+  tags: assets
