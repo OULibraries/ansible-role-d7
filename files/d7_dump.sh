@@ -26,4 +26,4 @@ SITE=$(basename "$SITEPATH")
 sudo -u apache mkdir -p "$SITEPATH/db"
 
 ## Perform sql-dump
-sudo -u apache drush -r "$SITEPATH/drupal" sql-dump --result-file="$SITEPATH/db/drupal_$SITE.sql"
+sudo -u apache drush -r "$SITEPATH/drupal" sql-dump --result-file="$SITEPATH/db/drupal_${SITE}_dump.sql"
