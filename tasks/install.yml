@@ -15,6 +15,7 @@
 
 - name: Add httpd template file
   copy:
+    mode: 0444
     src: d7_init_httpd_template
     dest: /opt/d7/etc
 

@@ -99,7 +99,7 @@ sudo -u apache drush -y sql-create --db-su=root --db-su-pw="$ROOTDBPSSWD" -r "$S
 sudo -u apache drush -y -r "$SITEPATH/drupal" site-install --site-name="$SITE" || exit 1;
 
 ## Apply the apache config
-sudo d7_httpd_conf.sh "$SITEPATH" || exit 1;
+d7_httpd_conf.sh "$SITEPATH" || exit 1;
 
 ## Apply security updates and clear caches.
-sudo d7_update.sh "$SITEPATH" || exit 1;
+d7_update.sh "$SITEPATH" || exit 1;

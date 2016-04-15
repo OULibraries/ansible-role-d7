@@ -34,8 +34,10 @@ then
   sudo chmod 644 "$SITEPATH/default/files/.htaccess"
 
   ## Remove the content
+  ## /srv/libraries1/default isn't supposed to be writeable, so we need
+  ## to do some things as root
   echo "Deleting site files."
-  sudo -u apache rm -rf "$SITEPATH"
+  sudo  rm -rf "$SITEPATH"
 
   sudo systemctl restart httpd
 fi

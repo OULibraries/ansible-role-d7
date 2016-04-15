@@ -16,7 +16,7 @@ fi
 
 ## Init site if it doesn't exist
 if [[ ! -e $SITEPATH ]]; then
-    sudo d7_init.sh "$SITEPATH" || exit 1;
+    d7_init.sh "$SITEPATH" || exit 1;
 fi
 
 ## Grab the basename of the site to use in a few places.
