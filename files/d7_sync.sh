@@ -1,4 +1,4 @@
->#!/usr/bin/env bash
+#!/usr/bin/env bash
 ## Sync Drupal files & DB from source host
 PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
