@@ -28,6 +28,20 @@ else
 fi       
 
 
+
+ROOTDBPSSWD="root"
+
+
+if drush sqlq -r $SITEPATH
+then
+    echo "Require database exists"
+else
+    ## Create the Drupal database
+    sudo -u apache drush -y sql-create --db-su=root --db-su-pw="$ROOTDBPSSWD" -r "$SITEPATH/drupal" || exit 1;
+fi
+
+
+
 ## Load sql-dump to local DB
 
 echo "Synching database for $SITE from file at $DBFILE."
