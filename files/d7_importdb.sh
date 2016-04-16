@@ -27,26 +27,21 @@ else
     DBFILE="${SITEPATH}/db/drupal_${SITE}_dump.sql"
 fi       
 
-
-
-ROOTDBPSSWD="root"
-
-
 if drush sqlq -r $SITEPATH
 then
-    echo "Require database exists"
+    echo "Target DB exists. "
 else
+    echo "Target DB doesn't exist, we need to create it. "
+    # Get root DB password
+    read -r -s -p "Enter MYSQL root password: " ROOTDBPSSWD
     ## Create the Drupal database
     sudo -u apache drush -y sql-create --db-su=root --db-su-pw="$ROOTDBPSSWD" -r "$SITEPATH/drupal" || exit 1;
 fi
 
-
-
 ## Load sql-dump to local DB
-
-echo "Synching database for $SITE from file at $DBFILE."
+echo "Importing database for $SITE from file at $DBFILE."
 sudo -u apache drush sql-cli -r "$SITEPATH/drupal" < "${DBFILE}" || exit 1;
-echo "Database synced."
+echo "Database imported."
 echo
 
 ## Apply security updates and clear caches.
