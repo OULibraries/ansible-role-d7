@@ -27,7 +27,7 @@ else
     DBFILE="${SITEPATH}/db/drupal_${SITE}_dump.sql"
 fi       
 
-if drush sqlq -r $SITEPATH
+if drush sqlq -r $SITEPATH/drupal
 then
     echo "Target DB exists. "
 else
