@@ -35,7 +35,7 @@ else
 
 
     # Get DB admin user
-    read -r -e -p "Enter MYSQL admin user: " -i "$D7_DBSU" DBSU
+    read -r -e -p "Enter MYSQL admin user: " -i "$D7_DBSU" D7_DBSU
     # Get DB admin password
     read -r -s -p "Enter MYSQL root password: " D7_DBSU_PASS
     while ! mysql -u  "$D7_DBSU" -p"$D7_DBSU_PASS"  -e ";" ; do
