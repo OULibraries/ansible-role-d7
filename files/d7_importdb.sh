@@ -34,7 +34,7 @@ else
     echo "Target DB doesn't exist, we need to create it. "
 
     # Get root DB password
-    read -r -s -p "Enter MYSQL root password: " ROOTDBPSSWD
+    read -r -s -p "Enter MYSQL admin password: " ROOTDBPSSWD
     while ! mysql -u root -p"$ROOTDBPSSWD"  -e ";" ; do
 	read -r -s -p "Can't connect. Re-enter password to try again: " ROOTDBPSSWD
     done
