@@ -43,7 +43,7 @@ else
     done
     
     ## Create the Drupal database
-    sudo -u apache drush -y sql-create --db-su="D7_DBSU" --db-su-pw="$D7_DBSU_PASS" -r "$SITEPATH/drupal" || exit 1;
+    sudo -u apache drush -y sql-create --db-su="$D7_DBSU" --db-su-pw="$D7_DBSU_PASS" -r "$SITEPATH/drupal" || exit 1;
 fi
 
 ## Load sql-dump to local DB
