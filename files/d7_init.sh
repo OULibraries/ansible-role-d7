@@ -30,7 +30,7 @@ echo
 read -r -e -p "Enter MYSQL admin user: " -i "$D7_DBSU" DBSU
 # Get DB admin password
 read -r -s -p "Enter MYSQL root password: " D7_DBSU_PASS
-while ! mysql -u "$D7_DBSU: -p"$D7_DBSU_PASS"  -e ";" ; do
+while ! mysql -u "$D7_DBSU" -p"$D7_DBSU_PASS"  -e ";" ; do
     read -r -s -p "Can't connect, please retry: " D7_DBSU_PASS
 done
 
