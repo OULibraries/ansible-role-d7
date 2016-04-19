@@ -88,6 +88,11 @@ read -r -d '' SETTINGSPHP <<- EOF
     ),
   ),
 );
+
+## Set public-facing hostname.
+\$base_url = 'https://${SITE}.${D7_HOST_SUFFIX}';
+\$cookie_domain = '${SITE}.${D7_HOST_SUFFIX}';
+
 EOF
 
 sudo -u apache cp "$SITEPATH/default/default.settings.php" "$SITEPATH/default/settings.php"
