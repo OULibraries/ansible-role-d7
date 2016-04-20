@@ -2,8 +2,9 @@
 ENV_NAME="{{ environment_name }}"
 
 # Default MySQL target
-DEFAULT_DBHOST="{{ db_host }}"
-DEFAULT_DBPORT="{{ db_port }}"
+D7_DBHOST="{{ mariadb_host }}"
+D7_DBPORT="{{ mariadb_port }}"
+D7_DBSU="{{ mariadb_root_user}}"
 
 # Writable dir on both local and source hosts
 TEMPDIR="{{ temp_dir }}"

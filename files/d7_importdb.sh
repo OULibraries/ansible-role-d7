@@ -33,14 +33,17 @@ then
 else
     echo "Target DB doesn't exist, we need to create it. "
 
-    # Get root DB password
-    read -r -s -p "Enter MYSQL admin password: " ROOTDBPSSWD
-    while ! mysql -u root -p"$ROOTDBPSSWD"  -e ";" ; do
-	read -r -s -p "Can't connect. Re-enter password to try again: " ROOTDBPSSWD
+
+    # Get DB admin user
+    read -r -e -p "Enter MYSQL admin user: " -i "$D7_DBSU" D7_DBSU
+    # Get DB admin password
+    read -r -s -p "Enter MYSQL root password: " D7_DBSU_PASS
+    while ! mysql -u  "$D7_DBSU" -p"$D7_DBSU_PASS"  -e ";" ; do
+	read -r -s -p "Can't connect, please retry: " D7_DBSU_PASS
     done
     
     ## Create the Drupal database
-    sudo -u apache drush -y sql-create --db-su=root --db-su-pw="$ROOTDBPSSWD" -r "$SITEPATH/drupal" || exit 1;
+    sudo -u apache drush -y sql-create --db-su="$D7_DBSU" --db-su-pw="$D7_DBSU_PASS" -r "$SITEPATH/drupal" || exit 1;
 fi
 
 ## Load sql-dump to local DB
