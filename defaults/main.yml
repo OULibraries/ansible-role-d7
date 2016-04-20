@@ -24,7 +24,7 @@ environment_name: "vagrant"
 mariadb_host: "localhost"
 mariadb_port: "3306"
 mariadb_root_user: 'root'
-mariadb_root_pass: 'root'
+
 
 
 temp_dir: "/var/local/backups/drupal/temp"
