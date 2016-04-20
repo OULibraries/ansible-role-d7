@@ -26,16 +26,16 @@ fi
 read -r -e -p "Enter host suffix (e.g. lib.ou.edu): " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
 
 # Get mysql host 
-read -r -e -p "Enter MYSQL host name: " -i "$D7_DBHOST" DBHOST
+read -r -e -p "Enter MYSQL host name: " -i "$D7_DBHOST" MY_DBHOST
 # Get mysql port
-read -r -e -p "Enter MYSQL host port: " -i "$D7_DBPORT" DBPORT
+read -r -e -p "Enter MYSQL host port: " -i "$D7_DBPORT" MY_DBPORT
 
 # Get DB admin user
-read -r -e -p "Enter MYSQL admin user: " -i "$D7_DBSU" DBSU
+read -r -e -p "Enter MYSQL admin user: " -i "$D7_DBSU" MY_DBSU
 # Get DB admin password
-read -r -s -p "Enter MYSQL root password: " D7_DBSU_PASS
-while ! mysql -u "$D7_DBSU" -p"$D7_DBSU_PASS"  -e ";" ; do
-    read -r -s -p "Can't connect, please retry: " D7_DBSU_PASS
+read -r -s -p "Enter MYSQL root password: " MY_DBSU_PASS
+while  [ -z "$MY_DBSU_PASS" ] || ! mysql --user="$MY_DBSU" --password="$MY_DBSU_PASS"  -e ";" ; do
+    read -r -s -p "Can't connect, please retry: " MY_DBSU_PASS
 done
 
 # Generate Drupal DB password
@@ -104,7 +104,7 @@ sudo -u apache echo "$SETTINGSPHP"| sudo -u apache tee -a "$SITEPATH/default/set
 sudo -u apache chmod 444 "$SITEPATH/default/settings.php"
 
 ## Create the Drupal database
-sudo -u apache drush -y sql-create --db-su="${D7_DBSU}" --db-su-pw="$D7_DBSU_PASS" -r "$SITEPATH/drupal" || exit 1;
+sudo -u apache drush -y sql-create --db-su="${MY_DBSU}" --db-su-pw="$MY_DBSU_PASS" -r "$SITEPATH/drupal" || exit 1;
 
 ## Do the Drupal install
 sudo -u apache drush -y -r "$SITEPATH/drupal" site-install --site-name="$SITE" || exit 1;
