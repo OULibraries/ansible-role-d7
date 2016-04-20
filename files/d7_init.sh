@@ -20,11 +20,15 @@ if [[ -e "$SITEPATH" ]]; then
     exit 1
 fi
 
-# Get mysql host
+
+
+# Get external host suffix (rev proxy, ngrok, etc)
+read -r -e -p "Enter host suffix (e.g. lib.ou.edu): " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
+
+# Get mysql host 
 read -r -e -p "Enter MYSQL host name: " -i "$D7_DBHOST" DBHOST
-# Get mysql host
+# Get mysql port
 read -r -e -p "Enter MYSQL host port: " -i "$D7_DBPORT" DBPORT
-echo
 
 # Get DB admin user
 read -r -e -p "Enter MYSQL admin user: " -i "$D7_DBSU" DBSU
@@ -90,8 +94,8 @@ read -r -d '' SETTINGSPHP <<- EOF
 );
 
 ## Set public-facing hostname.
-\$base_url = 'https://${SITE}.${D7_HOST_SUFFIX}';
-\$cookie_domain = '${SITE}.${D7_HOST_SUFFIX}';
+\$base_url = 'https://${SITE}.${MY_HOST_SUFFIX}';
+\$cookie_domain = '${SITE}.${MY_HOST_SUFFIX}';
 
 EOF
 
