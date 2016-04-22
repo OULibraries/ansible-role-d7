@@ -38,6 +38,11 @@ while  [ -z "$MY_DBSU_PASS" ] || ! mysql --user="$MY_DBSU" --password="$MY_DBSU_
     read -r -s -p "Can't connect, please retry: " MY_DBSU_PASS
 done
 
+echo
+echo
+echo "SHALL WE BUILD A SITE?"
+echo
+
 # Generate Drupal DB password
 DBPSSWD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 
@@ -85,8 +90,8 @@ read -r -d '' SETTINGSPHP <<- EOF
       'database' => 'drupal_${SITE}_${ENV_NAME}',
       'username' => '$SITE',
       'password' => '$DBPSSWD',
-      'host' => '$DBHOST',
-      'port' => '$DBPORT',
+      'host' => '$MY_DBHOST',
+      'port' => '$MY_DBPORT',
       'driver' => 'mysql',
       'prefix' => '',
     ),
