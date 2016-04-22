@@ -35,15 +35,15 @@ else
 
 
     # Get DB admin user
-    read -r -e -p "Enter MYSQL admin user: " -i "$D7_DBSU" D7_DBSU
+    read -r -e -p "Enter MYSQL admin user: " -i "$D7_DBSU" MY_DBSU
     # Get DB admin password
-    read -r -s -p "Enter MYSQL root password: " D7_DBSU_PASS
-    while ! mysql -u  "$D7_DBSU" -p"$D7_DBSU_PASS"  -e ";" ; do
-	read -r -s -p "Can't connect, please retry: " D7_DBSU_PASS
+    read -r -s -p "Enter MYSQL root password: " MY_DBSU_PASS
+    while ! mysql -u  "$MY_DBSU" -p"$MY_DBSU_PASS"  -e ";" ; do
+	read -r -s -p "Can't connect, please retry: " MY_DBSU_PASS
     done
     
     ## Create the Drupal database
-    sudo -u apache drush -y sql-create --db-su="$D7_DBSU" --db-su-pw="$D7_DBSU_PASS" -r "$SITEPATH/drupal" || exit 1;
+    sudo -u apache drush -y sql-create --db-su="$MY_DBSU" --db-su-pw="$MY_DBSU_PASS" -r "$SITEPATH/drupal" || exit 1;
 fi
 
 ## Load sql-dump to local DB
