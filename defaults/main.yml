@@ -27,4 +27,3 @@ mariadb_root_user: 'root'
 
 
 
-temp_dir: "/var/local/backups/drupal/temp"
