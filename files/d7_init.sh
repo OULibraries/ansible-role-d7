@@ -40,7 +40,7 @@ done
 
 echo
 echo
-echo "SHALL WE BUILD A SITE?"
+echo "Let's build a site!"
 echo
 
 # Generate Drupal DB password
