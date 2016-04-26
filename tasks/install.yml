@@ -12,13 +12,12 @@
   - php-gd
   - php-drush-drush
   - mariadb
-
-
+- name: Set SELinux to allow apache to connect to ldap servers
+  command: setsebool -P httpd_can_connect_ldap on
 - name: Add config include to http.conf
   lineinfile:
     dest: /etc/httpd/conf/httpd.conf
     line: "IncludeOptional \"/srv/*/etc/*.conf\""
-    
 - name: Ensure /etc/profile.d/d7-ops.sh exists
   file:
     path: /etc/profile.d/d7-ops.sh
