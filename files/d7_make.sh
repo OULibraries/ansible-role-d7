@@ -6,13 +6,15 @@ source /opt/d7/etc/d7_conf.sh
 
 ## Don't edit below here.
 # Require arguments
-if [ ! -z "$1" ] && [ ! -z "$2" ]
-then
-  SITEPATH=$1
-  MAKEFILE=$2
-  echo "Deploying $MAKEFILE to $SITEPATH"
-else
-  echo "Requires site path (eg. /srv/sample) and makefile as argument"
+if [ ! -z "$1" ] && [ ! -z "$2" ]; then
+    SITEPATH=$1
+    MAKEFILE=$2
+    echo "Deploying $MAKEFILE to $SITEPATH"
+elif [ ! -z "$1" ]; then
+    SITEPATH=$1
+    MAKEFILE="file://$SITEPATH/etc/$(basename $SITEPATH).make"
+else 
+  echo "Requires at least a site path (eg. /srv/sample)"
   exit 1;
 fi
 
