@@ -27,8 +27,15 @@ d7_dump.sh "$SITEPATH" || exit 1;
 ## Delete build dir if it's there
 sudo -u apache rm -rf "$SITEPATH/drupal_build"
 
+# Make sure etc exists
+sudo -u apache mkdir -p "$SITEPATH/etc"
+
+# get our makefile 
+(cd "$SITEPATH/etc" &&  curl -O "$MAKEFILE")
+MY_MAKEFILE=$( basename "$MAKEFILE")
+
 ## Build from drush make or die
-sudo -u apache drush -y --working-copy make "$MAKEFILE" "$SITEPATH/drupal_build" || exit 1;
+sudo -u apache drush -y --working-copy make "${SITEPATH}/etc/${MY_MAKEFILE}" "$SITEPATH/drupal_build" || exit 1;
 
 ## Delete default site in the build
 sudo -u apache rm -rf "$SITEPATH/drupal_build/sites/default"
