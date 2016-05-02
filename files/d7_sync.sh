@@ -57,13 +57,14 @@ echo "Placing synced files."
 sudo rm -rf "$SITEPATH/default/files_bak"
 sudo mv "$SITEPATH/default/files" "$SITEPATH/default/files_bak"
 sudo mv "$SITEPATH/default/files_sync" "$SITEPATH/default/files"
+echo
+echo
+
 
 ## Perform sql-dump on source host
+echo "Dumping database for ${ORIGIN_SITEPATH} at ${SRCHOST}"
 ssh -A "$SRCHOST" drush -r "$ORIGIN_SITEPATH/drupal" sql-dump --result-file="$ORIGIN_SITEPATH/db/drupal_${ORIGIN_SITE}_sync.sql"
 
-## Sync sql-dump
+## Sync sql-dump to localhost and import
 rsync --omit-dir-times "$SRCHOST:$ORIGIN_SITEPATH/db/drupal_${ORIGIN_SITE}_sync.sql" "$SITEPATH/db/"
-
-
-## Import sql dump
 d7_importdb.sh "$SITEPATH" "$SITEPATH/db/drupal_${ORIGIN_SITE}_sync.sql" || exit 1;
