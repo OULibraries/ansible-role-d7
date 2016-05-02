@@ -5,14 +5,21 @@ PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 source /opt/d7/etc/d7_conf.sh
 
 ## Require arguments
-if [ ! -z "$1" ] && [ ! -z "$2" ] && [ ! -z "$3" ]
+if [ ! -z "$1" ] && [ ! -z "$2" ]
 then
-  ORIGIN_SITEPATH=$1
+  SITEPATH=$1
   SRCHOST=$2
-  SITEPATH=$3
-  echo "Syncing $ORIGIN_SITEPATH content from $SRCHOST to local $SITEPATH"
+
+  if [-z "$3" ]; then
+      ORIGIN_SITEPATH=$3 
+  else
+      ORIGIN_SITEPATH=$SITEPATH
+  fi
+
+  echo "Syncing to SITEPATH content from $SRCHOST at $SITEPATH"
 else
-  echo "Requires site path (eg. /srv/sample), source host, and new site path as arguments"
+    echo "Usage: d7_synch.sh $SITEPATH $SRCHOST [$ORIGIN_SITEPATH]"
+    echo "$ORIGIN_SITEPATH is optional if it matches the local $SITEPATH"
   exit 1;
 fi
 
