@@ -40,17 +40,21 @@ sudo -u apache rm -rf "$SITEPATH/drupal_build"
 # Make sure etc exists
 sudo -u apache mkdir -p "$SITEPATH/etc"
 
-# Backup the file we might be overwriting 
-[ -f $MY_MAKEFILE ] && cp -v "$MY_MAKEFILE" "${MY_MAKEFILE}.bak"
 
 # Download makefile if it isn't the one we already have
 if [ ! MAKEURI == "file://${MY_MAKEFILE}" ]; then
+
+    # Backup old files if we have them
+    [ -f $MY_MAKEFILE ] && cp -v "$MY_MAKEFILE" "${MY_MAKEFILE}.bak"
+    [ -f "${MY_MAKEFILE}.url" ] && cp -v "$MY_MAKEFILE" "${MY_MAKEFILE}.uri.bak"
+
+    # Get a new copy of the make file
     echo "$MAKEURI" > $SITEPATH/etc/site.make.uri
     (cd "$SITEPATH/etc" &&  curl "$MAKEURI"  -o "$MY_MAKEFILE")
 fi
 
 ## Build from drush make or die
-sudo -u apache drush -y --working-copy make "${MAKEURI}" "$SITEPATH/drupal_build" || exit 1;
+sudo -u apache drush -y --working-copy make "${MY_MAKEFILE}" "$SITEPATH/drupal_build" || exit 1;
 
 
 ## Delete default site in the build
