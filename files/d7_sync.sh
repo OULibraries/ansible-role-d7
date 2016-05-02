@@ -16,9 +16,9 @@ then
       ORIGIN_SITEPATH=$SITEPATH
   fi
 
-  echo "Syncing to local path $SITEPATH  from $SRCHOST path $ORIGIN_SITEPATH"
+  echo "Syncing to local path $SITEPATH from $SRCHOST path $ORIGIN_SITEPATH"
 else
-    echo "Usage: d7_synch.sh \$SITEPATH \$SRCHOST [\$ORIGIN_SITEPATH]"
+    echo "Usage: d7_sync.sh \$SITEPATH \$SRCHOST [\$ORIGIN_SITEPATH]"
     echo "\$ORIGIN_SITEPATH is optional if it matches the local \$SITEPATH"
   exit 1;
 fi
