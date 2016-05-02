@@ -46,10 +46,10 @@ if [ ! MAKEURI == "file://${MY_MAKEFILE}" ]; then
 
     # Backup old files if we have them
     [ -f $MY_MAKEFILE ] && cp -v "$MY_MAKEFILE" "${MY_MAKEFILE}.bak"
-    [ -f "${MY_MAKEFILE}.url" ] && cp -v "$MY_MAKEFILE" "${MY_MAKEFILE}.uri.bak"
+    [ -f "${MY_MAKEFILE}.uri" ] && cp -v "$MY_MAKEFILE" "${MY_MAKEFILE}.uri.bak"
 
     # Get a new copy of the make file
-    echo "$MAKEURI" > $SITEPATH/etc/site.make.uri
+    echo "$MAKEURI" > "${MY_MAKEFILE}.uri"
     (cd "$SITEPATH/etc" &&  curl "$MAKEURI"  -o "$MY_MAKEFILE")
 fi
 
