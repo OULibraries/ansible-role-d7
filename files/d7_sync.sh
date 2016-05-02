@@ -10,16 +10,16 @@ then
   SITEPATH=$1
   SRCHOST=$2
 
-  if [-z "$3" ]; then
+  if [ ! -z "$3" ]; then
       ORIGIN_SITEPATH=$3 
   else
       ORIGIN_SITEPATH=$SITEPATH
   fi
 
-  echo "Syncing to SITEPATH content from $SRCHOST at $SITEPATH"
+  echo "Syncing to local path $SITEPATH  from $SRCHOST path $ORIGIN_SITEPATH"
 else
-    echo "Usage: d7_synch.sh $SITEPATH $SRCHOST [$ORIGIN_SITEPATH]"
-    echo "$ORIGIN_SITEPATH is optional if it matches the local $SITEPATH"
+    echo "Usage: d7_synch.sh \$SITEPATH \$SRCHOST [\$ORIGIN_SITEPATH]"
+    echo "\$ORIGIN_SITEPATH is optional if it matches the local \$SITEPATH"
   exit 1;
 fi
 
