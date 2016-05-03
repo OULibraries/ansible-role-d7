@@ -15,18 +15,17 @@ else
     exit 1;
 fi
 
-## Init site if it doesn't exist
 if [  -e "$SITEPATH" ]; then
     echo "A site alreay exists at $SITEPATH, try using sync."
     exit 1;
 fi
 
-# Build an empty site
+# Build an empty site 
 d7_init.sh "$SITEPATH"  || exit 1
 
-# Copy make files
+echo "Copying makefiles!"
 for file in "site.make" "site.make.uri" ; do
-    scp "$SRCHOST:$ORIGIN_SITEPATH/etc/${file}" "$SITEPATH/etc/${file}"
+    scp "$SRCHOST:$ORIGIN_SITEPATH/etc/${file}" "$SITEPATH/etc/${file}" || exit 1
 done
 
 # Install modules and themes
