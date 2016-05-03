@@ -10,36 +10,30 @@ then
   SITEPATH=$1
   SRCHOST=$2
   ORIGIN_SITEPATH=$3 
-
 else
     echo "Usage: d7_migrate.sh \$SITEPATH \$SRCHOST \$ORIGIN_SITEPATH"
-
-  exit 1;
+    exit 1;
 fi
 
-## Grab the basename of the NEW site to use in a few places.
-SITE=$(basename "$SITEPATH")
-ORIGIN_SITE=$(basename "$ORIGIN_SITEPATH")
-
 ## Init site if it doesn't exist
-if [[ ! -e $SITEPATH ]]; then
+if [  -e "$SITEPATH" ]; then
     echo "A site alreay exists at $SITEPATH, try using sync."
     exit 1;
 fi
 
 # Build an empty site
-d7_init.sh $SITEPATH  || exit 1
+d7_init.sh "$SITEPATH"  || exit 1
 
 # Copy make files
 for file in "site.make" "site.make.uri" ; do
-    scp "$SRCHOST:$ORIGIN_SITEPATH/etc/${file}" "$SITEPATH/etc/${file"
+    scp "$SRCHOST:$ORIGIN_SITEPATH/etc/${file}" "$SITEPATH/etc/${file}"
 done
 
 # Install modules and themes
-d7_make.sh $SITEPATH || exit 1
+d7_make.sh "$SITEPATH" || exit 1
 
 # sync files and db
-d7_sync.sh $SITEPATH $SRCHOST $ORIGIN_SITEPATH || exit 1
+d7_sync.sh "$SITEPATH" "$SRCHOST" "$ORIGIN_SITEPATH" || exit 1
 
 
 
