@@ -9,7 +9,7 @@ source /opt/d7/etc/d7_conf.sh
 # Require arguments
 if [ -z "$1" ]; then
     echo "Usage: d7_make.sh $SITEPATH [$MAKEURI]"
-    echo "If option $MAKEURI argument is not specified, a cached Makefile will be used"
+    echo "If optional \$MAKEURI argument is not specified, a cached Makefile will be used"
     exit 1;
 fi
 
