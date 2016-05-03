@@ -17,12 +17,12 @@
     group: wheel
   with_items:
       - d7_clean.sh
-      - d7_clone.sh
       - d7_dump.sh
       - d7_httpd_conf.sh
       - d7_init.sh
       - d7_importdb.sh
       - d7_make.sh
+      - d7_migrate.sh
       - d7_sync.sh
       - d7_update.sh
   tags:
