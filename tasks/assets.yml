@@ -22,6 +22,7 @@
       - d7_init.sh
       - d7_importdb.sh
       - d7_make.sh
+      - d7_migrate.sh
       - d7_sync.sh
       - d7_update.sh
   tags:
