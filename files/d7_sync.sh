@@ -37,7 +37,7 @@ sudo -u apache mkdir -p "$SITEPATH/default/files_sync"
 sudo -u apache chmod 777 "$SITEPATH/default/files_sync"
 
 ## Sync Files to writable directory (sudo would break ssh)
-RSOPTS="--verbose --recursive --links --devices --compress"
+RSOPTS="--verbose --recursive --links  --compress"
 rsync  $RSOPTS  "$SRCHOST:$ORIGIN_SITEPATH/default/files/" "$SITEPATH/default/files_sync" ;
 echo "Files synced."
 
