@@ -62,8 +62,8 @@ sudo -u apache rm -rf "$SITEPATH/drupal_build/sites/default"
 
 ## Set perms
 echo "Setting permissions of the new build."
-sudo find "$SITEPATH/drupal_build" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-sudo find "$SITEPATH/drupal_build" -type f -exec chmod u=rw,g=r,o= '{}' \;
+sudo -u apache find "$SITEPATH/drupal_build" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
+sudo -u apache find "$SITEPATH/drupal_build" -type f -exec chmod u=rw,g=r,o= '{}' \;
 
 # Set SELinux or die
 echo "Setting SELinux policy of the new build."
@@ -72,8 +72,8 @@ sudo restorecon -R "$SITEPATH/drupal_build" || exit 1;
 
 ## Set perms
 echo "Setting permissions of default site."
-sudo find "$SITEPATH/default" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-sudo find "$SITEPATH/default" -type f -exec chmod u=rw,g=r,o= '{}' \;
+sudo -u apache find "$SITEPATH/default" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
+sudo -u apache find "$SITEPATH/default" -type f -exec chmod u=rw,g=r,o= '{}' \;
 
 # Set SELinux or die
 echo "Setting SELinux policy of the default site."
