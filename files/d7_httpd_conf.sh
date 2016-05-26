@@ -28,7 +28,7 @@ sudo -u apache mkdir "$SITEPATH/etc"
 sudo -u apache sh -c "sed "s/__SITE_DIR__/$SITE/g" /opt/d7/etc/d7_init_httpd_template > $SITEPATH/etc/srv_$SITE.conf" || exit 1;
 sudo -u apache sh -c "sed -i "s/__SITE_NAME__/$SITE/g" $SITEPATH/etc/srv_$SITE.conf" || exit 1;
 
-## Allow apache to read it's config
+## Allow apache to read its config
 sudo semanage fcontext -a -t httpd_sys_content_t  "$SITEPATH/etc(/.*)?" || exit 1;
 sudo restorecon -R "$SITEPATH/etc" || exit 1;
 
