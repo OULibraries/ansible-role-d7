@@ -45,12 +45,12 @@ sudo -u apache mkdir -p "$SITEPATH/etc"
 if [ ! MAKEURI == "file://${MY_MAKEFILE}" ]; then
 
     # Backup old files if we have them
-    [ -f $MY_MAKEFILE ] && cp -v "$MY_MAKEFILE" "${MY_MAKEFILE}.bak"
-    [ -f "${MY_MAKEFILE}.uri" ] && cp -v "$MY_MAKEFILE" "${MY_MAKEFILE}.uri.bak"
+    [ -f $MY_MAKEFILE ] && sudo -u apache cp -v "$MY_MAKEFILE" "${MY_MAKEFILE}.bak"
+    [ -f "${MY_MAKEFILE}.uri" ] && sudo -u apache cp -v "$MY_MAKEFILE" "${MY_MAKEFILE}.uri.bak"
 
     # Get a new copy of the make file
-    echo "$MAKEURI" > "${MY_MAKEFILE}.uri"
-    (cd "$SITEPATH/etc" &&  curl "$MAKEURI"  -o "$MY_MAKEFILE")
+    echo "$MAKEURI"  | sudo -u apache tee  "${MY_MAKEFILE}.uri" > /dev/null
+    (cd "$SITEPATH/etc" &&  sudo -u apache curl "$MAKEURI"  -o "$MY_MAKEFILE")
 fi
 
 ## Build from drush make or die
@@ -62,8 +62,8 @@ sudo -u apache rm -rf "$SITEPATH/drupal_build/sites/default"
 
 ## Set perms
 echo "Setting permissions of the new build."
-sudo find "$SITEPATH/drupal_build" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-sudo find "$SITEPATH/drupal_build" -type f -exec chmod u=rw,g=r,o= '{}' \;
+sudo -u apache find "$SITEPATH/drupal_build" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
+sudo -u apache find "$SITEPATH/drupal_build" -type f -exec chmod u=rw,g=r,o= '{}' \;
 
 # Set SELinux or die
 echo "Setting SELinux policy of the new build."
@@ -72,8 +72,8 @@ sudo restorecon -R "$SITEPATH/drupal_build" || exit 1;
 
 ## Set perms
 echo "Setting permissions of default site."
-sudo find "$SITEPATH/default" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-sudo find "$SITEPATH/default" -type f -exec chmod u=rw,g=r,o= '{}' \;
+sudo -u apache find "$SITEPATH/default" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
+sudo -u apache find "$SITEPATH/default" -type f -exec chmod u=rw,g=r,o= '{}' \;
 
 # Set SELinux or die
 echo "Setting SELinux policy of the default site."

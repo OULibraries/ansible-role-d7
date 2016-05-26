@@ -47,8 +47,8 @@ echo
 DBPSSWD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 
 ## Make the parent directory
-sudo mkdir -p "$SITEPATH"
-sudo chmod 775 "$SITEPATH"
+sudo -u apache mkdir -p "$SITEPATH"
+sudo -u apache chmod 775 "$SITEPATH"
 sudo chown apache:apache "$SITEPATH"
 
 ## Grab the basename of the site to use in a few places.
@@ -65,7 +65,7 @@ sudo ls > /dev/null
 find "$SITEPATH/drupal" -type d -exec sudo -u apache chmod u=rwx,g=rx,o= '{}' \;
 find "$SITEPATH/drupal" -type f -exec sudo -u apache chmod u=rw,g=r,o= '{}' \;
 
-# Set SELinux or die
+# Set SELinux to allow Drupal to access files or die
 echo "Setting SELinux policy."
 sudo semanage fcontext -a -t httpd_sys_content_t  "$SITEPATH/drupal(/.*)?" || exit 1;
 sudo semanage fcontext -a -t httpd_sys_rw_content_t  "$SITEPATH/default/files(/.*)?" || exit 1

@@ -30,14 +30,14 @@ then
   echo "DROP DATABASE \`drupal_${SITE}_${ENV_NAME}\`" | sudo -u apache drush sql-cli -r "$SITEPATH/drupal"
 
   ## Change 444 files to 644
-  sudo chmod 644 "$SITEPATH/default/settings.php"
-  sudo chmod 644 "$SITEPATH/default/files/.htaccess"
+  sudo -u apache chmod 644 "$SITEPATH/default/settings.php"
+  sudo -u apache chmod 644 "$SITEPATH/default/files/.htaccess"
 
   ## Remove the content
   ## /srv/libraries1/default isn't supposed to be writeable, so we need
   ## to do some things as root
   echo "Deleting site files."
-  sudo  rm -rf "$SITEPATH"
+  sudo -u apache  rm -rf "$SITEPATH"
 
   sudo systemctl restart httpd
 fi
