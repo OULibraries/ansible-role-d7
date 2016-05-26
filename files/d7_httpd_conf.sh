@@ -25,6 +25,11 @@ SITE=$(basename "$SITEPATH")
 echo "Generating Apache Config."
 
 sudo -u apache mkdir "$SITEPATH/etc"
+
+## Config files should be group writable so they can be overwritten
+## by members of the apache group doing rsyncs and such.
+sudo -u apache chmod 6770 "$SITEPATH/etc"
+
 sudo -u apache sh -c "sed "s/__SITE_DIR__/$SITE/g" /opt/d7/etc/d7_init_httpd_template > $SITEPATH/etc/srv_$SITE.conf" || exit 1;
 sudo -u apache sh -c "sed -i "s/__SITE_NAME__/$SITE/g" $SITEPATH/etc/srv_$SITE.conf" || exit 1;
 
