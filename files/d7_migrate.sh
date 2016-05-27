@@ -26,8 +26,11 @@ d7_init.sh "$SITEPATH"  || exit 1
 echo "Copying makefiles!"
 for file in "site.make" "site.make.uri" ; do
     scp "$SRCHOST:$ORIGIN_SITEPATH/etc/${file}" "$SITEPATH/etc/${file}" || exit 1
-    chmod 660 "$SITEPATH/etc/${file}"
 done
+
+# Perms
+echo "Setting permissions for config files."
+d7_perms_sticky.sh "$SITEPATH/etc" || exit 1;
 
 # Install modules and themes
 d7_make.sh "$SITEPATH" || exit 1
