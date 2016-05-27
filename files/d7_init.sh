@@ -60,8 +60,8 @@ echo "Moving default site out of build."
 sudo -u apache mv "$SITEPATH/drupal/sites/default" "$SITEPATH"/
 
 ## Set perms
-d7_perms_drupal.sh "$SITEPATH" || exit 1;
-d7_perms_default.sh "$SITEPATH" || exit 1;
+d7_perms_no_sticky.sh "$SITEPATH/drupal" || exit 1;
+d7_perms_sticky.sh "$SITEPATH/default" || exit 1;
 
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.
