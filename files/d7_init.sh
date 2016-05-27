@@ -60,7 +60,9 @@ echo "Moving default site out of build."
 sudo -u apache mv "$SITEPATH/drupal/sites/default" "$SITEPATH"/
 
 ## Set perms
+echo "Setting permissions for drupal install."
 d7_perms_no_sticky.sh "$SITEPATH/drupal" || exit 1;
+echo "Setting permissions of default site."
 d7_perms_sticky.sh "$SITEPATH/default" || exit 1;
 
 ## Link default site folder. Doing this last ensures that our earlier recursive
