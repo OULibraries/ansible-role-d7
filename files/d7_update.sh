@@ -3,14 +3,13 @@
 PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 ## Require arguments
-if [ ! -z "$1" ]
+if [  -z "$1" ]
 then
-  SITEPATH=$1
-  echo "Processing $SITEPATH"
-else
-  echo "Requires site path (eg. /srv/sample) as argument"
-  exit 1;
+    echo "Usage: d7_update.sh \$SITEPATH"
+    exit 1;
 fi
+SITEPATH=$1
+
 
 ## Dump DB before touching anything
 d7_dump.sh "$SITEPATH" || exit 1;
