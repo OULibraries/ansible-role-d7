@@ -43,8 +43,8 @@ echo "Files synced."
 
 ## Set perms for sync directory
 echo "Setting permissions for synced files."
-sudo -u apache find "$SITEPATH/default/files_sync" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-sudo -u apache find "$SITEPATH/default/files_sync" -type f -exec chmod u=rw,g=r,o= '{}' \;
+find "$SITEPATH/default/files_sync" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
+find "$SITEPATH/default/files_sync" -type f -exec chmod u=rw,g=r,o= '{}' \;
 sudo chown -R apache:apache "$SITEPATH/default/files_sync"
 echo "Setting SELinux for synced files."
 sudo semanage fcontext -a -t httpd_sys_rw_content_t  "$SITEPATH/default/files_sync(/.*)?" || exit 1

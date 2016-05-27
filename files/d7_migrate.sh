@@ -26,6 +26,7 @@ d7_init.sh "$SITEPATH"  || exit 1
 echo "Copying makefiles!"
 for file in "site.make" "site.make.uri" ; do
     scp "$SRCHOST:$ORIGIN_SITEPATH/etc/${file}" "$SITEPATH/etc/${file}" || exit 1
+    chmod 660 "$SITEPATH/etc/${file}"
 done
 
 # Install modules and themes
