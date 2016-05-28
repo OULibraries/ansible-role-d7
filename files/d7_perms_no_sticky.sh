@@ -12,9 +12,10 @@ else
   exit 1;
 fi
 
-## Set perms
-sudo -u apache find "$INPUTDIR" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-sudo -u apache find "$INPUTDIR" -type f -exec chmod u=rw,g=r,o= '{}' \;
-sudo semanage fcontext -a -t httpd_sys_content_t  "$INPUTDIR(/.*)?" || exit 1;
-sudo restorecon -R "$INPUTDIR" || exit 1;
-sudo chown -R apache:apache "$INPUTDIR"
+## Set perms. Try as apache first, then as self.  Only show errors if both attempts have failed.
+sudo -u apache chmod u=rwx,g=rx,o= $INPUTDIR 2>/dev/null || chmod u=rwx,g=rx,o= $INPUTDIR
+find "$INPUTDIR" -type d -exec bash -c "sudo -u apache chmod u=rwx,g=rx,o= '{}' 2>/dev/null || chmod u=rwx,g=rx,o= '{}'" \;
+find "$INPUTDIR" -type f -exec bash -c "sudo -u apache chmod u=rw,g=r,o= '{}' 2>/dev/null || chmod u=rw,g=r,o= '{}'" \;
+sudo semanage fcontext -a -t httpd_sys_content_t  "$INPUTDIR(/.*)?"
+sudo restorecon -R "$INPUTDIR"
+sudo -u apache chgrp -R apache $INPUTDIR 2>/dev/null || chgrp -R apache $INPUTDIR
