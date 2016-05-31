@@ -27,7 +27,7 @@ sudo -u apache mkdir -p "$SITEPATH/db"
 
 ## Set perms
 echo "Setting permissions for db dumps."
-d7_perms_sticky.sh "$SITEPATH/db" || exit 1;
+d7_perms_sticky.sh "$SITEPATH/db"
 
 ## Perform sql-dump
 sudo -u apache drush -r "$SITEPATH/drupal" sql-dump --result-file="$SITEPATH/db/drupal_${SITE}_dump.sql"
