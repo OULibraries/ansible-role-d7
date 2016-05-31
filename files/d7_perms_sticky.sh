@@ -15,17 +15,19 @@ fi
 DIRPERMS='u=rwxs,g=rwxs,o='
 FILEPERMS='u=rw,g=rw,o='
 
-## This stuff may not do anything on NFS
+## Set SELinux context.  Useless over NFS/SMB.
 sudo semanage fcontext -a -t httpd_sys_content_t  "${INPUTDIR}(/.*)?"
 sudo restorecon -R "${INPUTDIR}"
-sudo -u apache chgrp -R apache "${INPUTDIR}" 2>/dev/null || \
-chgrp -R apache "${INPUTDIR}" 2>/dev/null
 
 ## Set perms. Try as apache first, then as self.
 
+## Recursively set group to apache.
+sudo -u apache chgrp -R apache "${INPUTDIR}" 2>/dev/null || \
+chgrp -R apache "${INPUTDIR}" 2>/dev/null
+
 ## Recursively set perms for input directory.
-sudo -u apache chmod -R ${DIRPERMS} "${INPUTDIR}" || \
-chmod -R ${DIRPERMS} "${INPUTDIR}"
+sudo -u apache chmod -R ${DIRPERMS} "${INPUTDIR}" 2>/dev/null || \
+chmod -R ${DIRPERMS} "${INPUTDIR}" 2>/dev/null
 
 ## Find all of the files
 declare -a FILES
