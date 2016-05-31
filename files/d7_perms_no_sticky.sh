@@ -18,27 +18,23 @@ FILEPERMS='u=rw,g=r,o='
 ## This stuff may not do anything on NFS
 sudo semanage fcontext -a -t httpd_sys_content_t  "${INPUTDIR}(/.*)?"
 sudo restorecon -R "${INPUTDIR}"
-sudo -u apache chgrp -R apache "${INPUTDIR}" 2>/dev/null ||\
+sudo -u apache chgrp -R apache "${INPUTDIR}" 2>/dev/null || \
 chgrp -R apache "${INPUTDIR}" 2>/dev/null
 
 ## Set perms. Try as apache first, then as self.
-## We're doing files, then subdirs, then top dir
 
-## Loop through the files
-for FILE in `find "${INPUTDIR}" -mindepth 1 -maxdepth 1 -type f`
-do
-  sudo -u apache chmod ${FILEPERMS} "${FILE}" 2>/dev/null ||\
+## Recursively set perms for input directory.
+sudo -u apache chmod -R ${DIRPERMS} "${INPUTDIR}" || \
+chmod -R ${DIRPERMS} "${INPUTDIR}"
+
+## Find all of the files
+declare -a FILES
+while IFS= read -r -d '' FILE; do
+  FILES+=( "$FILE" )
+done < <(find "${INPUTDIR}" -mindepth 1 -print0 -type f 2>/dev/null)
+
+## Loop through the files, setting appropriate perms.
+for FILE in "${FILES[@]}"; do
+  sudo -u apache chmod ${FILEPERMS} "${FILE}" 2>/dev/null || \
   chmod ${FILEPERMS} "${FILE}" 2>/dev/null
 done
-
-## Loop through the subdirectories
-for SUBDIR in `find "${INPUTDIR}" -mindepth 1 -maxdepth 1 -type d`
-do
-  sudo -u apache chmod ${DIRPERMS} "${SUBDIR}" 2>/dev/null ||\
-  chmod ${DIRPERMS} "${SUBDIR}" 2>/dev/null
-done
-
-## Set perms for input directory itself. Try as apache first, then as self.
-## For no reason I can fathom, this must come last.
-sudo -u apache chmod ${DIRPERMS} "${INPUTDIR}" ||\
-chmod ${DIRPERMS} "${INPUTDIR}"
