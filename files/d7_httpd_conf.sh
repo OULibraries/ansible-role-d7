@@ -28,7 +28,7 @@ sudo -u apache mkdir -p "$SITEPATH/etc"
 
 ## Set perms
 echo "Setting permissions for config files."
-d7_perms_sticky.sh "$SITEPATH/etc" || exit 1;
+d7_perms_sticky.sh "$SITEPATH/etc"
 
 sudo -u apache sh -c "sed "s/__SITE_DIR__/$SITE/g" /opt/d7/etc/d7_init_httpd_template > $SITEPATH/etc/srv_$SITE.conf" || exit 1;
 sudo -u apache sh -c "sed -i "s/__SITE_NAME__/$SITE/g" $SITEPATH/etc/srv_$SITE.conf" || exit 1;
