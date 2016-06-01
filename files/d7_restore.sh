@@ -16,7 +16,7 @@ SITE=$(basename "$SITEPATH")
 SNAPSHOTFILE="${SITEPATH}/snapshots/${SITE}.${DOW}.tar"
 
 
-if [ ! -f "$SITEPATH" ]; then
+if [ ! -d "$SITEPATH" ]; then
     echo "${SITEPATH} doesn't exist, nothing to restore."
     exit 0
 fi
