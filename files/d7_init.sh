@@ -32,7 +32,7 @@ read -r -e -p "Enter MYSQL host port: " -i "$D7_DBPORT" MY_DBPORT
 read -r -e -p "Enter MYSQL admin user: " -i "$D7_DBSU" MY_DBSU
 # Get DB admin password
 read -r -s -p "Enter MYSQL root password: " MY_DBSU_PASS
-while  [ -z "$MY_DBSU_PASS" ] || ! mysql --user="$MY_DBSU" --password="$MY_DBSU_PASS"  -e ";" ; do
+while  [ -z "$MY_DBSU_PASS" ] || ! mysql --host="$MY_DBHOST" --port="$MY_DBPORT" --user="$MY_DBSU" --password="$MY_DBSU_PASS"  -e ";" ; do
     read -r -s -p "Can't connect, please retry: " MY_DBSU_PASS
 done
 
