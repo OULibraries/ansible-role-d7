@@ -11,12 +11,16 @@ fi
 SITEPATH=$1
 SITE=$(basename "$SITEPATH")
 SNAPSHOTDIR="$SITEPATH/snapshots"
-DOW=$( date +%a)
+DOW=$( date +%a | awk '{print tolower($0)}')
 
 
-# Make a backup in case the latest one is old
+# Make a db backup in case the latest one is old
 d7_dump.sh $SITEPATH
 
-# Tar files required to rebuild 
+# Make sure we have a place to stick snapshots
 sudo -u apache mkdir -p "$SNAPSHOTDIR"
-sudo -u apache tar -cvf "$SNAPSHOTDIR/$SITE.$DOW.tar" -C "${SITEPATH}" "./etc" "./db" "./default/files"
+
+# Tar files required to rebuild, with $SITE as TLD inside tarball. 
+sudo -u apache tar -cf "$SNAPSHOTDIR/$SITE.$DOW.tar" -C /srv/ "./${SITE}/etc" "./${SITE}/db" "./${SITE}/default/files"
+
+echo "Snapshot created at ${SNAPSHOTDIR}/${SITE}.${DOW}.tar"
