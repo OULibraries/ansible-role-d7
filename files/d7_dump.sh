@@ -25,9 +25,8 @@ SITE=$(basename "$SITEPATH")
 ## Make the database dump directory
 sudo -u apache mkdir -p "$SITEPATH/db"
 
-## DB dumps should be group writable so they can be overwritten
-## by members of the apache group doing rsyncs and such.
-sudo -u apache chmod 6770 "$SITEPATH/db"
+## Set perms
+d7_perms_sticky.sh "$SITEPATH/db"
 
 ## Perform sql-dump
 sudo -u apache drush -r "$SITEPATH/drupal" sql-dump --result-file="$SITEPATH/db/drupal_${SITE}_dump.sql"

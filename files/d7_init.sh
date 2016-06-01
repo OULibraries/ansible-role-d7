@@ -20,8 +20,6 @@ if [[ -e "$SITEPATH" ]]; then
     exit 1
 fi
 
-
-
 # Get external host suffix (rev proxy, ngrok, etc)
 read -r -e -p "Enter host suffix (e.g. lib.ou.edu): " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
 
@@ -57,23 +55,13 @@ SITE=$(basename "$SITEPATH")
 ## Build from drush make
 sudo -u apache drush @none -y dl drupal --drupal-project-rename=drupal --destination="$SITEPATH" || exit 1;
 
-## Set perms
-echo "Setting permissions."
-
-## Get sudo password if needed because first sudo use is behind a pipe.
-sudo ls > /dev/null
-find "$SITEPATH/drupal" -type d -exec sudo -u apache chmod u=rwx,g=rx,o= '{}' \;
-find "$SITEPATH/drupal" -type f -exec sudo -u apache chmod u=rw,g=r,o= '{}' \;
-
-# Set SELinux to allow Drupal to access files or die
-echo "Setting SELinux policy."
-sudo semanage fcontext -a -t httpd_sys_content_t  "$SITEPATH/drupal(/.*)?" || exit 1;
-sudo semanage fcontext -a -t httpd_sys_rw_content_t  "$SITEPATH/default/files(/.*)?" || exit 1
-sudo restorecon -R "$SITEPATH/drupal" || exit 1;
-
 ##  Move the default site out of the build. This makes updates easier later.
 echo "Moving default site out of build."
 sudo -u apache mv "$SITEPATH/drupal/sites/default" "$SITEPATH"/
+
+## Set perms
+d7_perms_no_sticky.sh "$SITEPATH/drupal"
+d7_perms_sticky.sh "$SITEPATH/default"
 
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.

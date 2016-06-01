@@ -34,7 +34,8 @@ fi
 
 ## Make the sync directory
 sudo -u apache mkdir -p "$SITEPATH/default/files_sync"
-sudo -u apache chmod 777 "$SITEPATH/default/files_sync"
+echo "Setting permissions for synced files."
+d7_perms_sticky.sh "$SITEPATH/default/files_sync"
 
 ## Sync Files to writable directory (sudo would break ssh)
 RSOPTS="--verbose --recursive --links  --compress"
@@ -43,12 +44,7 @@ echo "Files synced."
 
 ## Set perms for sync directory
 echo "Setting permissions for synced files."
-find "$SITEPATH/default/files_sync" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-find "$SITEPATH/default/files_sync" -type f -exec chmod u=rw,g=r,o= '{}' \;
-sudo chown -R apache:apache "$SITEPATH/default/files_sync"
-echo "Setting SELinux for synced files."
-sudo semanage fcontext -a -t httpd_sys_rw_content_t  "$SITEPATH/default/files_sync(/.*)?" || exit 1
-sudo restorecon -R "$SITEPATH/default" || exit 1;
+d7_perms_sticky.sh "$SITEPATH/default/files_sync"
 
 ## Now that everything is ready, swap in the synced files
 ## /srv/libraries1/default isn't supposed to be writeable, so we need
@@ -59,7 +55,6 @@ sudo -u apache mv "$SITEPATH/default/files" "$SITEPATH/default/files_bak"
 sudo -u apache mv "$SITEPATH/default/files_sync" "$SITEPATH/default/files"
 echo
 echo
-
 
 ## Perform sql-dump on source host
 echo "Dumping database for ${ORIGIN_SITEPATH} at ${SRCHOST}"
