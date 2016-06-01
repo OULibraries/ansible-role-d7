@@ -39,7 +39,7 @@ chmod -R ${DIRPERMS} "${INPUTDIR}" 2>/dev/null
 declare -a FILES
 while IFS= read -r -d '' FILE; do
   FILES+=( "$FILE" )
-done < <(find "${INPUTDIR}" -mindepth 1 -print0 -type f 2>/dev/null)
+done < <(find "${INPUTDIR}" -mindepth 1 -type f -print0 2>/dev/null)
 
 ## Loop through the files, setting appropriate perms.
 for FILE in "${FILES[@]}"; do
