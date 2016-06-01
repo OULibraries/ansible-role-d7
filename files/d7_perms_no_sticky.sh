@@ -15,7 +15,7 @@ DIRPERMS='u=rwx,g=rx,o='
 FILEPERMS='u=rw,g=r,o='
 
 if [ ! -d "$INPUTDIR" ]; then
-  echo "cannot access ${INPUTDIR}: No such or directory"
+  echo "cannot access ${INPUTDIR}: No such directory"
   exit 1
 fi
 
