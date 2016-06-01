@@ -64,6 +64,10 @@ d7_perms_no_sticky.sh "$SITEPATH/drupal_build"
 ## Set perms
 d7_perms_sticky.sh "$SITEPATH/default"
 
+## Change settings.php to 440
+sudo -u apache chmod ug=r,o= "$SITEPATH/default/settings.php" 2>/dev/null || \
+chmod ug=r,o= "$SITEPATH/default/settings.php"
+
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.
 echo "Linking default site into new build."

@@ -94,7 +94,10 @@ EOF
 
 sudo -u apache cp "$SITEPATH/default/default.settings.php" "$SITEPATH/default/settings.php"
 sudo -u apache echo "$SETTINGSPHP"| sudo -u apache tee -a "$SITEPATH/default/settings.php" >/dev/null
-sudo -u apache chmod 444 "$SITEPATH/default/settings.php"
+
+## Change settings.php to 440
+sudo -u apache chmod ug=r,o= "$SITEPATH/default/settings.php" 2>/dev/null || \
+chmod ug=r,o= "$SITEPATH/default/settings.php"
 
 ## Create the Drupal database
 sudo -u apache drush -y sql-create --db-su="${MY_DBSU}" --db-su-pw="$MY_DBSU_PASS" -r "$SITEPATH/drupal" || exit 1;
