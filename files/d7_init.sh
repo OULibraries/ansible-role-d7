@@ -65,7 +65,7 @@ d7_perms_sticky.sh "$SITEPATH/default"
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.
 echo "Linking default site into build."
-sudo -u apache ln -s "$SITEPATH/default" "$SITEPATH/drupal/sites/default"
+sudo -u apache ln -s "$SITEPATH/default" "$SITEPATH/drupal/sites/default" || exit 1;
 
 echo "Generating settings.php."
 read -r -d '' SETTINGSPHP <<- EOF

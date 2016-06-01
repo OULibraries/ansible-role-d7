@@ -71,7 +71,7 @@ chmod ug=r,o= "$SITEPATH/default/settings.php"
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.
 echo "Linking default site into new build."
-sudo -u apache ln -s "$SITEPATH/default" "$SITEPATH/drupal_build/sites/default"
+sudo -u apache ln -s "$SITEPATH/default" "$SITEPATH/drupal_build/sites/default" || exit 1;
 
 ## Now that everything is ready, do the swap
 echo "Placing new build."
