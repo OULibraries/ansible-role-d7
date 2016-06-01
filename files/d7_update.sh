@@ -18,7 +18,7 @@ d7_dump.sh "$SITEPATH" || exit 1;
 sudo -u apache drush -y en update -r "$SITEPATH/drupal" || exit 1;
 
 ## Apply security updates.
-sudo -u apache drush up -y --security-only -r "$SITEPATH/drupal"  --backup-dir="$SITEPATH/drush-backups/" || exit 1;
+sudo -u apache drush up -y --security-only -r "$SITEPATH/drupal"  --no-backup  || exit 1;
 
 ## Disable update manager; no need to leave it phoning home.
 sudo -u apache drush -y dis update -r "$SITEPATH/drupal" || exit 1;
