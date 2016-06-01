@@ -9,6 +9,7 @@ then
     echo "$DOW should be something like Mon, Tue, Web, etc. "
     exit 1;
 fi
+
 SITEPATH=$1
 DOW=$2
 SITE=$(basename "$SITEPATH")
@@ -21,14 +22,10 @@ if [ -z "${DOW}" ]; then
     exit 0
 fi
 
-
 if [ ! -f $SNAPSHOTFILE ]; then
     echo "No snapshot at ${SNAPSHOTFILE}"
     exit 0
 fi
-
-# It's possible we're restoring a deleted site 
-mkdir -p "${SITEPATH}"
 
 # Tarballs include the $SITE folder, so we need to strip that off
 # whene extracting
