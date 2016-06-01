@@ -47,7 +47,6 @@ DBPSSWD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 ## Make the parent directory
 sudo -u apache mkdir -p "$SITEPATH"
 sudo -u apache chmod 775 "$SITEPATH"
-sudo chown apache:apache "$SITEPATH"
 
 ## Grab the basename of the site to use in a few places.
 SITE=$(basename "$SITEPATH")
