@@ -29,12 +29,13 @@ then
   echo "Dropping database."
   echo "DROP DATABASE \`drupal_${SITE}_${ENV_NAME}\`" | sudo -u apache drush sql-cli -r "$SITEPATH/drupal"
 
-  ## Change $SITEPATH/default from 550 to 750
-  sudo -u apache chmod 750 "$SITEPATH/default"
- 
-  ## Change 444 files to 644
-  sudo -u apache chmod 644 "$SITEPATH/default/settings.php"
-  sudo -u apache chmod 644 "$SITEPATH/default/files/.htaccess"
+  ## Change settings.php to 660
+  sudo -u apache chmod ug=rw,o= "$SITEPATH/default/settings.php" 2>/dev/null || \
+  chmod ug=rw,o= "$SITEPATH/default/settings.php"
+
+  ## Change .htaccess to 660
+  sudo -u apache chmod ug=rw,o= "$SITEPATH/default/files/.htaccess" 2>/dev/null || \
+  chmod ug=rw,o= "$SITEPATH/default/files/.htaccess"
 
   ## Remove the content
   ## /srv/libraries1/default isn't supposed to be writeable, so we need

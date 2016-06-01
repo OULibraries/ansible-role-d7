@@ -40,7 +40,6 @@ sudo -u apache rm -rf "$SITEPATH/drupal_build"
 # Make sure etc exists
 sudo -u apache mkdir -p "$SITEPATH/etc"
 
-
 # Download makefile if it isn't the one we already have
 if [ ! MAKEURI == "file://${MY_MAKEFILE}" ]; then
 
@@ -56,35 +55,13 @@ fi
 ## Build from drush make or die
 sudo -u apache drush -y --working-copy make "${MY_MAKEFILE}" "$SITEPATH/drupal_build" || exit 1;
 
-
 ## Delete default site in the build
 sudo -u apache rm -rf "$SITEPATH/drupal_build/sites/default"
-
-## Set perms
-echo "Setting permissions of the new build."
-sudo -u apache find "$SITEPATH/drupal_build" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-sudo -u apache find "$SITEPATH/drupal_build" -type f -exec chmod u=rw,g=r,o= '{}' \;
-
-# Set SELinux or die
-echo "Setting SELinux policy of the new build."
-sudo semanage fcontext -a -t httpd_sys_content_t  "$SITEPATH/drupal_build(/.*)?" || exit 1;
-sudo restorecon -R "$SITEPATH/drupal_build" || exit 1;
-
-## Set perms
-echo "Setting permissions of default site."
-sudo -u apache find "$SITEPATH/default" -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-sudo -u apache find "$SITEPATH/default" -type f -exec chmod u=rw,g=r,o= '{}' \;
-
-# Set SELinux or die
-echo "Setting SELinux policy of the default site."
-sudo semanage fcontext -a -t httpd_sys_content_t  "$SITEPATH/default(/.*)?" || exit 1;
-sudo semanage fcontext -a -t httpd_sys_rw_content_t  "$SITEPATH/default/files(/.*)?" || exit 1
-sudo restorecon -R "$SITEPATH/default" || exit 1;
 
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.
 echo "Linking default site into new build."
-sudo -u apache ln -s "$SITEPATH/default" "$SITEPATH/drupal_build/sites/default"
+sudo -u apache ln -s "$SITEPATH/default" "$SITEPATH/drupal_build/sites/default" || exit 1;
 
 ## Now that everything is ready, do the swap
 echo "Placing new build."
