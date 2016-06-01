@@ -15,6 +15,12 @@ DOW=$2
 SITE=$(basename "$SITEPATH")
 SNAPSHOTFILE="${SITEPATH}/snapshots/${SITE}.${DOW}.tar"
 
+
+if [ ! -f "$SITEPATH" ]; then
+    echo "${SITEPATH} doesn't exist, nothing to restore."
+    exit 0
+fi
+
 if [ -z "${DOW}" ]; then
     echo "No snapshot specified."
     echo "The following snapshots exist:"
@@ -22,7 +28,7 @@ if [ -z "${DOW}" ]; then
     exit 0
 fi
 
-if [ ! -f $SNAPSHOTFILE ]; then
+if [ ! -f "$SNAPSHOTFILE" ]; then
     echo "No snapshot at ${SNAPSHOTFILE}"
     exit 0
 fi
