@@ -59,11 +59,9 @@ sudo -u apache drush -y --working-copy make "${MY_MAKEFILE}" "$SITEPATH/drupal_b
 sudo -u apache rm -rf "$SITEPATH/drupal_build/sites/default"
 
 ## Set perms
-echo "Setting permissions of the new build."
 d7_perms_no_sticky.sh "$SITEPATH/drupal_build"
 
 ## Set perms
-echo "Setting permissions of default site."
 d7_perms_sticky.sh "$SITEPATH/default"
 
 ## Link default site folder. Doing this last ensures that our earlier recursive

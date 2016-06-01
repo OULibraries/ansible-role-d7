@@ -26,7 +26,6 @@ SITE=$(basename "$SITEPATH")
 sudo -u apache mkdir -p "$SITEPATH/db"
 
 ## Set perms
-echo "Setting permissions for db dumps."
 d7_perms_sticky.sh "$SITEPATH/db"
 
 ## Perform sql-dump
