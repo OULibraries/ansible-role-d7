@@ -58,10 +58,6 @@ sudo -u apache drush @none -y dl drupal --drupal-project-rename=drupal --destina
 echo "Moving default site out of build."
 sudo -u apache mv "$SITEPATH/drupal/sites/default" "$SITEPATH"/
 
-## Set perms
-d7_perms_no_sticky.sh "$SITEPATH/drupal"
-d7_perms_sticky.sh "$SITEPATH/default"
-
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.
 echo "Linking default site into build."
@@ -93,10 +89,6 @@ EOF
 
 sudo -u apache cp "$SITEPATH/default/default.settings.php" "$SITEPATH/default/settings.php"
 sudo -u apache echo "$SETTINGSPHP"| sudo -u apache tee -a "$SITEPATH/default/settings.php" >/dev/null
-
-## Change settings.php to 440
-sudo -u apache chmod ug=r,o= "$SITEPATH/default/settings.php" 2>/dev/null || \
-chmod ug=r,o= "$SITEPATH/default/settings.php"
 
 ## Create the Drupal database
 sudo -u apache drush -y sql-create --db-su="${MY_DBSU}" --db-su-pw="$MY_DBSU_PASS" -r "$SITEPATH/drupal" || exit 1;
