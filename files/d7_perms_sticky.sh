@@ -6,7 +6,6 @@ PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 if [ ! -z "$1" ]
 then
   INPUTDIR=$1
-  echo "Processing ${INPUTDIR}"
 else
   echo "Requires input dir (eg. /srv/example/drupal) as argument"
   exit 1;
@@ -14,6 +13,13 @@ fi
 
 DIRPERMS='u=rwxs,g=rwxs,o='
 FILEPERMS='u=rw,g=rw,o='
+
+if [ ! -d "$INPUTDIR" ]; then
+  echo "cannot access ${INPUTDIR}: No such directory"
+  exit 1
+fi
+
+echo "Setting permissions on ${INPUTDIR}"
 
 ## Set SELinux context.  Useless over NFS/SMB.
 sudo semanage fcontext -a -t httpd_sys_content_t  "${INPUTDIR}(/.*)?"
