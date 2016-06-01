@@ -23,6 +23,7 @@
       - d7_importdb.sh
       - d7_make.sh
       - d7_migrate.sh
+      - d7_perms_fix.sh
       - d7_perms_no_sticky.sh
       - d7_perms_sticky.sh
       - d7_sync.sh
