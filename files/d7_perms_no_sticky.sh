@@ -27,15 +27,27 @@ sudo restorecon -R "${INPUTDIR}"
 
 ## Set perms. Try as apache first, then as self.
 
-## Recursively set group to apache.
-sudo -u apache chgrp -R apache "${INPUTDIR}" 2>/dev/null || \
-chgrp -R apache "${INPUTDIR}" 2>/dev/null
+## Find all of the DIRs.
+declare -a DIRS
+while IFS= read -r -d '' DIR; do
+  
+  ## Add dir to the array.
+  DIRS+=( "$DIR" )
+done < <(find "${INPUTDIR}" -type d -print0 2>/dev/null)
 
-## Recursively set perms for input directory.
-sudo -u apache chmod -R ${DIRPERMS} "${INPUTDIR}" 2>/dev/null || \
-chmod -R ${DIRPERMS} "${INPUTDIR}" 2>/dev/null
+## Loop through the DIRs, setting appropriate perms.
+for DIR in "${DIRS[@]}"; do
 
-## Find all of the files
+  ## Set group to apache.
+  sudo -u apache chgrp -R apache "${DIR}" 2>/dev/null || \
+  chgrp -R apache "${DIR}" 
+
+  ## Set dir perms.
+  sudo -u apache chmod ${DIRPERMS} "${DIR}" 2>/dev/null || \
+  chmod ${DIRPERMS} "${DIR}" 
+done
+
+## Find all of the files.
 declare -a FILES
 while IFS= read -r -d '' FILE; do
   FILES+=( "$FILE" )
@@ -43,6 +55,12 @@ done < <(find "${INPUTDIR}" -mindepth 1 -type f -print0 2>/dev/null)
 
 ## Loop through the files, setting appropriate perms.
 for FILE in "${FILES[@]}"; do
+
+  ## Set group to apache.
+  sudo -u apache chgrp -R apache "${FILE}" 2>/dev/null || \
+  chgrp -R apache "${FILE}"
+
+  ## Set file perms.
   sudo -u apache chmod ${FILEPERMS} "${FILE}" 2>/dev/null || \
-  chmod ${FILEPERMS} "${FILE}" 2>/dev/null
+  chmod ${FILEPERMS} "${FILE}"
 done
