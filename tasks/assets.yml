@@ -40,15 +40,13 @@
     group: wheel
     recurse: yes
 
-
 - name: Install httpd template file
   copy:
     mode: 0444
     src: d7_init_httpd_template
     dest: /opt/d7/etc
 
-
-- name: Install d7  config
+- name: Install d7 config
   template:
     src: d7_conf.sh.j2
     dest: /opt/d7/etc/d7_conf.sh
