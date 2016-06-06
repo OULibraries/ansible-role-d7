@@ -28,8 +28,6 @@
       - d7_perms_sticky.sh
       - d7_sync.sh
       - d7_update.sh
-  tags:
-    scripts
 
 - name: Ensure /opt/d7/etc exists
   file:
