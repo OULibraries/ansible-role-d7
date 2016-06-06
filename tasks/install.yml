@@ -1,5 +1,5 @@
 ---
-- name: Install packages necessary to run Drupal
+- name: Install yum packages necessary to run Drupal
   yum:
     name: "{{ item }}"
     state: latest
@@ -12,6 +12,10 @@
   - php-gd
   - php-drush-drush
   - mariadb
+- name: Install PEAR package necessary for drush
+  pear: 
+    name: Console_Table
+    state: present
 - name: Set SELinux to allow apache to connect to networks
   command: setsebool -P httpd_can_network_connect on
 - name: Set SELinux to allow apache to connect to ldap servers
