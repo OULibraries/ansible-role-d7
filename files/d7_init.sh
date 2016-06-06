@@ -21,7 +21,7 @@ if [[ -e "$SITEPATH" ]]; then
 fi
 
 # Get external host suffix (rev proxy, ngrok, etc)
-read -r -e -p "Enter host suffix (e.g. lib.ou.edu): " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
+read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
 
 # Get mysql host 
 read -r -e -p "Enter MYSQL host name: " -i "$D7_DBHOST" MY_DBHOST
