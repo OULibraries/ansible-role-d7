@@ -29,9 +29,9 @@ read -r -e -p "Enter MYSQL host name: " -i "$D7_DBHOST" MY_DBHOST
 read -r -e -p "Enter MYSQL host port: " -i "$D7_DBPORT" MY_DBPORT
 
 # Get DB admin user
-read -r -e -p "Enter MYSQL admin user: " -i "$D7_DBSU" MY_DBSU
+read -r -e -p "Enter MYSQL user: " -i "$D7_DBSU" MY_DBSU
 # Get DB admin password
-read -r -s -p "Enter MYSQL root password: " MY_DBSU_PASS
+read -r -s -p "Enter MYSQL password: " MY_DBSU_PASS
 while  [ -z "$MY_DBSU_PASS" ] || ! mysql --host="$MY_DBHOST" --port="$MY_DBPORT" --user="$MY_DBSU" --password="$MY_DBSU_PASS"  -e ";" ; do
     read -r -s -p "Can't connect, please retry: " MY_DBSU_PASS
 done
@@ -40,9 +40,6 @@ echo
 echo
 echo "Let's build a site!"
 echo
-
-# Generate Drupal DB password
-DBPSSWD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 
 ## Make the parent directory
 sudo -u apache mkdir -p "$SITEPATH"
@@ -71,8 +68,8 @@ read -r -d '' SETTINGSPHP <<- EOF
     'default' =>
     array (
       'database' => 'drupal_${SITE}_${ENV_NAME}',
-      'username' => 'd7_${SITE}_${ENV_NAME}',
-      'password' => '$DBPSSWD',
+      'username' => '${MY_DBSU}',
+      'password' => '${MY_DBSU_PASS}',
       'host' => '$MY_DBHOST',
       'port' => '$MY_DBPORT',
       'driver' => 'mysql',
