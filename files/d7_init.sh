@@ -55,6 +55,9 @@ sudo -u apache drush @none -y dl drupal --drupal-project-rename=drupal --destina
 echo "Moving default site out of build."
 sudo -u apache mv "$SITEPATH/drupal/sites/default" "$SITEPATH"/
 
+## Drupal default site dir is ~ 6770
+d7_perms_sticky.sh "$SITEPATH/default"
+
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.
 echo "Linking default site into build."
