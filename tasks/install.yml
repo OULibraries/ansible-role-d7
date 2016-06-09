@@ -33,7 +33,7 @@
     dest: /usr/share/pear/apc.php
     state: present
     regexp: '^defaults\(\'ADMIN_PASSWORD\',\'password\');$'
-    line: "defaults('ADMIN_PASSWORD','{{apc_password}}');"
+    line: "defaults('ADMIN_PASSWORD','{{ apc_password }}');"
 - name: Ensure /etc/profile.d/d7-ops.sh exists
   file:
     path: /etc/profile.d/d7-ops.sh
