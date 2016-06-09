@@ -29,6 +29,14 @@
       - d7_sync.sh
       - d7_update.sh
 
+- name: Install APC config
+  copy:
+    mode: 0440
+    owner: apache
+    group: wheel
+    src: apc.conf
+    dest: /etc/httpd/conf.d
+
 - name: Ensure /opt/d7/etc exists
   file:
     path: /opt/d7/etc
