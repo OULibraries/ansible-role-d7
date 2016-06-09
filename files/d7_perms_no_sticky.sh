@@ -39,8 +39,8 @@ done < <(find "${INPUTDIR}" -type d -print0 2>/dev/null)
 for DIR in "${DIRS[@]}"; do
 
   ## Set group to apache.
-  sudo -u apache chgrp -R apache "${DIR}" 2>/dev/null || \
-  chgrp -R apache "${DIR}" 
+  sudo -u apache chgrp apache "${DIR}" 2>/dev/null || \
+  chgrp apache "${DIR}" 
 
   ## Set dir perms.
   sudo -u apache chmod ${DIRPERMS} "${DIR}" 2>/dev/null || \
@@ -57,8 +57,8 @@ done < <(find "${INPUTDIR}" -mindepth 1 -type f -print0 2>/dev/null)
 for FILE in "${FILES[@]}"; do
 
   ## Set group to apache.
-  sudo -u apache chgrp -R apache "${FILE}" 2>/dev/null || \
-  chgrp -R apache "${FILE}"
+  sudo -u apache chgrp apache "${FILE}" 2>/dev/null || \
+  chgrp apache "${FILE}"
 
   ## Set file perms.
   sudo -u apache chmod ${FILEPERMS} "${FILE}" 2>/dev/null || \
