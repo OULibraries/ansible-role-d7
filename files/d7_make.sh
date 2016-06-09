@@ -58,6 +58,9 @@ sudo -u apache drush -y --working-copy make "${MY_MAKEFILE}" "$SITEPATH/drupal_b
 ## Delete default site in the build
 sudo -u apache rm -rf "$SITEPATH/drupal_build/sites/default"
 
+## Drupal build dir is ~ 750
+d7_perms_no_sticky.sh "$SITEPATH/drupal_build"
+
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.
 echo "Linking default site into new build."
