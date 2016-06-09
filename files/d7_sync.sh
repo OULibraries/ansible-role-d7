@@ -32,6 +32,9 @@ if [[ ! -e $SITEPATH ]]; then
     d7_init.sh "$SITEPATH" || exit 1;
 fi
 
+## Drupal default site dir is ~ 6770
+d7_perms_sticky.sh "$SITEPATH/default"
+
 ## Make the sync directory
 sudo -u apache mkdir -p "$SITEPATH/default/files_sync"
 echo "Setting permissions for synced files."
