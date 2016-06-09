@@ -15,5 +15,5 @@ else
 fi
 
 ## Clear the caches
-curl --basic --user ${APC_USER}:${APC_PASS} "http://localhost/apc.php?SCOPE=A&SORT1=H&SORT2=D&COUNT=20&CC=1&OB=1" >/dev/null
+curl --basic --user "${APC_USER}:${APC_PASS}" "http://localhost/apc.php?SCOPE=A&SORT1=H&SORT2=D&COUNT=20&CC=1&OB=1" >/dev/null
 sudo -u apache drush -y cc all -r "$SITEPATH/drupal" || exit 1;
