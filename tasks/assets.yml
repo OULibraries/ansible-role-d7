@@ -16,6 +16,7 @@
     owner: root
     group: wheel
   with_items:
+      - d7_cc.sh
       - d7_clean.sh
       - d7_dump.sh
       - d7_httpd_conf.sh
