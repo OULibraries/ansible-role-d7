@@ -25,7 +25,7 @@ sudo -u apache drush up -y --security-only -r "$SITEPATH/drupal"  --backup-dir="
 sudo -u apache drush -y dis update -r "$SITEPATH/drupal" || exit 1;
 
 ## Clear the caches
-sudo -u apache drush -y cc all -r "$SITEPATH/drupal" || exit 1;
+d7_cc.sh "$SITEPATH"
 
 ## Avoid a known performance-crusher in our environment
 sudo -u apache drush eval 'variable_set('drupal_http_request_fails', 0)' -r "$SITEPATH/drupal" || exit 1;
