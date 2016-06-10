@@ -34,7 +34,7 @@
     dest: /usr/share/pear/apc.php
     state: present
     regexp: ^defaults\('ADMIN_USERNAME','apc'\);
-    line: "defaults('ADMIN_PASSWORD','{{ apc_username }}');"
+    line: "defaults('ADMIN_USERNAME','{{ apc_username }}');"
 - name: Set APC Password
   lineinfile:
     dest: /usr/share/pear/apc.php
