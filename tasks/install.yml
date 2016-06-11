@@ -21,10 +21,12 @@
   with_items:
   - Console_Table
   - pecl/apc
-- name: Set SELinux to allow apache to connect to networks
-  command: setsebool -P httpd_can_network_connect on
-- name: Set SELinux to allow apache to connect to ldap servers
-  command: setsebool -P httpd_can_connect_ldap on
+- name: Set SELinux exceptions for apache 
+  command: "setsebool -P {{ item }} on"
+  with_items:
+  - httpd_can_connect_ldap
+  - httpd_can_network_connect
+  - httpd_can_sendmail
 - name: Add config include to http.conf
   lineinfile:
     dest: /etc/httpd/conf/httpd.conf
