@@ -132,6 +132,6 @@ galaxy_info:
   #- packaging
   #- system
   - web
-dependencies:
-  - OULibraries.centos7
-  - OULibraries.apache2
+dependencies: []
+  #- OULibraries.centos7
+  #- OULibraries.apache2

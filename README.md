@@ -6,7 +6,13 @@ OU Libraries Drupal Ops.
 Role Variables
 --------------
 
-See defaults/main.yml
+APC credentials, we don't set a default because security.
+```
+apc_username: apc
+apc_password: password
+```
+
+For more, see defaults/main.yml
 
 Dependencies
 ------------

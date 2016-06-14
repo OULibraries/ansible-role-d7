@@ -16,6 +16,7 @@
     owner: root
     group: wheel
   with_items:
+      - d7_cc.sh
       - d7_clean.sh
       - d7_dump.sh
       - d7_httpd_conf.sh
@@ -30,8 +31,22 @@
       - d7_snapshot.sh
       - d7_sync.sh
       - d7_update.sh
-  tags:
-    scripts
+
+- name: Install apc.ini
+  copy:
+    mode: 0644
+    owner: root
+    group: root
+    src: apc.ini
+    dest: /etc/php.d
+
+- name: Install apc.conf
+  copy:
+    mode: 0644
+    owner: root
+    group: root
+    src: apc.conf
+    dest: /etc/httpd/conf.d    
 
 - name: Ensure /opt/d7/etc exists
   file:
@@ -42,15 +57,13 @@
     group: wheel
     recurse: yes
 
-
 - name: Install httpd template file
   copy:
     mode: 0444
     src: d7_init_httpd_template
     dest: /opt/d7/etc
 
-
-- name: Install d7  config
+- name: Install d7 config
   template:
     src: d7_conf.sh.j2
     dest: /opt/d7/etc/d7_conf.sh

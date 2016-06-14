@@ -30,9 +30,8 @@ SITE=$(basename "$SITEPATH")
 ## Make the database dump directory
 sudo -u apache mkdir -p "$SITEPATH/db"
 
-## Set perms
-d7_perms_sticky.sh "$SITEPATH/db"
-
 ## Perform sql-dump
 sudo -u apache drush -r "$SITEPATH/drupal" sql-dump --result-file="$SITEPATH/db/drupal_${SITE}_dump.sql"
 
+## Set perms
+d7_perms_sticky.sh "$SITEPATH/db"

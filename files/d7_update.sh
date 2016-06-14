@@ -24,18 +24,10 @@ sudo -u apache drush up -y --security-only -r "$SITEPATH/drupal"  --no-backup  |
 sudo -u apache drush -y dis update -r "$SITEPATH/drupal" || exit 1;
 
 ## Clear the caches
-sudo -u apache drush -y cc all -r "$SITEPATH/drupal" || exit 1;
+d7_cc.sh "$SITEPATH"
 
 ## Avoid a known performance-crusher in our environment
 sudo -u apache drush eval 'variable_set('drupal_http_request_fails', 0)' -r "$SITEPATH/drupal" || exit 1;
-
-## Set perms
-
-## Drupal install dir is ~ 750
-d7_perms_no_sticky.sh "$SITEPATH/drupal"
-
-## Drupal default site dir is ~ 6770
-d7_perms_sticky.sh "$SITEPATH/default"
 
 ## settings.php is protected.
 sudo -u apache chmod ug=r,o= "$SITEPATH/default/settings.php" 2>/dev/null || \

@@ -1,25 +1,46 @@
 ---
-- name: Install packages necessary to run Drupal
+- name: Install yum packages
   yum:
     name: "{{ item }}"
-    state: latest
+    state: present
   with_items:
   - php
   - mod_php
+  - php-devel
   - php-mysql
   - php-ldap
   - php-pear
   - php-gd
   - php-drush-drush
   - mariadb
-- name: Set SELinux to allow apache to connect to networks
-  command: setsebool -P httpd_can_network_connect on
-- name: Set SELinux to allow apache to connect to ldap servers
-  command: setsebool -P httpd_can_connect_ldap on
+  - gcc
+- name: Install PEAR packages
+  pear: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - Console_Table
+  - pecl/apc
+- name: Set SELinux exceptions for apache 
+  command: "setsebool -P {{ item }} on"
+  with_items:
+  - httpd_can_connect_ldap
+  - httpd_can_network_connect
+  - httpd_can_sendmail
 - name: Add config include to http.conf
   lineinfile:
     dest: /etc/httpd/conf/httpd.conf
     line: "IncludeOptional \"/srv/*/etc/*.conf\""
+- name: Set APC Username
+  lineinfile:
+    dest: /usr/share/pear/apc.php
+    regexp: ^defaults\('ADMIN_USERNAME','apc'\);
+    line: "defaults('ADMIN_USERNAME','{{ apc_username }}');"
+- name: Set APC Password
+  lineinfile:
+    dest: /usr/share/pear/apc.php
+    regexp: ^defaults\('ADMIN_PASSWORD','password'\);
+    line: "defaults('ADMIN_PASSWORD','{{ apc_password }}');"
 - name: Ensure /etc/profile.d/d7-ops.sh exists
   file:
     path: /etc/profile.d/d7-ops.sh

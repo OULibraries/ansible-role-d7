@@ -33,17 +33,21 @@ then
 else
     echo "Target DB doesn't exist, we need to create it. "
 
+    # Get mysql host 
+    read -r -e -p "Enter MYSQL host name: " -i "$D7_DBHOST" MY_DBHOST
+    # Get mysql port
+    read -r -e -p "Enter MYSQL host port: " -i "$D7_DBPORT" MY_DBPORT
 
     # Get DB admin user
     read -r -e -p "Enter MYSQL admin user: " -i "$D7_DBSU" MY_DBSU
     # Get DB admin password
     read -r -s -p "Enter MYSQL root password: " MY_DBSU_PASS
-    while ! mysql -u  "$MY_DBSU" -p"$MY_DBSU_PASS"  -e ";" ; do
-	read -r -s -p "Can't connect, please retry: " MY_DBSU_PASS
+    while  [ -z "$MY_DBSU_PASS" ] || ! mysql --host="$MY_DBHOST" --port="$MY_DBPORT" --user="$MY_DBSU" --password="$MY_DBSU_PASS"  -e ";" ; do
+        read -r -s -p "Can't connect, please retry: " MY_DBSU_PASS
     done
     
     ## Create the Drupal database
-    sudo -u apache drush -y sql-create --db-su="$MY_DBSU" --db-su-pw="$MY_DBSU_PASS" -r "$SITEPATH/drupal" || exit 1;
+    sudo -u apache drush -y sql-create --db-url="mysql://${MY_DBSU}:${MY_DBSU_PASS}@${MY_DBHOST}:${MY_DBPORT}/drupal_${SITE}_${ENV_NAME}" -r "$SITEPATH/drupal" || exit 1;
 fi
 
 ## Load sql-dump to local DB
