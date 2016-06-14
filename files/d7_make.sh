@@ -41,7 +41,7 @@ sudo -u apache rm -rf "$SITEPATH/drupal_build"
 sudo -u apache mkdir -p "$SITEPATH/etc"
 
 # Download makefile if it isn't the one we already have
-if [ ! MAKEURI == "file://${MY_MAKEFILE}" ]; then
+if [ ! ${MAKEURI} == "file://${MY_MAKEFILE}" ]; then
 
     # Backup old files if we have them
     [ -f $MY_MAKEFILE ] && sudo -u apache cp -v "$MY_MAKEFILE" "${MY_MAKEFILE}.bak"
@@ -50,6 +50,7 @@ if [ ! MAKEURI == "file://${MY_MAKEFILE}" ]; then
     # Get a new copy of the make file
     echo "$MAKEURI"  | sudo -u apache tee  "${MY_MAKEFILE}.uri" > /dev/null
     (cd "$SITEPATH/etc" &&  sudo -u apache curl "$MAKEURI"  -o "$MY_MAKEFILE")
+    d7_perms_sticky.sh "$SITEPATH/etc"
 fi
 
 ## Build from drush make or die
