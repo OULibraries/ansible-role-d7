@@ -22,3 +22,5 @@ d7_perms_sticky.sh "$SITEPATH/etc"
 d7_perms_sticky.sh "$SITEPATH/default"
 
 sudo -u apache chmod 444 "$SITEPATH/default/settings.php"
+
+exit 0

@@ -64,3 +64,6 @@ for FILE in "${FILES[@]}"; do
   sudo -u apache chmod ${FILEPERMS} "${FILE}" 2>/dev/null || \
   chmod ${FILEPERMS} "${FILE}"
 done
+
+
+exit 0
