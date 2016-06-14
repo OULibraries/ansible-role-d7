@@ -25,7 +25,7 @@ d7_init.sh "$SITEPATH"  || exit 1
 
 echo "Copying makefiles!"
 for file in "site.make" "site.make.uri" ; do
-    ssh "$SRCHHOST" "cat $ORIGIN_SITEPATH/etc/${file}" | sudo -u apache tee "$SITEPATH/etc/${file}" >/dev/null
+    ssh "$SRCHOST" "cat $ORIGIN_SITEPATH/etc/${file}" | sudo -u apache tee "$SITEPATH/etc/${file}" >/dev/null
 done
 
 # Perms
