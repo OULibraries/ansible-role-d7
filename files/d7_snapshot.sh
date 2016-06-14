@@ -22,6 +22,8 @@ d7_dump.sh $SITEPATH
 # Make sure we have a place to stick snapshots
 sudo -u apache mkdir -p "$SNAPSHOTDIR"
 
+d7_perms_no_sticky.sh "$SNAPSHOTDIR"
+
 # Tar files required to rebuild, with $SITE as TLD inside tarball. 
 sudo -u apache tar -cf "$SNAPSHOTDIR/$SITE.$DOW.tar" -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files"
 
