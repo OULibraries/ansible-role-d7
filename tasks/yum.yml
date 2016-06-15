@@ -1,0 +1,16 @@
+---
+- name: Install yum packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - php
+  - mod_php
+  - php-devel
+  - php-mysql
+  - php-ldap
+  - php-pear
+  - php-gd
+  - php-drush-drush
+  - mariadb
+  - gcc

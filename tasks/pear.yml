@@ -1,0 +1,8 @@
+---
+- name: Install PEAR packages
+  pear:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - Console_Table
+  - pecl/apc
