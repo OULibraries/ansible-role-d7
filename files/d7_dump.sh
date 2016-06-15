@@ -5,14 +5,17 @@ PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 source /opt/d7/etc/d7_conf.sh
 
 ## Require arguments
-if [ ! -z "$1" ]
+if [  -z "$1" ]
 then
-  SITEPATH=$1
-  echo "Dumping $SITEPATH database"
-else
-  echo "Requires site path (eg. /srv/sample) as argument"
-  exit 1;
+    echo "Usage: d7_dump.sh \$SITEPATH"
+
+    exit 1;
 fi
+SITEPATH=$1
+
+echo "Dumping $SITEPATH database"
+
+
 
 ## Init site if it doesn't exist
 if [[ ! -e $SITEPATH ]]; then
@@ -21,6 +24,8 @@ fi
 
 ## Grab the basename of the site to use in a few places.
 SITE=$(basename "$SITEPATH")
+
+
 
 ## Make the database dump directory
 sudo -u apache mkdir -p "$SITEPATH/db"
