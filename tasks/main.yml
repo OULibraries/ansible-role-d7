@@ -1,5 +1,11 @@
 ---
-- include: install.yml
+- include: yum.yml
+  sudo: yes
+
+- include: pear.yml
+  sudo: yes
+
+- include: configure.yml
   sudo: yes
 
 - include: assets.yml
