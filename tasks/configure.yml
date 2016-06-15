@@ -15,13 +15,15 @@
     dest: /usr/share/pear/apc.php
     regexp: >
       ^defaults\('ADMIN_USERNAME','apc'\);(.*)$
-    replace: defaults('ADMIN_USERNAME','{{ apc_username }}');\1
+    replace: >
+      defaults('ADMIN_USERNAME','{{ apc_username }}');\1
 - name: Set APC Password
   replace:
     dest: /usr/share/pear/apc.php
     regexp: >
       ^defaults\('ADMIN_PASSWORD','password'\);(.*)$
-    replace: defaults('ADMIN_PASSWORD','{{ apc_password }}');\1
+    replace: >
+      defaults('ADMIN_PASSWORD','{{ apc_password }}');\1
 - name: Set upload_max_filesize
   replace:
     dest: /etc/php.ini
