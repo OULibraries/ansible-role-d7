@@ -14,14 +14,14 @@
   replace:
     dest: /usr/share/pear/apc.php
     regexp: >
-      ^defaults\('ADMIN_USERNAME','apc'\);.*$
-    replace: "defaults('ADMIN_USERNAME','{{ apc_username }}');"
+      ^defaults\('ADMIN_USERNAME','apc'\);(.*)$
+    replace: defaults('ADMIN_USERNAME','{{ apc_username }}');\1
 - name: Set APC Password
   replace:
     dest: /usr/share/pear/apc.php
     regexp: >
-      ^defaults\('ADMIN_PASSWORD','password'\);.*$
-    replace: "defaults('ADMIN_PASSWORD','{{ apc_password }}');"
+      ^defaults\('ADMIN_PASSWORD','password'\);(.*)$
+    replace: defaults('ADMIN_PASSWORD','{{ apc_password }}');\1
 - name: Set upload_max_filesize
   replace:
     dest: /etc/php.ini
@@ -45,11 +45,11 @@
   lineinfile: 
     state: present
     dest: /etc/profile.d/d7-ops.sh
-    line: "'export PATH=/opt/d7/bin:$PATH'"
+    line: "export PATH=/opt/d7/bin:$PATH"
 - name: Add ops scripts to sudo secure_path
   replace:
     dest: /etc/sudoers
     regexp: >
       ^Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin$
-    replace: "'Defaults    secure_path = /opt/d7/bin:/sbin:/bin:/usr/sbin:/usr/bin'"
+    replace: 'Defaults    secure_path = /opt/d7/bin:/sbin:/bin:/usr/sbin:/usr/bin'
     validate: visudo -cf %s
