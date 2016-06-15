@@ -6,7 +6,7 @@ PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 if [  -z "$1" ]
 then
     echo "Usage: d7_snapshot.sh \$SITEPATH \$DOW"
-    echo "$DOW should be something like Mon, Tue, Web, etc. "
+    echo "$DOW should be something like Mon, Tue, Wed, etc. "
     exit 1;
 fi
 
