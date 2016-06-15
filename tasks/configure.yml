@@ -12,13 +12,23 @@
 - name: Set APC Username
   lineinfile:
     dest: /usr/share/pear/apc.php
-    regexp: ^defaults\('ADMIN_USERNAME','apc'\);
+    regexp: ^defaults\('ADMIN_USERNAME','apc'\);.*$
     line: "defaults('ADMIN_USERNAME','{{ apc_username }}');"
 - name: Set APC Password
   lineinfile:
     dest: /usr/share/pear/apc.php
-    regexp: ^defaults\('ADMIN_PASSWORD','password'\);
+    regexp: ^defaults\('ADMIN_PASSWORD','password'\);.*$
     line: "defaults('ADMIN_PASSWORD','{{ apc_password }}');"
+- name: Set upload_max_filesize
+  lineinfile:
+    dest: /etc/php.ini
+    regexp: ^upload_max_filesize = 2M$
+    line: "upload_max_filesize = 64M"
+- name: Set post_max_size
+  lineinfile:
+    dest: /etc/php.ini
+    regexp: ^post_max_size = 8M$
+    line: "post_max_size = 70M"
 - name: Ensure /etc/profile.d/d7-ops.sh exists
   file:
     path: /etc/profile.d/d7-ops.sh
