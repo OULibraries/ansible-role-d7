@@ -3,14 +3,13 @@
 PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 ## Require arguments
-if [ ! -z "$1" ]
+if [  -z "$1" ]
 then
-  SITEPATH=$1
-  echo "Processing $SITEPATH"
-else
-  echo "Requires site path (eg. /srv/sample) as argument"
-  exit 1;
+    echo "Usage: d7_update.sh \$SITEPATH"
+    exit 1;
 fi
+SITEPATH=$1
+
 
 ## Dump DB before touching anything
 d7_dump.sh "$SITEPATH" || exit 1;
@@ -19,7 +18,7 @@ d7_dump.sh "$SITEPATH" || exit 1;
 sudo -u apache drush -y en update -r "$SITEPATH/drupal" || exit 1;
 
 ## Apply security updates.
-sudo -u apache drush up -y --security-only -r "$SITEPATH/drupal"  --backup-dir="$SITEPATH/drush-backups/" || exit 1;
+sudo -u apache drush up -y --security-only -r "$SITEPATH/drupal"  --no-backup  || exit 1;
 
 ## Disable update manager; no need to leave it phoning home.
 sudo -u apache drush -y dis update -r "$SITEPATH/drupal" || exit 1;

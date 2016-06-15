@@ -20,13 +20,15 @@
       - d7_clean.sh
       - d7_dump.sh
       - d7_httpd_conf.sh
-      - d7_init.sh
       - d7_importdb.sh
+      - d7_init.sh
       - d7_make.sh
       - d7_migrate.sh
       - d7_perms_fix.sh
       - d7_perms_no_sticky.sh
       - d7_perms_sticky.sh
+      - d7_restore.sh
+      - d7_snapshot.sh
       - d7_sync.sh
       - d7_update.sh
 
