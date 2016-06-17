@@ -5,17 +5,15 @@ PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 source /opt/d7/etc/d7_conf.sh
 
 if [  -z "$1" ]; then
-
   cat <<USAGE
-d7_perm.sh sets our preferred permissions for Drupal paths. 
+d7_perm.sh sets our preferred permissions for a Drupal path. 
 
-Usage: d7_perm.sh [--sticky] \$SITEPATH
-
-\$SITEPATH   Folder to modify (eg. /srv/example/drupal).
---sticky     Optional argument adds group write with sticky bit. 
-             This is the default behavior for dev environments.  
+Usage: d7_perm.sh [--sticky] \$PATH
+            
+\$PATH      Folder to modify (eg. /srv/example/drupal).
+--sticky    Optional argument adds group write with sticky bit. 
+            This is the default behavior for dev environments.  
 USAGE
-
 
   exit 1;
 fi
