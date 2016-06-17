@@ -50,7 +50,7 @@ if [ ! ${MAKEURI} == "file://${MY_MAKEFILE}" ]; then
     # Get a new copy of the make file
     echo "$MAKEURI"  | sudo -u apache tee  "${MY_MAKEFILE}.uri" > /dev/null
     (cd "$SITEPATH/etc" &&  sudo -u apache curl "$MAKEURI"  -o "$MY_MAKEFILE")
-    d7_perms_sticky.sh "$SITEPATH/etc"
+    d7_perms.sh --sticky "$SITEPATH/etc"
 fi
 
 ## Build from drush make or die
@@ -60,7 +60,7 @@ sudo -u apache drush -y --working-copy make "${MY_MAKEFILE}" "$SITEPATH/drupal_b
 sudo -u apache rm -rf "$SITEPATH/drupal_build/sites/default"
 
 ## Drupal build dir is ~ 750
-d7_perms_no_sticky.sh "$SITEPATH/drupal_build"
+d7_perms.sh "$SITEPATH/drupal_build"
 
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.

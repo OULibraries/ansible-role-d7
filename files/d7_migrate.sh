@@ -30,7 +30,7 @@ done
 
 # Perms
 echo "Setting permissions for config files."
-d7_perms_sticky.sh "$SITEPATH/etc"
+d7_perms.sh --sticky "$SITEPATH/etc"
 
 # Install modules and themes
 d7_make.sh "$SITEPATH" || exit 1

@@ -15,11 +15,11 @@ else
 fi
 
 ## Set perms
-d7_perms_no_sticky.sh "$SITEPATH/drupal"
-d7_perms_no_sticky.sh "$SITEPATH/drupal_bak"
-d7_perms_sticky.sh "$SITEPATH/db"
-d7_perms_sticky.sh "$SITEPATH/etc"
-d7_perms_sticky.sh "$SITEPATH/default"
+d7_perms.sh "$SITEPATH/drupal"
+d7_perms.sh "$SITEPATH/drupal_bak"
+d7_perms.sh --sticky "$SITEPATH/db"
+d7_perms.sh --sticky "$SITEPATH/etc"
+d7_perms.sh --sticky "$SITEPATH/default"
 
 sudo -u apache chmod 444 "$SITEPATH/default/settings.php"
 

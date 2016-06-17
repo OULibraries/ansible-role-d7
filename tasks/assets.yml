@@ -25,8 +25,7 @@
       - d7_make.sh
       - d7_migrate.sh
       - d7_perms_fix.sh
-      - d7_perms_no_sticky.sh
-      - d7_perms_sticky.sh
+      - d7_perms.sh
       - d7_restore.sh
       - d7_snapshot.sh
       - d7_sync.sh

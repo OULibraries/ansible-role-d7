@@ -4,27 +4,33 @@ PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/d7/etc/d7_conf.sh
 
-## Require arguments
 if [  -z "$1" ]; then
+  echo "Usage: d7_perm.sh [--sticky] $SITEPATH"
   echo "Requires input dir (eg. /srv/example/drupal) as argument"
+  echo "Optional \"--sticky\" argument adds group write with sticky bit"
   exit 1;
 fi
 
-INPUTDIR=$1
+# Check for argument to set sticky group perms
+if [ "$1" == "--sticky" ]; then 
+    STICKY="sticky"
+    INPUTDIR="$2"
+else 
+    INPUTDIR="$1"
+fi 
 
-if [[ ${ENV_NAME} == *dev ]] || [[ $0 != *no_sticky.sh ]]; then 
-  # content files, settings and dev mode drupal files get group write
-  # and sticky bit
+if  [[ "${ENV_NAME}" == *dev ]] || [ "${STICKY}" == "sticky" ]; then
+  # Looser permissions in sticky mode and dev environments so that
+  # files can be moved around by all group members
   DIRPERMS='u=rwxs,g=rwxs,o='
   FILEPERMS='u=rw,g=rw,o='
-  POLICY="sticky"
+  POLICY="sticky group"
 else
-  # More restrictive perms for drupal files in prod mode
+  # Default to more restrictive perms for drupal files in prod mode
   DIRPERMS='u=rwx,g=rx,o='
   FILEPERMS='u=rw,g=r,o='
-  POLICY="no sticky"
+  POLICY="strict (no group)"
 fi
-
 
 if [ ! -d "$INPUTDIR" ]; then
   echo "cannot access ${INPUTDIR}: No such directory"
@@ -77,5 +83,6 @@ for FILE in "${FILES[@]}"; do
   chmod ${FILEPERMS} "${FILE}"
 done
 
-
+# Returning 0 because variances in storage leads to a lot of false
+# positives in detecting errors.
 exit 0

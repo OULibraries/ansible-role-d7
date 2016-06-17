@@ -33,12 +33,12 @@ if [[ ! -e $SITEPATH ]]; then
 fi
 
 ## Drupal default site dir is ~ 6770
-d7_perms_sticky.sh "$SITEPATH/default"
+d7_perms.sh --sticky "$SITEPATH/default"
 
 ## Make the sync directory
 sudo -u apache mkdir -p "$SITEPATH/default/files_sync"
 echo "Setting permissions for synced files."
-d7_perms_sticky.sh "$SITEPATH/default/files_sync"
+d7_perms.sh --sticky "$SITEPATH/default/files_sync"
 
 ## Sync Files to writable directory (sudo would break ssh)
 RSOPTS="--verbose --recursive --links  --compress"
@@ -47,7 +47,7 @@ echo "Files synced."
 
 ## Set perms for sync directory
 echo "Setting permissions for synced files."
-d7_perms_sticky.sh "$SITEPATH/default/files_sync"
+d7_perms.sh --sticky "$SITEPATH/default/files_sync"
 
 ## Now that everything is ready, swap in the synced files
 ## /srv/libraries1/default isn't supposed to be writeable, so we need

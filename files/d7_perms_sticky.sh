@@ -1,1 +1,1 @@
-. /opt/d7/bin/d7_perms_no_sticky.sh
+. /opt/d7/bin/d7_perms.sh
