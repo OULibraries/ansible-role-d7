@@ -4,15 +4,20 @@ PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/d7/etc/d7_conf.sh
 
-## Require arguments
-if [ ! -z "$1" ]
-then
-  SITEPATH=$1
-  echo "Processing $SITEPATH"
-else
-  echo "Requires site path (eg. /srv/sample) as argument"
+if [  -z "$1" ]; then
+  cat <<USAGE
+d7_init.sh builds a Drupal site.
+
+Usage: d7_init.sh \$SITEPATH
+            
+\$SITEPATH  Destination for Drupal site (eg. /srv/example).
+USAGE
+
   exit 1;
 fi
+
+SITEPATH=$1
+echo "Processing $SITEPATH"
 
 ## Don't blow away existing sites
 if [[ -e "$SITEPATH" ]]; then
@@ -96,8 +101,15 @@ sudo -u apache drush -y sql-create --db-su="${MY_DBSU}" --db-su-pw="$MY_DBSU_PAS
 ## Do the Drupal install
 sudo -u apache drush -y -r "$SITEPATH/drupal" site-install --site-name="$SITE" || exit 1;
 
+## Apply env specific perms to drupal
+d7_perms.sh "$SITEPATH/drupal"
+
 ## Apply the apache config
 d7_httpd_conf.sh "$SITEPATH" || exit 1;
 
 ## Apply security updates and clear caches.
 d7_update.sh "$SITEPATH" || exit 1;
+
+echo
+echo "New site built at ${SITEPATH}"
+echo 
