@@ -6,9 +6,9 @@ source /opt/d7/etc/d7_conf.sh
 
 if [  -z "$1" ]; then
   cat <<USAGE
-d7_perm.sh sets our preferred permissions for a Drupal path. 
+d7_perms.sh sets our preferred permissions for a Drupal path. 
 
-Usage: d7_perm.sh [--sticky] \$PATH
+Usage: d7_perms.sh [--sticky] \$PATH
             
 \$PATH      Folder to modify (eg. /srv/example/drupal).
 --sticky    Optional argument adds group write with sticky bit. 

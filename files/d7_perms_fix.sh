@@ -7,9 +7,9 @@ source /opt/d7/etc/d7_conf.sh
 if [  -z "$1" ]; then
 
   cat <<USAGE
-d7_perm_fix.sh sets our preferred permissions for all Drupal paths in a site folder. 
+d7_perms_fix.sh sets our preferred permissions for all Drupal paths in a site folder. 
 
-Usage: d7_perm_fix.sh [--sticky] \$SITEPATH
+Usage: d7_perms_fix.sh \$SITEPATH
 
 \$SITEPATH   Site to apply permissions (eg. /srv/example).
 
