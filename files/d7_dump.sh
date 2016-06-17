@@ -34,4 +34,4 @@ sudo -u apache mkdir -p "$SITEPATH/db"
 sudo -u apache drush -r "$SITEPATH/drupal" sql-dump --result-file="$SITEPATH/db/drupal_${SITE}_dump.sql"
 
 ## Set perms
-d7_perms_sticky.sh "$SITEPATH/db"
+d7_perms.sh --sticky "$SITEPATH/db"

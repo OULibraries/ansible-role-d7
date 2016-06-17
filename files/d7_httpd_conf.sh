@@ -35,6 +35,6 @@ sudo restorecon -R "$SITEPATH/etc" || exit 1;
 
 ## Set perms
 echo "Setting permissions for config files."
-d7_perms_sticky.sh "$SITEPATH/etc"
+d7_perms.sh --sticky "$SITEPATH/etc"
 
 sudo systemctl restart httpd || exit 1;

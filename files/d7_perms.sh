@@ -2,24 +2,55 @@
 ## Set permissions on the specified dir
 PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
-## Require arguments
-if [ ! -z "$1" ]
-then
-  INPUTDIR=$1
-else
-  echo "Requires input dir (eg. /srv/example/drupal) as argument"
+source /opt/d7/etc/d7_conf.sh
+
+if [  -z "$1" ]; then
+  cat <<USAGE
+d7_perms.sh sets our preferred permissions for a Drupal path. 
+
+Usage: d7_perms.sh [--sticky] \$PATH
+            
+\$PATH      Folder to modify (eg. /srv/example/drupal).
+--sticky    Optional argument adds group write with sticky bit. 
+            This is the default behavior for dev environments.  
+USAGE
+
   exit 1;
 fi
 
-DIRPERMS='u=rwx,g=rx,o='
-FILEPERMS='u=rw,g=r,o='
+# Process options and args
+if [ "$1" == "--sticky" ] ; then 
+    STICKY="sticky"
+    INPUTDIR="$2"
+else
+    INPUTDIR=$1
+fi
+
+# Validate arguments
+if  [ -z "$INPUTDIR" ] || [ ! -e "$INPUTDIR" ]; then 
+    echo "Error: Cowardly refusing to set perms on bad \$INPUTDIR \"${INPUTDIR}\"."
+    exit 1;
+fi
+
+if  [[ "${ENV_NAME}" == *dev ]] || [ "${STICKY}" == "sticky" ]; then
+  # Looser permissions in sticky mode and dev environments so that
+  # files can be moved around by all group members
+  DIRPERMS='u=rwxs,g=rwxs,o='
+  FILEPERMS='u=rw,g=rw,o='
+  POLICY="sticky group"
+else
+  # Default to more restrictive perms for drupal files in prod mode
+  DIRPERMS='u=rwx,g=rx,o='
+  FILEPERMS='u=rw,g=r,o='
+  POLICY="strict (no group)"
+fi
 
 if [ ! -d "$INPUTDIR" ]; then
   echo "cannot access ${INPUTDIR}: No such directory"
   exit 1
 fi
 
-echo "Setting permissions on ${INPUTDIR}"
+echo "Setting ${POLICY} permissions on ${INPUTDIR}"
 
 ## Set SELinux context.  Useless over NFS/SMB.
 sudo semanage fcontext -a -t httpd_sys_content_t  "${INPUTDIR}(/.*)?"
@@ -65,5 +96,6 @@ for FILE in "${FILES[@]}"; do
   chmod ${FILEPERMS} "${FILE}"
 done
 
-
+# Returning 0 because variances in storage leads to a lot of false
+# positives in detecting errors.
 exit 0
