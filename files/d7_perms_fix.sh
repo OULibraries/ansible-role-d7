@@ -21,7 +21,6 @@ fi
 SITEPATH=$1
 echo "Processing $SITEPATH"
 
-
 # Strict perms for drupal code in prod
 d7_perms.sh "$SITEPATH/drupal"
 d7_perms.sh "$SITEPATH/drupal_bak"
