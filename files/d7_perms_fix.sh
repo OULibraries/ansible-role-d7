@@ -21,16 +21,16 @@ fi
 SITEPATH=$1
 echo "Processing $SITEPATH"
 
-# Strict perms for drupal code in prod
+# Set strict perms for drupal code in prod
 d7_perms.sh "$SITEPATH/drupal"
 d7_perms.sh "$SITEPATH/drupal_bak"
 
-# More liberal perms for config and content 
+# Set more liberal perms for config and content 
 d7_perms.sh --sticky "$SITEPATH/db"
 d7_perms.sh --sticky "$SITEPATH/etc"
 d7_perms.sh --sticky "$SITEPATH/default"
 
-# Paying specific attention to the file with the passwords 
+# Pay specific attention to the file with the passwords 
 sudo -u apache chmod 444 "$SITEPATH/default/settings.php"
 
 echo
