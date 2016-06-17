@@ -18,13 +18,19 @@ USAGE
   exit 1;
 fi
 
-# Check for argument to set sticky group perms
-if [ "$1" == "--sticky" ]; then 
+# Process options and args
+if [ "$1" == "--sticky" ] ; then 
     STICKY="sticky"
     INPUTDIR="$2"
-else 
-    INPUTDIR="$1"
-fi 
+else
+    INPUTDIR=$1
+fi
+
+# Validate arguments
+if  [ -z "$INPUTDIR" ] || [ ! -e "$INPUTDIR" ]; then 
+    echo "Error: Cowardly refusing to set perms on bad \$INPUTDIR \"${INPUTDIR}\"."
+    exit 1;
+fi
 
 if  [[ "${ENV_NAME}" == *dev ]] || [ "${STICKY}" == "sticky" ]; then
   # Looser permissions in sticky mode and dev environments so that
