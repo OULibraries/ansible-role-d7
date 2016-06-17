@@ -111,5 +111,5 @@ d7_httpd_conf.sh "$SITEPATH" || exit 1;
 d7_update.sh "$SITEPATH" || exit 1;
 
 echo
-echo "New site built at ${SITEPATH}"
+echo "Finished building site at ${SITEPATH}"
 echo 

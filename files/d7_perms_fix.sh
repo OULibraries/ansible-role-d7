@@ -33,4 +33,8 @@ d7_perms.sh --sticky "$SITEPATH/default"
 # Paying specific attention to the file with the passwords 
 sudo -u apache chmod 444 "$SITEPATH/default/settings.php"
 
+echo
+echo "Finished processing permissions at $SITEPATH"
+echo
+
 exit 0
