@@ -2,14 +2,25 @@
 ## Deploy drupal site from drush make
 PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
-## Require arguments
-if [  -z "$1" ]
-then
-    echo "Usage: d7_update.sh \$SITEPATH"
-    exit 1;
+source /opt/d7/etc/d7_conf.sh
+
+if [  -z "$1" ]; then
+    cat <<USAGE
+
+d7_update.sh applies security (only) updates to a drupal site.
+
+Usage: d7_update.sh \$SITEPATH
+            
+\$SITEPATH   Drupal site to update.
+
+USAGE
+
+  exit 1;
 fi
+
 SITEPATH=$1
 
+echo "Processing $SITEPATH"
 
 ## Dump DB before touching anything
 d7_dump.sh "$SITEPATH" || exit 1;

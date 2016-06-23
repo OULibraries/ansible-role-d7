@@ -5,23 +5,34 @@ PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 source /opt/d7/etc/d7_conf.sh
 
 ## Require arguments
-if [ ! -z "$1" ] && [ ! -z "$2" ]
-then
-  SITEPATH=$1
-  SRCHOST=$2
+if [  -z "$1" ] || [ -z "$2" ]; then
+    cat <<USAGE
 
-  if [ ! -z "$3" ]; then
-      ORIGIN_SITEPATH=$3 
-  else
-      ORIGIN_SITEPATH=$SITEPATH
-  fi
+d7_synch.sh syncs content files and database from a remote site to a
+local Drupal site, creating it if it doesn't exist.
 
-  echo "Syncing to local path $SITEPATH from $SRCHOST path $ORIGIN_SITEPATH"
-else
-    echo "Usage: d7_sync.sh \$SITEPATH \$SRCHOST [\$ORIGIN_SITEPATH]"
-    echo "\$ORIGIN_SITEPATH is optional if it matches the local \$SITEPATH"
+Usage: d7_sync.sh \$SITEPATH \$SRCHOST [\$ORIGIN_SITEPATH]
+    
+\$SITEPATH         local target of the sync
+\$SRCHOST          host from which to sync  
+\$ORIGIN_SITEPATH  optional argument, path to sync on the remote host. 
+                   \$SITEPATH will be used if a different $ORIGIN_SITEPATH 
+                   is not specified. 
+
+USAGE
+
   exit 1;
 fi
+
+SITEPATH=$1
+SRCHOST=$2
+if [ ! -z "$3" ]; then
+    ORIGIN_SITEPATH=$3 
+else
+    ORIGIN_SITEPATH=$SITEPATH
+fi
+
+echo "Syncing local path ${SITEPATH} from ${SRCHOST} path ${ORIGIN_SITEPATH}"
 
 ## Grab the basename of the NEW site to use in a few places.
 SITE=$(basename "$SITEPATH")
@@ -66,3 +77,8 @@ ssh -A "$SRCHOST" drush -r "$ORIGIN_SITEPATH/drupal" sql-dump --result-file="$OR
 ## Sync sql-dump to localhost and import
 rsync --omit-dir-times "$SRCHOST:$ORIGIN_SITEPATH/db/drupal_${ORIGIN_SITE}_sync.sql" "$SITEPATH/db/"
 d7_importdb.sh "$SITEPATH" "$SITEPATH/db/drupal_${ORIGIN_SITE}_sync.sql" || exit 1;
+
+
+echo
+echo "Site synched!"
+echo

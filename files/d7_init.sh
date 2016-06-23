@@ -6,24 +6,27 @@ source /opt/d7/etc/d7_conf.sh
 
 if [  -z "$1" ]; then
   cat <<USAGE
+
 d7_init.sh builds a Drupal site.
 
 Usage: d7_init.sh \$SITEPATH
             
 \$SITEPATH  Destination for Drupal site (eg. /srv/example).
+
 USAGE
 
   exit 1;
 fi
 
 SITEPATH=$1
-echo "Processing $SITEPATH"
 
 ## Don't blow away existing sites
 if [[ -e "$SITEPATH" ]]; then
     echo "$SITEPATH already exists!"
     exit 1
 fi
+
+echo "Initializing site at ${SITEPATH}."
 
 # Get external host suffix (rev proxy, ngrok, etc)
 read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 

@@ -4,13 +4,19 @@ PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/d7/etc/d7_conf.sh
 
-## Don't edit below here.
 
-# Require arguments
-if [ -z "$1" ]; then
-    echo "Usage: d7_make.sh $SITEPATH [$MAKEURI]"
-    echo "If optional \$MAKEURI argument is not specified, a cached Makefile will be used"
-    exit 1;
+if [  -z "$1" ]; then
+  cat <<USAGE
+
+d7_make.sh applies a Drupal makefile to a Drupal site. 
+
+Usage: d7_init.sh \$SITEPATH [$MAKEURI]
+            
+\$SITEPATH  Drupal site (eg. /srv/example).
+\$MAKEFILE  URI of Drupal makefike. Can be a file:// uri.
+USAGE
+
+  exit 1;
 fi
 
 SITEPATH=$1
@@ -23,7 +29,6 @@ else
 fi
 
 echo "Making $SITEPATH based on $MAKEURI"
-
 
     
 ## Init site if it doesn't exist
@@ -75,3 +80,7 @@ sudo -u apache mv "$SITEPATH/drupal_build" "$SITEPATH/drupal"
 
 ## Apply security updates and clear caches.
 d7_update.sh "$SITEPATH" || exit 1;
+
+echo
+echo "Finished making ${SITEPATH}."
+echo

@@ -2,15 +2,21 @@
 ## Create Apache config for Drupal site
 PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
-## Require arguments
-if [ ! -z "$1" ]
-then
-  SITEPATH=$1
-  echo "Processing $SITEPATH"
-else
-  echo "Requires site path (eg. /srv/sample) as argument"
+source /opt/d7/etc/d7_conf.sh
+
+if [  -z "$1" ]; then
+  cat <<USAGE
+d7_httpd_conf.sh generates the Apache config for a site.
+
+Usage: d7_httpd_conf.sh \$SITEPATH
+            
+\$SITEPATH  Drupal site.
+USAGE
+
   exit 1;
 fi
+
+SITEPATH=$1
 
 ## Site should already be there
 if [[ ! -e $SITEPATH ]]; then
@@ -22,7 +28,7 @@ fi
 SITE=$(basename "$SITEPATH")
 
 ## Make the apache config
-echo "Generating Apache Config."
+echo "Generating Apache config for ${SITEPATH}."
 
 sudo -u apache mkdir -p "$SITEPATH/etc"
 
