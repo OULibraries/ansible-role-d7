@@ -19,7 +19,7 @@ fi
 SITEPATH=$1
 
 if [[ ! -e "$SITEPATH" ]] ;then
-    echo "Can't find site at $SITEPATH, clearing Drush cache and APC only."
+    echo "Can't find site at $SITEPATH."
     exit 0
 fi
 
