@@ -6,13 +6,11 @@ source /opt/d7/etc/d7_conf.sh
 
 if [  -z "$1" ]; then
   cat <<USAGE
-
 d7_init.sh builds a Drupal site.
 
 Usage: d7_init.sh \$SITEPATH
             
 \$SITEPATH  Destination for Drupal site (eg. /srv/example).
-
 USAGE
 
   exit 1;
@@ -63,9 +61,6 @@ sudo -u apache drush @none -y dl drupal --drupal-project-rename=drupal --destina
 echo "Moving default site out of build."
 sudo -u apache mv "$SITEPATH/drupal/sites/default" "$SITEPATH"/
 
-## Drupal default site dir is ~ 6770
-d7_perms.sh --sticky "$SITEPATH/default"
-
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.
 echo "Linking default site into build."
@@ -104,15 +99,16 @@ sudo -u apache drush -y sql-create --db-su="${MY_DBSU}" --db-su-pw="$MY_DBSU_PAS
 ## Do the Drupal install
 sudo -u apache drush -y -r "$SITEPATH/drupal" site-install --site-name="$SITE" || exit 1;
 
-## Apply env specific perms to drupal
-d7_perms.sh "$SITEPATH/drupal"
-
 ## Apply the apache config
 d7_httpd_conf.sh "$SITEPATH" || exit 1;
 
 ## Apply security updates and clear caches.
 d7_update.sh "$SITEPATH" || exit 1;
 
-echo
-echo "Finished building site at ${SITEPATH}"
+# Apply our standard permissions to the new site
+d7_perms_fix.sh "$SITEPATH"
+
+
+echo "Finished building site at ${SITEPATH}."
+echo "If this is a new site, make sure to note the admin password."
 echo 
