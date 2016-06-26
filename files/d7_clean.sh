@@ -24,7 +24,7 @@ if [[ ! -e "$SITEPATH" ]] ;then
     exit 0
 fi
 
-echo "Deleting Drupal stie at $SITEPATH, and the corresponding database."
+echo "Preparing to delete Drupal files and database for $SITEPATH."
 read -p "You would cry if you did this on accident. Are you sure? " -n 1 -r
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]] ;then
