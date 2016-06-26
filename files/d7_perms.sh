@@ -6,15 +6,13 @@ source /opt/d7/etc/d7_conf.sh
 
 if [  -z "$1" ]; then
   cat <<USAGE
-
 d7_perms.sh sets our preferred permissions for a Drupal path. 
 
-Usage: d7_perms.sh [--sticky] \$PATH
+Usage: d7_perms.sh [--sticky] \$DIR
             
-\$PATH      Folder to modify (eg. /srv/example/drupal).
 --sticky    Optional argument adds group write with sticky bit. 
             This is the default behavior for dev environments.  
-
+\$INPUTDIR      Folder to modify (eg. /srv/example/drupal).
 USAGE
 
   exit 1;
@@ -30,7 +28,7 @@ fi
 
 # Validate arguments
 if  [ -z "$INPUTDIR" ] || [ ! -e "$INPUTDIR" ]; then 
-    echo "Error: Cowardly refusing to set perms on bad \$INPUTDIR \"${INPUTDIR}\"."
+    echo "Error: Cowardly refusing to set perms on nonexistent \$INPUTDIR \"${INPUTDIR}\"."
     exit 1;
 fi
 
@@ -98,10 +96,7 @@ for FILE in "${FILES[@]}"; do
   chmod ${FILEPERMS} "${FILE}"
 done
 
-
-echo
-echo "Permissions set for ${PATH}."
-echo 
+echo "Done!"
 
 # Returning 0 because variances in storage leads to a lot of false
 # positives in detecting errors.
