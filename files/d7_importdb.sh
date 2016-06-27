@@ -69,7 +69,7 @@ fi
 echo "Importing database for $SITE from file at $DBFILE."
 sudo -u apache drush sql-cli -r "$SITEPATH/drupal" < "${DBFILE}" || exit 1;
 echo "Database imported."
-echo
+
 
 ## Apply security updates and clear caches.
 d7_update.sh "$SITEPATH" || exit 1;

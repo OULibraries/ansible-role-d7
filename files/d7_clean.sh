@@ -26,7 +26,7 @@ fi
 
 echo "Preparing to delete Drupal files and database for $SITEPATH."
 read -p "You would cry if you did this on accident. Are you sure? " -n 1 -r
-echo
+
 if [[ ! $REPLY =~ ^[Yy]$ ]] ;then
     echo "Better safe than sorry."
     exit 0

@@ -42,10 +42,10 @@ while  [ -z "$MY_DBSU_PASS" ] || ! mysql --host="$MY_DBHOST" --port="$MY_DBPORT"
     read -r -s -p "Can't connect, please retry: " MY_DBSU_PASS
 done
 
-echo
-echo
+
+
 echo "Let's build a site!"
-echo
+
 
 ## Make the parent directory
 sudo -u apache mkdir -p "$SITEPATH"
