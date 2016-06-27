@@ -7,7 +7,6 @@ source /opt/d7/etc/d7_conf.sh
 ## Require arguments
 if [  -z "$1" ] || [ -z "$2" ]; then
     cat <<USAGE
-
 d7_synch.sh syncs content files and database from a remote site to a
 local Drupal site, creating it if it doesn't exist.
 
@@ -18,7 +17,6 @@ Usage: d7_sync.sh \$SITEPATH \$SRCHOST [\$ORIGIN_SITEPATH]
 \$ORIGIN_SITEPATH  optional argument, path to sync on the remote host. 
                    \$SITEPATH will be used if a different $ORIGIN_SITEPATH 
                    is not specified. 
-
 USAGE
 
   exit 1;
