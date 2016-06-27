@@ -43,7 +43,7 @@ d7_dump.sh "$SITEPATH" || exit 1;
 sudo -u apache rm -rf "$SITEPATH/drupal_build"
 
 # Make sure etc exists
-sudo -u apache mkdir -p "$SITEPATH/etc"
+sudo -u apache mkdir -p "$SITEPATH/etc" && d7_perms.sh --sticky "$SITEPATH/etc"
 
 # Download makefile if it isn't the one we already have
 if [ ! ${MAKEURI} == "file://${MY_MAKEFILE}" ]; then
@@ -56,6 +56,7 @@ if [ ! ${MAKEURI} == "file://${MY_MAKEFILE}" ]; then
     echo "$MAKEURI"  | sudo -u apache tee  "${MY_MAKEFILE}.uri" > /dev/null
     (cd "$SITEPATH/etc" &&  sudo -u apache curl "$MAKEURI"  -o "$MY_MAKEFILE")
     d7_perms.sh --sticky "$SITEPATH/etc"
+
 fi
 
 ## Build from drush make or die
