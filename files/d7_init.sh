@@ -108,7 +108,5 @@ d7_update.sh "$SITEPATH" || exit 1;
 # Apply our standard permissions to the new site
 d7_perms_fix.sh "$SITEPATH"
 
-
 echo "Finished building site at ${SITEPATH}."
 echo "If this is a new site, make sure to note the admin password."
-echo 

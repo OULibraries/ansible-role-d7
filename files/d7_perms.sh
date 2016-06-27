@@ -68,6 +68,7 @@ done < <(find "${INPUTDIR}" -type d -print0 2>/dev/null)
 
 ## Loop through the DIRs, setting appropriate perms.
 for DIR in "${DIRS[@]}"; do
+  printf "." 
 
   ## Set group to apache.
   sudo -u apache chgrp apache "${DIR}" 2>/dev/null || \
@@ -86,6 +87,7 @@ done < <(find "${INPUTDIR}" -mindepth 1 -type f -print0 2>/dev/null)
 
 ## Loop through the files, setting appropriate perms.
 for FILE in "${FILES[@]}"; do
+  printf "." 
 
   ## Set group to apache.
   sudo -u apache chgrp apache "${FILE}" 2>/dev/null || \

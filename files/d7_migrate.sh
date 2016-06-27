@@ -29,7 +29,6 @@ fi
 
 echo "Migrating site to ${SITEPATH} from ${SRCHOST} path ${ORIGIN_SITEPATH}."
 
-
 # Build an empty site 
 d7_init.sh "$SITEPATH"  || exit 1
 
@@ -52,4 +51,3 @@ d7_sync.sh "$SITEPATH" "$SRCHOST" "$ORIGIN_SITEPATH" || exit 1
 d7_cc.sh "$SITEPATH"  || exit 1
 
 echo "Finished migrating site to ${SITEPATH}."
-

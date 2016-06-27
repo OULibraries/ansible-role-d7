@@ -32,7 +32,6 @@ if [[ ! $REPLY =~ ^[Yy]$ ]] ;then
     exit 0
 fi
 
-
 ## Get sudo password if needed because first sudo use is behind a pipe.
 sudo ls > /dev/null
 
@@ -54,5 +53,5 @@ sudo -u apache chmod ug=rw,o= "$SITEPATH/default/files/.htaccess" 2>/dev/null ||
 echo "Deleting site files."
 sudo -u apache  rm -rf "$SITEPATH"
 
+echo "Restarting web server."
 sudo systemctl restart httpd
-

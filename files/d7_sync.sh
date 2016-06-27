@@ -57,7 +57,7 @@ d7_perms.sh --sticky "$SITEPATH/default/files_sync"
 
 ## Sync Files to writable directory (sudo would break ssh)
 RSOPTS="--verbose --recursive --links  --compress"
-rsync  $RSOPTS  "$SRCHOST:$ORIGIN_SITEPATH/default/files/" "$SITEPATH/default/files_sync" ;
+rsync  $RSOPTS  "$SRCHOST:$ORIGIN_SITEPATH/default/files/" "$SITEPATH/default/files_sync" | while read $RSFILE; do printf "."; done; 
 echo "Files synced."
 
 ## Set perms for sync directory
@@ -69,10 +69,8 @@ d7_perms.sh --sticky "$SITEPATH/default/files_sync"
 ## to do some things as root.
 echo "Placing synced files."
 sudo -u apache rm -rf "$SITEPATH/default/files_bak"
-sudo -u apache mv "$SITEPATH/default/files" "$SITEPATH/default/files_bak"
-sudo -u apache mv "$SITEPATH/default/files_sync" "$SITEPATH/default/files"
-echo
-echo
+sudo -u apache mv -v "$SITEPATH/default/files" "$SITEPATH/default/files_bak"
+sudo -u apache mv -v "$SITEPATH/default/files_sync" "$SITEPATH/default/files"
 
 ## Perform sql-dump on source host
 echo "Dumping database for ${ORIGIN_SITEPATH} at ${SRCHOST}"
@@ -82,6 +80,4 @@ ssh -A "$SRCHOST" drush -r "$ORIGIN_SITEPATH/drupal" sql-dump --result-file="$OR
 rsync --omit-dir-times "$SRCHOST:$ORIGIN_SITEPATH/db/drupal_${ORIGIN_SITE}_sync.sql" "$SITEPATH/db/"
 d7_importdb.sh "$SITEPATH" "$SITEPATH/db/drupal_${ORIGIN_SITE}_sync.sql" || exit 1;
 
-
 echo "Site synched!"
-

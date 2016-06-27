@@ -4,7 +4,6 @@ PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/d7/etc/d7_conf.sh
 
-
 if [  -z "$1" ]; then
   cat <<USAGE
 d7_make.sh applies a Drupal makefile to a Drupal site. 

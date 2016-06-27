@@ -32,5 +32,4 @@ d7_perms.sh --sticky "$SITEPATH/default"
 # Pay specific attention to the file with the passwords 
 sudo -u apache chmod 444 "$SITEPATH/default/settings.php"
 
-
 exit 0

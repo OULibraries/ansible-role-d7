@@ -4,7 +4,6 @@ PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/d7/etc/d7_conf.sh
 
-
 if [  -z "$1" ]; then
   cat <<USAGE
 d7_dump.sh performs a dump of the database for a Drupal site.
@@ -21,7 +20,6 @@ SITEPATH=$1
 
 echo "Dumping $SITEPATH database"
 
-
 ## Init site if it doesn't exist
 if [[ ! -e $SITEPATH ]]; then
     d7_init.sh "$SITEPATH" || exit 1;
@@ -29,7 +27,6 @@ fi
 
 ## Grab the basename of the site to use in a few places.
 SITE=$(basename "$SITEPATH")
-
 
 ## Make the database dump directory
 sudo -u apache mkdir -p "$SITEPATH/db"
@@ -41,4 +38,3 @@ sudo -u apache drush -r "$SITEPATH/drupal" sql-dump --result-file="$SITEPATH/db/
 d7_perms.sh --sticky "$SITEPATH/db"
 
 echo "Finished dumping $SITEPATH database."
-

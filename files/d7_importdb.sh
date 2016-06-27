@@ -37,13 +37,10 @@ else
     DBFILE="${SITEPATH}/db/drupal_${SITE}_dump.sql"
 fi       
 
-
 if [[ ! -f $DBFILE ]]; then
     echo "No file exists at ${DBFILE}."
     exit 1;
 fi
-
-
 
 if drush sqlq -r "$SITEPATH/drupal"
 then
@@ -76,5 +73,3 @@ echo
 
 ## Apply security updates and clear caches.
 d7_update.sh "$SITEPATH" || exit 1;
-
-
