@@ -6,8 +6,7 @@ source /opt/d7/etc/d7_conf.sh
 
 if [  -z "$1" ]; then
   cat <<USAGE
-d7_importdb.sh applies security (only) updates to a drupal site.
-
+d7_importdb.sh imports a Drupal database file. 
 
 Usage: d7_importdb.sh.sh \$SITEPATH [\$DBFILE]
             
@@ -15,7 +14,6 @@ Usage: d7_importdb.sh.sh \$SITEPATH [\$DBFILE]
 \$DBFILE    Drupal database file to load
 
 If \$DBFILE is not given, then \$SITEPATH/db/drupal_\$SITE_dump.sql will be used.
-
 USAGE
 
   exit 1;
