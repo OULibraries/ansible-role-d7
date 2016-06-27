@@ -6,13 +6,11 @@ source /opt/d7/etc/d7_conf.sh
 
 if [  -z "$1" ]; then
     cat <<USAGE
-
 d7_update.sh applies security (only) updates to a drupal site.
 
 Usage: d7_update.sh \$SITEPATH
             
 \$SITEPATH   Drupal site to update.
-
 USAGE
 
   exit 1;
