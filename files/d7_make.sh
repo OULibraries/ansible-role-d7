@@ -7,7 +7,6 @@ source /opt/d7/etc/d7_conf.sh
 
 if [  -z "$1" ]; then
   cat <<USAGE
-
 d7_make.sh applies a Drupal makefile to a Drupal site. 
 
 Usage: d7_init.sh \$SITEPATH [$MAKEURI]
@@ -30,7 +29,6 @@ fi
 
 echo "Making $SITEPATH based on $MAKEURI"
 
-    
 ## Init site if it doesn't exist
 if [[ ! -e $SITEPATH ]]; then
     d7_init.sh "$SITEPATH" || exit 1;
@@ -56,16 +54,12 @@ if [ ! ${MAKEURI} == "file://${MY_MAKEFILE}" ]; then
     echo "$MAKEURI"  | sudo -u apache tee  "${MY_MAKEFILE}.uri" > /dev/null
     (cd "$SITEPATH/etc" &&  sudo -u apache curl "$MAKEURI"  -o "$MY_MAKEFILE")
     d7_perms.sh --sticky "$SITEPATH/etc"
-
 fi
-
-
 
 if [[ ! -e "${MY_MAKEFILE}" ]]; then 
     echo "Makefile ${MY_MAKEFILE} does not exist."
     exit 1
 fi
-
 
 ## Build from drush make or die
 sudo -u apache drush -y --working-copy make "${MY_MAKEFILE}" "$SITEPATH/drupal_build" || exit 1;
@@ -91,4 +85,3 @@ sudo -u apache mv "$SITEPATH/drupal_build" "$SITEPATH/drupal"
 d7_update.sh "$SITEPATH" || exit 1;
 
 echo "Finished applying makefile to ${SITEPATH}."
-
