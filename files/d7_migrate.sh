@@ -48,5 +48,8 @@ d7_make.sh "$SITEPATH" || exit 1
 # sync files and db
 d7_sync.sh "$SITEPATH" "$SRCHOST" "$ORIGIN_SITEPATH" || exit 1
 
+# clear caches
+d7_cc.sh "$SITEPATH"  || exit 1
+
 echo "Finished migrating site to ${SITEPATH}."
 
