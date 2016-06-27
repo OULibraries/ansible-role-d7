@@ -7,13 +7,11 @@ source /opt/d7/etc/d7_conf.sh
 
 if [  -z "$1" ]; then
   cat <<USAGE
+d7_dump.sh performs a dump of the database for a Drupal site.
 
-d7_dump.sh performs a database dump of the database for a Drupal site
-
-Usage: d7_dumo.sh \$SITEPATH
+Usage: d7_dump.sh \$SITEPATH
             
 \$SITEPATH  Drupal site to sql dump (eg. /srv/example).
-
 USAGE
 
   exit 1;
@@ -42,6 +40,5 @@ sudo -u apache drush -r "$SITEPATH/drupal" sql-dump --result-file="$SITEPATH/db/
 ## Set perms
 d7_perms.sh --sticky "$SITEPATH/db"
 
-echo
 echo "Finished dumping $SITEPATH database."
-echo
+
