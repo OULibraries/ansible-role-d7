@@ -59,6 +59,14 @@ if [ ! ${MAKEURI} == "file://${MY_MAKEFILE}" ]; then
 
 fi
 
+
+
+if [[ ! -e "${MY_MAKEFILE}" ]]; then 
+    echo "Makefile ${MY_MAKEFILE} does not exist."
+    exit 1
+fi
+
+
 ## Build from drush make or die
 sudo -u apache drush -y --working-copy make "${MY_MAKEFILE}" "$SITEPATH/drupal_build" || exit 1;
 
@@ -82,6 +90,5 @@ sudo -u apache mv "$SITEPATH/drupal_build" "$SITEPATH/drupal"
 ## Apply security updates and clear caches.
 d7_update.sh "$SITEPATH" || exit 1;
 
-echo
-echo "Finished making ${SITEPATH}."
-echo
+echo "Finished applying makefile to ${SITEPATH}."
+
