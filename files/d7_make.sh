@@ -39,8 +39,9 @@ d7_dump.sh "$SITEPATH" || exit 1;
 ## Delete build dir if it's there
 sudo -u apache rm -rf "$SITEPATH/drupal_build"
 
-# Make sure etc exists
-sudo -u apache mkdir -p "$SITEPATH/etc" && d7_perms.sh --sticky "$SITEPATH/etc"
+# Make sure etc exists and is writeable
+sudo -u apache mkdir -p "$SITEPATH/etc"
+d7_perms.sh --sticky "$SITEPATH/etc"
 
 # Download makefile if it isn't the one we already have
 if [ ! ${MAKEURI} == "file://${MY_MAKEFILE}" ]; then
