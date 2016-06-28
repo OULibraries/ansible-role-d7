@@ -17,13 +17,14 @@ USAGE
 fi
 
 SITEPATH=$1
-echo "Processing $SITEPATH"
 
 ## Don't blow away existing sites
 if [[ -e "$SITEPATH" ]]; then
     echo "$SITEPATH already exists!"
     exit 1
 fi
+
+echo "Initializing site at ${SITEPATH}."
 
 # Get external host suffix (rev proxy, ngrok, etc)
 read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
@@ -41,10 +42,10 @@ while  [ -z "$MY_DBSU_PASS" ] || ! mysql --host="$MY_DBHOST" --port="$MY_DBPORT"
     read -r -s -p "Can't connect, please retry: " MY_DBSU_PASS
 done
 
-echo
+# Add some whitespace because read doesn't
 echo
 echo "Let's build a site!"
-echo
+
 
 ## Make the parent directory
 sudo -u apache mkdir -p "$SITEPATH"
@@ -59,9 +60,6 @@ sudo -u apache drush @none -y dl drupal --drupal-project-rename=drupal --destina
 ##  Move the default site out of the build. This makes updates easier later.
 echo "Moving default site out of build."
 sudo -u apache mv "$SITEPATH/drupal/sites/default" "$SITEPATH"/
-
-## Drupal default site dir is ~ 6770
-d7_perms.sh --sticky "$SITEPATH/default"
 
 ## Link default site folder. Doing this last ensures that our earlier recursive
 ## operations aren't duplicating efforts.
@@ -101,15 +99,14 @@ sudo -u apache drush -y sql-create --db-su="${MY_DBSU}" --db-su-pw="$MY_DBSU_PAS
 ## Do the Drupal install
 sudo -u apache drush -y -r "$SITEPATH/drupal" site-install --site-name="$SITE" || exit 1;
 
-## Apply env specific perms to drupal
-d7_perms.sh "$SITEPATH/drupal"
-
 ## Apply the apache config
 d7_httpd_conf.sh "$SITEPATH" || exit 1;
 
 ## Apply security updates and clear caches.
 d7_update.sh "$SITEPATH" || exit 1;
 
-echo
-echo "Finished building site at ${SITEPATH}"
-echo 
+# Apply our standard permissions to the new site
+d7_perms_fix.sh "$SITEPATH"
+
+echo "Finished building site at ${SITEPATH}."
+echo "If this is a new site, make sure to note the admin password."

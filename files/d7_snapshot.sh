@@ -4,17 +4,32 @@ PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/d7/etc/d7_conf.sh
 
-## Require arguments
-if [  -z "$1" ]
-then
-    echo "Usage: d7_snapshot.sh \$SITEPATH"
+if [  -z "$1" ]; then
+    cat <<USAGE
+d7_snapshot.sh creates a db dump and tar backup for a site.
+
+Usage: d7_snapshot.sh \$SITEPATH
+            
+\$SITEPATH   Drupal site to tar (eg. /srv/example).
+
+Backups will be stored at $SITEPATH/snapshots/$SITE.$DOW.tar. $DOW is
+the lowercase day-of-week abbreviation for the current day.
+
+USAGE
     exit 1;
 fi
+
 SITEPATH=$1
 SITE=$(basename "$SITEPATH")
 SNAPSHOTDIR="$SITEPATH/snapshots"
 DOW=$( date +%a | awk '{print tolower($0)}')
 
+if [[ ! -e "$SITEPATH" ]]; then 
+    echo "Can't create snapshot of nonexistent site at $SITEPATH."
+    exit 1;
+fi
+
+echo "Making ${DOW} snapshot for $SITEPATH"
 
 # Make a db backup in case the latest one is old
 d7_dump.sh $SITEPATH

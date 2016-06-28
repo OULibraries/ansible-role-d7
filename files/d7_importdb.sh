@@ -4,13 +4,23 @@ PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/d7/etc/d7_conf.sh
 
-## Require arguments
-if [  -z "$1" ]
-then
-   echo "Requires site path (eg. /srv/sample)."
-   exit 1;
+if [  -z "$1" ]; then
+  cat <<USAGE
+d7_importdb.sh imports a Drupal database file. 
+
+Usage: d7_importdb.sh.sh \$SITEPATH [\$DBFILE]
+            
+\$SITEPATH  Drupal site path
+\$DBFILE    Drupal database file to load
+
+If \$DBFILE is not given, then \$SITEPATH/db/drupal_\$SITE_dump.sql will be used.
+USAGE
+
+  exit 1;
 fi
+
 SITEPATH=$1
+echo "Processing $SITEPATH"
 
 if [[ ! -e $SITEPATH ]]; then
     echo "No site exists at ${SITEPATH}."
@@ -26,6 +36,11 @@ then
 else
     DBFILE="${SITEPATH}/db/drupal_${SITE}_dump.sql"
 fi       
+
+if [[ ! -f $DBFILE ]]; then
+    echo "No file exists at ${DBFILE}."
+    exit 1;
+fi
 
 if drush sqlq -r "$SITEPATH/drupal"
 then
@@ -54,7 +69,7 @@ fi
 echo "Importing database for $SITE from file at $DBFILE."
 sudo -u apache drush sql-cli -r "$SITEPATH/drupal" < "${DBFILE}" || exit 1;
 echo "Database imported."
-echo
+
 
 ## Apply security updates and clear caches.
 d7_update.sh "$SITEPATH" || exit 1;

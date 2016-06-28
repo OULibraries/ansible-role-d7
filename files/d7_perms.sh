@@ -8,11 +8,11 @@ if [  -z "$1" ]; then
   cat <<USAGE
 d7_perms.sh sets our preferred permissions for a Drupal path. 
 
-Usage: d7_perms.sh [--sticky] \$PATH
+Usage: d7_perms.sh [--sticky] \$DIR
             
-\$PATH      Folder to modify (eg. /srv/example/drupal).
 --sticky    Optional argument adds group write with sticky bit. 
             This is the default behavior for dev environments.  
+\$INPUTDIR      Folder to modify (eg. /srv/example/drupal).
 USAGE
 
   exit 1;
@@ -28,7 +28,7 @@ fi
 
 # Validate arguments
 if  [ -z "$INPUTDIR" ] || [ ! -e "$INPUTDIR" ]; then 
-    echo "Error: Cowardly refusing to set perms on bad \$INPUTDIR \"${INPUTDIR}\"."
+    echo "Error: Cowardly refusing to set perms on nonexistent \$INPUTDIR \"${INPUTDIR}\"."
     exit 1;
 fi
 
@@ -68,6 +68,7 @@ done < <(find "${INPUTDIR}" -type d -print0 2>/dev/null)
 
 ## Loop through the DIRs, setting appropriate perms.
 for DIR in "${DIRS[@]}"; do
+  printf "." 
 
   ## Set group to apache.
   sudo -u apache chgrp apache "${DIR}" 2>/dev/null || \
@@ -86,6 +87,7 @@ done < <(find "${INPUTDIR}" -mindepth 1 -type f -print0 2>/dev/null)
 
 ## Loop through the files, setting appropriate perms.
 for FILE in "${FILES[@]}"; do
+  printf "." 
 
   ## Set group to apache.
   sudo -u apache chgrp apache "${FILE}" 2>/dev/null || \
@@ -95,6 +97,8 @@ for FILE in "${FILES[@]}"; do
   sudo -u apache chmod ${FILEPERMS} "${FILE}" 2>/dev/null || \
   chmod ${FILEPERMS} "${FILE}"
 done
+
+echo "Done!"
 
 # Returning 0 because variances in storage leads to a lot of false
 # positives in detecting errors.
