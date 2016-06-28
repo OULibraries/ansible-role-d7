@@ -32,6 +32,9 @@ if [[ ! $REPLY =~ ^[Yy]$ ]] ;then
     exit 0
 fi
 
+# Add some whitespace to the output because the above read doesn't
+echo
+
 ## Get sudo password if needed because first sudo use is behind a pipe.
 sudo ls > /dev/null
 
