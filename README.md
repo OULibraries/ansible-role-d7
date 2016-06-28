@@ -40,8 +40,7 @@ d7_cc.ss /srv/example
 
 ```
 
-
-See the [Usage](./USAGE.md) file for more usage information.
+See the full [USAGE](./USAGE.md) file for more usage information.
 
 
 License
