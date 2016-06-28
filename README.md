@@ -25,7 +25,23 @@ ansible-galaxy install -r requirements.yml
 Script Usage
 ----------------
 
-See the [Usage](./USAGE.md) file for basic usage information.
+To create an empty Drupal site:
+
+```
+d7_init.sh /srv/example
+```
+
+To install Drupal modules based on a makefile and sync with an existing site:
+
+```
+d7_make.sh /srv/example $MAKEURI
+d7_sync.sh /srv/example $SRCHOST
+d7_cc.ss /srv/example
+
+```
+
+
+See the [Usage](./USAGE.md) file for more usage information.
 
 
 License
