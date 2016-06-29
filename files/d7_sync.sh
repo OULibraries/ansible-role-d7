@@ -42,7 +42,7 @@ if [[ ! -e $SITEPATH ]]; then
 fi
 
 ## Can't sync a nonexisting remote site
-if ssh -A d7.dev.web.ec2.internal [[ ! -e "${ORIGIN_SITEPATH}" ]] ; then 
+if ssh -A "${SRCHOST}" [[ ! -e "${ORIGIN_SITEPATH}" ]] ; then 
     echo "Can't find remote site at ${ORIGIN_SITEPATH}."
     exit 1
 fi
