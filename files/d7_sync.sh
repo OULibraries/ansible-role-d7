@@ -41,11 +41,6 @@ if [[ ! -e $SITEPATH ]]; then
     d7_init.sh "$SITEPATH" || exit 1;
 fi
 
-## Can't sync a nonexisting remote site
-if ssh -A d7.dev.web.ec2.internal [[ ! -e "${ORIGIN_SITEPATH}" ]] ; then 
-    echo "Can't find remote site at ${ORIGIN_SITEPATH}."
-    exit 1
-fi
 
 ## Drupal default site dir is ~ 6770
 d7_perms.sh --sticky "$SITEPATH/default"
