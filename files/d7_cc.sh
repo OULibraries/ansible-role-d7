@@ -23,8 +23,14 @@ if [[ ! -e "$SITEPATH" ]] ;then
     exit 0
 fi
 
+# Kludging APC username and password from php file.
+APC_USER=$(cat /usr/share/pear/apc.php  | grep ^defaults.*USERNAME | grep -o \'.*\',\'.*\' | awk  'BEGIN { FS=","};  {print $2}')
+APC_USER=${APC_USER:1:-1}
+APC_PASS=$(cat /usr/share/pear/apc.php  | grep ^defaults.*PASSWORD | grep -o \'.*\',\'.*\' | awk  'BEGIN { FS=","};  {print $2}')
+APC_PASS=${APC_PASS:1:-1}
+
 echo "Clearing APC cache"
-curl --silent --basic --user "${APC_USER}:${APC_PASS}" "http://localhost/apc.php?SCOPE=A&SORT1=H&SORT2=D&COUNT=20&CC=1&OB=1" >/dev/null || exit 1;
+curl --silent --basic --user "${APC_USER}:${APC_PASS}" "http://localhost/apc.php?SCOPE=A&SORT1=H&SORT2=D&COUNT=20&CC=1&OB=1" >/dev/null|| exit 1;
 
 echo "Clearing Drupal caches for ${SITEPATH}."
 sudo -u apache drush -y cc all -r "$SITEPATH/drupal" || exit 1;
