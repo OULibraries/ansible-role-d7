@@ -31,4 +31,4 @@ echo "Cleared APC cache"
 
 
 sudo -u apache drush -y cc all -r "$SITEPATH/drupal" || exit 1;
-echo "ClearedDrupal caches for ${SITEPATH}."
+echo "Cleared Drupal caches for ${SITEPATH}."
