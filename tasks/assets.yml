@@ -31,6 +31,16 @@
       - d7_sync.sh
       - d7_update.sh
 
+- name: Install cron scripts
+  copy:
+    src: "{{ item }}"
+    dest: /etc/cron.daily/
+    mode: 0755
+    owner: root
+    group: wheel
+  with_items:
+      - d7_daily.cron
+
 - name: Install apc.ini
   copy:
     mode: 0644
