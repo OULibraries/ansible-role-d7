@@ -10,7 +10,7 @@
     path: /var/log/httpd
     owner: root
     group: apache
-    mode: 750
+    mode: 0750
 - name: Add config include to http.conf
   lineinfile:
     state: present
