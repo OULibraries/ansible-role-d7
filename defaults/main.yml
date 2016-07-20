@@ -25,5 +25,8 @@ mariadb_host: "localhost"
 mariadb_port: "3306"
 mariadb_root_user: 'root'
 
+# Set to 0 to disable APC
+apc_enabled: "1"
+
 
 
