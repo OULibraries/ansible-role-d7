@@ -39,7 +39,6 @@
     owner: root
     group: wheel
 
-
 - name: Set upload_max_filesize
   replace:
     dest: /etc/php.ini
