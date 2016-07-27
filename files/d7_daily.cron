@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+printf "Searching for Drupal sites.\n"
+find -L /srv -maxdepth 1 -mindepth 1 -type d 2>/dev/null | while read -r SITEPATH ; do
+  # Check for settings.php
+  stat ${SITEPATH}/default/settings.php &>/dev/null
+  if [ "$?" -eq "0" ]; then
+    printf "Backing up ${SITEPATH}\n"
+    /opt/d7/bin/d7_snapshot.sh ${SITEPATH}
+    /opt/d7/bin/d7_update.sh ${SITEPATH}
+  fi
+done
+
+printf "Done.\n"

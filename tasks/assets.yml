@@ -31,13 +31,23 @@
       - d7_sync.sh
       - d7_update.sh
 
-- name: Install apc.ini
+- name: Install cron scripts
   copy:
+    src: "{{ item }}"
+    dest: /etc/cron.daily/
+    mode: 0755
+    owner: root
+    group: wheel
+  with_items:
+      - d7_daily.cron
+
+- name: Install apc.ini 
+  template:
+    src: apc.ini.j2
+    dest: /etc/php.d/apc.ini
     mode: 0644
     owner: root
     group: root
-    src: apc.ini
-    dest: /etc/php.d
 
 - name: Install apc.conf
   copy:
