@@ -34,7 +34,7 @@
 - name: Copy apc_clear.php
   copy:
     src: apc_clear.php
-    dest: //usr/share/pear
+    dest: /usr/share/pear
     mode: 0754
     owner: root
     group: wheel
