@@ -5,6 +5,12 @@
   - httpd_can_connect_ldap
   - httpd_can_network_connect
   - httpd_can_sendmail
+- name: Allow apache group to view httpd log files
+  file:
+    path: /var/log/httpd
+    owner: root
+    group: apache
+    mode: 0750
 - name: Add config include to http.conf
   lineinfile:
     state: present
