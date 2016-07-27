@@ -5,6 +5,12 @@
   - httpd_can_connect_ldap
   - httpd_can_network_connect
   - httpd_can_sendmail
+- name: Allow apache group to view httpd log files
+  file:
+    path: /var/log/httpd
+    owner: root
+    group: apache
+    mode: 0750
 - name: Add config include to http.conf
   lineinfile:
     state: present
@@ -24,6 +30,15 @@
       ^defaults\('ADMIN_PASSWORD','password'\);(.*)$
     replace: >
       defaults('ADMIN_PASSWORD','{{ apc_password }}');\1
+
+- name: Copy apc_clear.php
+  copy:
+    src: apc_clear.php
+    dest: /usr/share/pear
+    mode: 0754
+    owner: root
+    group: wheel
+
 - name: Set upload_max_filesize
   replace:
     dest: /etc/php.ini

@@ -11,6 +11,7 @@
   - php-ldap
   - php-pear
   - php-gd
+  - php-soap
   - php-drush-drush
   - mariadb
   - gcc
