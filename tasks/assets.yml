@@ -41,13 +41,13 @@
   with_items:
       - d7_daily.cron
 
-- name: Install apc.ini
-  copy:
+- name: Install apc.ini 
+  template:
+    src: apc.ini.j2
+    dest: /etc/php.d/apc.ini
     mode: 0644
     owner: root
     group: root
-    src: apc.ini
-    dest: /etc/php.d
 
 - name: Install apc.conf
   copy:
