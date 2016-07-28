@@ -51,6 +51,14 @@
     regexp: >
       ^post_max_size = 8M$
     replace: "post_max_size = 70M"
+
+- name: Set PHP timezone
+  replace:
+    dest: /etc/php.ini
+    regexp: >
+      ^;date.timezone =$
+    replace: "date.timezone = America/Chicago"
+
 - name: Ensure /etc/profile.d/d7-ops.sh exists
   file:
     path: /etc/profile.d/d7-ops.sh
