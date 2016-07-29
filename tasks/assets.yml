@@ -55,8 +55,16 @@
     owner: root
     group: root
     src: apc.conf
-    dest: /etc/httpd/conf.d    
+    dest: /etc/httpd/conf.d
 
+- name: Install apc_clear.php
+  copy:
+    src: apc_clear.php
+    dest: /usr/share/pear
+    mode: 0754
+    owner: root
+    group: wheel
+    
 - name: Ensure /opt/d7/etc exists
   file:
     path: /opt/d7/etc
