@@ -5,6 +5,9 @@
 - include: pear.yml
   sudo: yes
 
+- include: drush.yml
+  sudo: yes
+
 - include: configure.yml
   sudo: yes
 
