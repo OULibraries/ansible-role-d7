@@ -70,7 +70,7 @@
 - name: Add drush scripts to path
   lineinfile: 
     state: present
-    dest: /etc/profile.d/d7-ops.sh
+    dest: /etc/profile.d/drush.sh
     line: "export PATH=/opt/php/drush:$PATH"
 
 - name: Set up bash completion for drush
