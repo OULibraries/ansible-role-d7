@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 ## Clear Drupal and APC caches
-PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/d7/etc/d7_conf.sh
 
