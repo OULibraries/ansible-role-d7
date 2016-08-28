@@ -4,13 +4,13 @@
     name: "{{ item }}"
     state: present
   with_items:
-  - php
-  - mod_php
-  - php-devel
-  - php-mysql
-  - php-ldap
-  - php-pear
-  - php-gd
-  - php-soap
-  - mariadb
-  - gcc
+    - php
+    - mod_php
+    - php-devel
+    - php-mysql
+    - php-ldap
+    - php-pear
+    - php-gd
+    - php-soap
+    - mariadb
+    - gcc

@@ -5,11 +5,12 @@
 - include: pear.yml
   sudo: yes
 
-- include: drush.yml
-  sudo: yes
-
 - include: configure.yml
   sudo: yes
+
+- include: composer.yml
+  sudo: yes
+  tags: composer
 
 - include: assets.yml
   sudo: yes
