@@ -12,5 +12,6 @@
     - php-pear
     - php-gd
     - php-soap
+    - php-mbstring
     - mariadb
     - gcc
