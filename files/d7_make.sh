@@ -61,7 +61,7 @@ if [[ ! -e "${MY_MAKEFILE}" ]]; then
 fi
 
 ## Build from drush make or die
-sudo -u apache drush -y  make "${MY_MAKEFILE}" "$SITEPATH/drupal_build" || exit 1;
+sudo -u apache drush -y --working-copy make "${MY_MAKEFILE}" "$SITEPATH/drupal_build" || exit 1;
 
 ## Delete default site in the build
 sudo -u apache rm -rf "$SITEPATH/drupal_build/sites/default"
