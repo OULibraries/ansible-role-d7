@@ -1,22 +1,28 @@
 ---
+# Composer wants to run as a non-privleged user.     
+- name: Add composer user 
+  user:
+    name: composer
+    state: present
+
 - name: Ensure /tmp/downloads exists
   file:
     path: /tmp/downloads
     owner: root
-    group: root
+    group: wheel
     state: directory
 
 - name: Ensure php dir exists
   file:
     path: /opt/php
-    owner: libacct
+    owner: composer
     group: wheel
     state: directory
 
 - name: Ensure php/bin path exists
   file:
     path: /opt/php/bin
-    owner: libacct
+    owner: composer
     group: wheel
     state: directory
 
@@ -28,7 +34,7 @@
 
 - name: Install Composer
   become: yes
-  become_user: libacct
+  become_user: composer
   command: >
     php /tmp/downloads/composer-installer.php
   args:
@@ -38,13 +44,13 @@
 - name: Make sure Composer is executable
   file:
     path: /opt/php/bin/composer.phar
-    owner: libacct
+    owner: composer
     group: wheel
     mode: 0775
 
 - name: Composer install Drush 7
   become: yes
-  become_user: libacct
+  become_user: composer
   shell: |
     /opt/php/bin/composer.phar init --require=drush/drush:7.* -n
     /opt/php/bin/composer.phar config bin-dir /opt/php/bin
