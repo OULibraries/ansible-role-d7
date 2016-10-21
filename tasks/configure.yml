@@ -53,5 +53,5 @@
     dest: /etc/sudoers
     regexp: >
       ^Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin$
-    replace: 'Defaults    secure_path = /opt/d7/bin:/opt/php/bin:/sbin:/bin:/usr/sbin:/usr/bin'
+    replace: 'Defaults    secure_path = /opt/d7/bin:/opt/php/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/php/bin'
     validate: visudo -cf %s
