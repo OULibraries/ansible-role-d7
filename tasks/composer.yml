@@ -78,3 +78,4 @@
     src: /opt/php/vendor/drush/drush/drush.complete.sh
     dest: /etc/bash_completion.d/drush.complete.sh
     state: link
+    force: yes

@@ -15,3 +15,10 @@
     - php-mbstring
     - mariadb
     - gcc
+
+- name: Make sure some packages are removed
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - drush
