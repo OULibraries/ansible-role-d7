@@ -12,24 +12,25 @@
   copy:
     src: "{{ item }}"
     dest: /opt/d7/bin/
-    mode: 0754
+    mode: 0755
     owner: root
     group: wheel
   with_items:
-      - d7_cc.sh
-      - d7_clean.sh
-      - d7_dump.sh
-      - d7_httpd_conf.sh
-      - d7_importdb.sh
-      - d7_init.sh
-      - d7_make.sh
-      - d7_migrate.sh
-      - d7_perms_fix.sh
-      - d7_perms.sh
-      - d7_restore.sh
-      - d7_snapshot.sh
-      - d7_sync.sh
-      - d7_update.sh
+    - d7_cc.sh
+    - d7_clean.sh
+    - d7_dump.sh
+    - d7_httpd_conf.sh
+    - d7_importdb.sh
+    - d7_init.sh
+    - d7_make.sh
+    - d7_make_islandora.sh
+    - d7_migrate.sh
+    - d7_perms_fix.sh
+    - d7_perms.sh
+    - d7_restore.sh
+    - d7_snapshot.sh
+    - d7_sync.sh
+    - d7_update.sh
 
 - name: Install cron scripts
   copy:
@@ -39,9 +40,9 @@
     owner: root
     group: wheel
   with_items:
-      - d7_daily.cron
+    - d7_daily.cron
 
-- name: Install apc.ini 
+- name: Install apc.ini
   template:
     src: apc.ini.j2
     dest: /etc/php.d/apc.ini
@@ -64,7 +65,7 @@
     mode: 0644
     owner: root
     group: root
-      
+
 - name: Install apc_clear.php
   copy:
     src: apc_clear.php
@@ -72,7 +73,7 @@
     mode: 0754
     owner: root
     group: wheel
-    
+
 - name: Ensure /opt/d7/etc exists
   file:
     path: /opt/d7/etc

@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 ## Deploy drupal site from drush make
-PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/d7/etc/d7_conf.sh
 
