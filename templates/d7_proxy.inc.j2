@@ -1,8 +1,8 @@
 {% if d7_proxies is defined %}
 <?php
-
+## Configure Drupal reverse proxy
 $conf['reverse_proxy'] = TRUE;
-$conf['reverse_proxy_addresses'] = array( {%- for proxy_ip in d7_proxies -%} '{{ proxy_ip }}', {%- endfor %});
+$conf['reverse_proxy_addresses'] = array('{{ d7_proxies|join('\',\'') }}');
 $conf['reverse_proxy_header'] = 'HTTP_X_FORWARDED_FOR';
 
 {% endif %}
