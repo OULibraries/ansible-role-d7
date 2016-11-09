@@ -1,0 +1,8 @@
+{% if d7_proxies is defined %}
+<?php
+
+$conf['reverse_proxy'] = TRUE;
+$conf['reverse_proxy_addresses'] = array( {%- for proxy_ip in d7_proxies -%} '{{ proxy_ip }}', {%- endfor %});
+$conf['reverse_proxy_header'] = 'HTTP_X_FORWARDED_FOR';
+
+{% endif %}

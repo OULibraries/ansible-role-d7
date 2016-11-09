@@ -96,3 +96,13 @@
     owner: root
     group: wheel
     mode: 0444
+
+- name: Install reverse proxy config
+  template:
+    src: d7_proxy.inc.j2
+    dest: /opt/d7/etc/d7_proxy.inc.php
+    owner: apache
+    group: wheel
+    mode: 0444
+
+    
