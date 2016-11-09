@@ -92,6 +92,21 @@ EOF
 sudo -u apache cp "$SITEPATH/default/default.settings.php" "$SITEPATH/default/settings.php"
 sudo -u apache echo "$SETTINGSPHP"| sudo -u apache tee -a "$SITEPATH/default/settings.php" >/dev/null
 
+# Drupal reverse proxy block for settings.php
+read -r -d '' PROXYPHP <<- EOF
+
+$conf['reverse_proxy'] = TRUE;
+$conf['reverse_proxy_addresses'] = array('${D7_PROXY_IP}');
+$conf['reverse_proxy_header'] = 'HTTP_X_FORWARDED_FOR';
+
+EOF
+
+## Set reverse proxy IP if defined
+if [ -n "${D7_PROXY_IP}" ] ; then
+   echo "Set reverse proxy at ${D7_PROXY_IP}."
+   sudo -u apache echo "$PROXYPHP" | sudo -u apache tee -a "$SITEPATH/default/settings.php" >/dev/null
+fi
+   
 ## Create the Drupal database
 sudo -u apache drush -y sql-create --db-su="${MY_DBSU}" --db-su-pw="$MY_DBSU_PASS" -r "$SITEPATH/drupal" || exit 1;
 
