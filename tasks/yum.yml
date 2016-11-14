@@ -4,13 +4,21 @@
     name: "{{ item }}"
     state: present
   with_items:
-  - php
-  - mod_php
-  - php-devel
-  - php-mysql
-  - php-ldap
-  - php-pear
-  - php-gd
-  - php-drush-drush
-  - mariadb
-  - gcc
+    - php
+    - mod_php
+    - php-devel
+    - php-mysql
+    - php-ldap
+    - php-pear
+    - php-gd
+    - php-soap
+    - php-mbstring
+    - mariadb
+    - gcc
+
+- name: Make sure some packages are removed
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - drush

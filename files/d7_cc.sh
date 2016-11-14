@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 ## Clear Drupal and APC caches
-PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/d7/etc/d7_conf.sh
 
@@ -17,14 +16,14 @@ USAGE
 fi
 
 SITEPATH=$1
-
 if [[ ! -e "$SITEPATH" ]] ;then
     echo "Can't find site at $SITEPATH."
     exit 0
 fi
 
-echo "Clearing APC cache"
-curl --silent --basic --user "${APC_USER}:${APC_PASS}" "http://localhost/apc.php?SCOPE=A&SORT1=H&SORT2=D&COUNT=20&CC=1&OB=1" >/dev/null || exit 1;
+curl --silent "http://localhost/apc_clear.php" || exit 1;
+echo""
+echo "Cleared APC cache"
 
-echo "Clearing Drupal caches for ${SITEPATH}."
 sudo -u apache drush -y cc all -r "$SITEPATH/drupal" || exit 1;
+echo "Cleared Drupal caches for ${SITEPATH}."

@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 ## Create Apache config for Drupal site
-PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/d7/etc/d7_conf.sh
 
@@ -36,7 +35,7 @@ sudo -u apache sh -c "sed "s/__SITE_DIR__/$SITE/g" /opt/d7/etc/d7_init_httpd_tem
 sudo -u apache sh -c "sed -i "s/__SITE_NAME__/$SITE/g" $SITEPATH/etc/srv_$SITE.conf" || exit 1;
 
 ## Allow apache to read its config
-sudo semanage fcontext -a -t httpd_sys_content_t  "$SITEPATH/etc(/.*)?" || exit 1;
+sudo semanage fcontext -a -t httpd_sys_rw_content_t  "$SITEPATH/etc(/.*)?" || exit 1;
 sudo restorecon -R "$SITEPATH/etc" || exit 1;
 
 ## Set perms

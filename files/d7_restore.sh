@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 ## Deploy drupal site from drush make
-PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 ## Require arguments
 if [  -z "$1" ]; then

@@ -12,24 +12,25 @@
   copy:
     src: "{{ item }}"
     dest: /opt/d7/bin/
-    mode: 0754
+    mode: 0755
     owner: root
     group: wheel
   with_items:
-      - d7_cc.sh
-      - d7_clean.sh
-      - d7_dump.sh
-      - d7_httpd_conf.sh
-      - d7_importdb.sh
-      - d7_init.sh
-      - d7_make.sh
-      - d7_migrate.sh
-      - d7_perms_fix.sh
-      - d7_perms.sh
-      - d7_restore.sh
-      - d7_snapshot.sh
-      - d7_sync.sh
-      - d7_update.sh
+    - d7_cc.sh
+    - d7_clean.sh
+    - d7_dump.sh
+    - d7_httpd_conf.sh
+    - d7_importdb.sh
+    - d7_init.sh
+    - d7_make.sh
+    - d7_make_islandora.sh
+    - d7_migrate.sh
+    - d7_perms_fix.sh
+    - d7_perms.sh
+    - d7_restore.sh
+    - d7_snapshot.sh
+    - d7_sync.sh
+    - d7_update.sh
 
 - name: Install cron scripts
   copy:
@@ -39,15 +40,15 @@
     owner: root
     group: wheel
   with_items:
-      - d7_daily.cron
+    - d7_daily.cron
 
 - name: Install apc.ini
-  copy:
+  template:
+    src: apc.ini.j2
+    dest: /etc/php.d/apc.ini
     mode: 0644
     owner: root
     group: root
-    src: apc.ini
-    dest: /etc/php.d
 
 - name: Install apc.conf
   copy:
@@ -55,7 +56,23 @@
     owner: root
     group: root
     src: apc.conf
-    dest: /etc/httpd/conf.d    
+    dest: /etc/httpd/conf.d
+
+- name: Configure apc credentials.
+  template:
+    src: apc.php.j2
+    dest: /usr/share/pear/apc.php
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Install apc_clear.php
+  copy:
+    src: apc_clear.php
+    dest: /usr/share/pear
+    mode: 0754
+    owner: root
+    group: wheel
 
 - name: Ensure /opt/d7/etc exists
   file:
@@ -79,3 +96,13 @@
     owner: root
     group: wheel
     mode: 0444
+
+- name: Install reverse proxy config
+  template:
+    src: d7_proxy.inc.j2
+    dest: /opt/d7/etc/d7_proxy.inc.php
+    owner: apache
+    group: wheel
+    mode: 0444
+
+    

@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 ## Set permissions on the specified dir
-PATH=/opt/d7/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/d7/etc/d7_conf.sh
 
@@ -53,7 +52,7 @@ fi
 echo "Setting ${POLICY} permissions on ${INPUTDIR}"
 
 ## Set SELinux context.  Useless over NFS/SMB.
-sudo semanage fcontext -a -t httpd_sys_content_t  "${INPUTDIR}(/.*)?"
+sudo semanage fcontext -a -t httpd_sys_rw_content_t  "${INPUTDIR}(/.*)?"
 sudo restorecon -R "${INPUTDIR}"
 
 ## Set perms. Try as apache first, then as self.

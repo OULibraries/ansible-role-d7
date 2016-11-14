@@ -1,15 +1,14 @@
+# Path for d7 scripts
+PATH=/opt/d7/bin:/opt/php/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
+
 # tag for drupal boxes
 ENV_NAME="{{ environment_name }}"
 
 # Public facing host name
 D7_HOST_SUFFIX="{{httpd_dn_suffix}}"
 
-
 # Default MySQL target
 D7_DBHOST="{{ mariadb_host }}"
 D7_DBPORT="{{ mariadb_port }}"
 D7_DBSU="{{ mariadb_root_user}}"
 
-# APC credentials
-APC_USER="{{ apc_username }}"
-APC_PASS="{{ apc_password }}"
