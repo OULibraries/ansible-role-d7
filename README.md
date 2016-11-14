@@ -17,7 +17,7 @@ For more, see defaults/main.yml
 Dependencies
 ------------
 
-Requires OU Libraries centos7, mariadb, and apache2 roles. To install:
+Requires OU Libraries centos7, mariadb, apache2, and users roles. To install:
 ```
 ansible-galaxy install -r requirements.yml
 ```

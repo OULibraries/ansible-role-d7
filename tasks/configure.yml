@@ -48,10 +48,3 @@
     state: present
     dest: /etc/profile.d/d7-ops.sh
     line: "export PATH=/opt/d7/bin:$PATH"
-- name: Add ops scripts to sudo secure_path
-  replace:
-    dest: /etc/sudoers
-    regexp: >
-      ^Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin$
-    replace: 'Defaults    secure_path = /opt/d7/bin:/sbin:/bin:/usr/sbin:/usr/bin'
-    validate: visudo -cf %s
