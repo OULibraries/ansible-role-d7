@@ -8,13 +8,17 @@
 #  1) proper DNS entries
 #  2) a service like ngrok
 httpd_dn_suffix: 'example.com'
+
 ## Your email address
 email: 'user@example.com'
+
 ## The hostnames of the sites you will build.
 #sites: ['drupal-dev1', 'drupal-dev2']
+
 ## Let's encrypt cert paths
 #httpd_cert_path: '/vagrant/letsencrypt/etc/live/'
 #httpd_key_path: '/vagrant/letsencrypt/etc/live/'
+
 ## Self-signed cert paths
 httpd_cert_path: '/etc/pki/tls/certs/'
 httpd_key_path: '/etc/pki/tls/private/'
@@ -25,6 +29,9 @@ mariadb_host: "localhost"
 mariadb_port: "3306"
 mariadb_root_user: 'root'
 
+# Setting secure path makes sudo work as desired
+users_secure_path: '/opt/php/bin:/opt/d7/bin:/sbin:/bin:/usr/sbin:/usr/bin'
+
 # Set to 0 to disable APC
 apc_enabled: "1"
 
@@ -32,5 +39,3 @@ apc_enabled: "1"
 ## test and prod at aws
 # d7_proxies:
 #  - 127.0.0.1
-
-
