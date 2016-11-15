@@ -28,5 +28,9 @@ mariadb_root_user: 'root'
 # Set to 0 to disable APC
 apc_enabled: "1"
 
+## List of reverse proxies to feed to Drupal. Neccessary mainly in
+## test and prod at aws
+# d7_proxies:
+#  - 127.0.0.1
 
 
