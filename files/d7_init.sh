@@ -65,14 +65,17 @@ sudo -u apache mv "$SITEPATH/drupal/sites/default" "$SITEPATH"/
 echo "Linking default site into build."
 sudo -u apache ln -s "$SITEPATH/default" "$SITEPATH/drupal/sites/default" || exit 1;
 
-echo "Generating settings.php."
+
+DBSLUG=$(echo  '${SITE}' | tr -c 'A-Za-z_0-9' '_')
+
+echo "Generating settings.php with database ${DBSLUG}."
 read -r -d '' SETTINGSPHP <<- EOF
 \$databases = array (
   'default' =>
   array (
     'default' =>
     array (
-      'database' => 'drupal_${SITE}_${ENV_NAME}',
+      'database' => 'drupal_${DBSLUG}_${ENV_NAME}',
       'username' => '${MY_DBSU}',
       'password' => '${MY_DBSU_PASS}',
       'host' => '$MY_DBHOST',
