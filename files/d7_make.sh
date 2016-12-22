@@ -61,7 +61,11 @@ if [[ ! -e "${MY_MAKEFILE}" ]]; then
 fi
 
 ## Build from drush make or die
-sudo -u apache drush -y --working-copy make "${MY_MAKEFILE}" "$SITEPATH/drupal_build" || exit 1;
+(cd /tmp && sudo -u apache drush -y --working-copy make "${MY_MAKEFILE}" "$SITEPATH/drupal_build" )|| exit 1;
+# Drush gets unhappy if it can't chdir back to CWD, and sudo breaks
+# that when the script is run from, for example, /home/$user. Starting
+# a subshell so we can run from a consistent dir and end up back where
+# we started at end of execution.
 
 ## Delete default site in the build
 sudo -u apache rm -rf "$SITEPATH/drupal_build/sites/default"
