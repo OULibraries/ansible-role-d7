@@ -66,7 +66,7 @@ echo "Linking default site into build."
 sudo -u apache ln -s "$SITEPATH/default" "$SITEPATH/drupal/sites/default" || exit 1;
 
 
-DBSLUG=$(echo  '${SITE}' | tr -c 'A-Za-z_0-9' '_')
+DBSLUG=$(echo  "${SITE}" | tr -c 'A-Za-z_0-9' '_')
 
 echo "Generating settings.php with database ${DBSLUG}."
 read -r -d '' SETTINGSPHP <<- EOF
