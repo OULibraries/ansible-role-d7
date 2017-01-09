@@ -37,9 +37,10 @@ echo
 ## Get sudo password if needed because first sudo use is behind a pipe.
 sudo ls > /dev/null
 
-## Drop the database
-echo "Dropping database."
-echo "DROP DATABASE \`drupal_${SITE}_${ENV_NAME}\`" | sudo -u apache drush sql-cli -r "$SITEPATH/drupal"
+## Get the db name from drush and drop it.
+MYDB=$(drush -r "$SITEPATH/drupal" sql-connect | sed 's/.*\-\-database=//; s/ \-\-host=.*//')
+echo "Dropping database ${MYDB}."
+echo "DROP DATABASE \`${MYDB}\`" | sudo -u apache drush sql-cli -r "$SITEPATH/drupal"
 
 ## Change settings.php to 660
 sudo -u apache chmod ug=rw,o= "$SITEPATH/default/settings.php" 2>/dev/null || \
