@@ -105,4 +105,19 @@
     group: wheel
     mode: 0444
 
-    
+- name: Ensure /etc/drush exists
+  file:
+    path: /etc/drush
+    state: directory
+    mode: 0655
+    owner: root
+    group: wheel
+    recurse: yes
+
+- name: Install drush.ini
+  copy:
+    src: drush.ini
+    dest: /etc/drush
+    mode: 0644
+    owner: root
+    group: wheel
