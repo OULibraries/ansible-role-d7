@@ -26,7 +26,7 @@ SITEPATH=$1
 ## Site should already be there
 if [[ ! -e $SITEPATH ]]; then
     echo "$SITEPATH doesn't exist!"
-#    exit 1
+    exit 1
 fi
 
 if [ ! -z "$2" ]; then
