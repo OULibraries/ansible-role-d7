@@ -41,11 +41,25 @@ echo "Initializing site at ${SITEPATH}."
 # Get external host suffix (rev proxy, ngrok, etc)
 read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
 
-# Get cookie domain. Default is site name, but may need to be changed for SSO.
-read -r -e -p "Enter cookie domain: " -i "${SITE}.${MY_HOST_SUFFIX}" MY_COOKIE_DOMAIN
+## Set some defaults
+BASE_URL="https://${SITE}.${MY_HOST_SUFFIX}"
+COOKIE_DOMAIN="${SITE}.${MY_HOST_SUFFIX}"
+
+if [ "$SITE_TYPE" == "sub" ]; then
+  # Get master sitepath
+  read -r -e -p "Enter sitepath for master site: " MASTER_SITEPATH
+  MASTER_SITE=$(basename "$MASTER_SITEPATH")
+  
+  # Set some smarter defaults
+  BASE_URL="https://${MASTER_SITE}.${MY_HOST_SUFFIX}/${SITE}"
+  COOKIE_DOMAIN="${MASTER_SITE}.${MY_HOST_SUFFIX}"
+fi
 
 # Get base URL. Default is the root of the sitename over HTTPS.
-read -r -e -p "Enter base URL without trailing slash: " -i "https://${SITE}.${MY_HOST_SUFFIX}" MY_BASE_URL
+read -r -e -p "Enter base URL without trailing slash: " -i "${BASE_URL}" MY_BASE_URL
+
+# Get cookie domain. Default is site name, but may need to be changed for SSO.
+read -r -e -p "Enter cookie domain: " -i "${COOKIE_DOMAIN}" MY_COOKIE_DOMAIN
 
 # Get mysql host 
 read -r -e -p "Enter MYSQL host name: " -i "$D7_DBHOST" MY_DBHOST
