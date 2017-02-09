@@ -34,6 +34,9 @@ read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX
 # Get cookie domain. Default is site name, but may need to be changed for SSO.
 read -r -e -p "Enter cookie domain: " -i "${SITE}.${MY_HOST_SUFFIX}" MY_COOKIE_DOMAIN
 
+# Get base URL. Default is the root of the sitename over HTTPS.
+read -r -e -p "Enter base URL without trailing slash: " -i "https://${SITE}.${MY_HOST_SUFFIX}" MY_BASE_URL
+
 # Get mysql host 
 read -r -e -p "Enter MYSQL host name: " -i "$D7_DBHOST" MY_DBHOST
 
@@ -92,7 +95,7 @@ read -r -d '' SETTINGSPHP <<- EOF
 );
 
 ## Set public-facing hostname.
-\$base_url = 'https://${SITE}.${MY_HOST_SUFFIX}';
+\$base_url = '${MY_BASE_URL}';
 \$cookie_domain = '${MY_COOKIE_DOMAIN}';
 
 ## Include reverse proxy config (empty if no proxy)
