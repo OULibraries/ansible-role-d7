@@ -17,6 +17,9 @@ fi
 
 SITEPATH=$1
 
+## Grab the basename of the site to use in a few places.
+SITE=$(basename "$SITEPATH")
+
 ## Don't blow away existing sites
 if [[ -e "$SITEPATH" ]]; then
     echo "$SITEPATH already exists!"
@@ -28,13 +31,18 @@ echo "Initializing site at ${SITEPATH}."
 # Get external host suffix (rev proxy, ngrok, etc)
 read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
 
+# Get cookie domain. Default is site name, but may need to be changed for SSO.
+read -r -e -p "Enter cookie domain: " -i "${SITE}.${MY_HOST_SUFFIX}" MY_COOKIE_DOMAIN
+
 # Get mysql host 
 read -r -e -p "Enter MYSQL host name: " -i "$D7_DBHOST" MY_DBHOST
+
 # Get mysql port
 read -r -e -p "Enter MYSQL host port: " -i "$D7_DBPORT" MY_DBPORT
 
 # Get DB admin user
 read -r -e -p "Enter MYSQL user: " -i "$D7_DBSU" MY_DBSU
+
 # Get DB admin password
 read -r -s -p "Enter MYSQL password: " MY_DBSU_PASS
 while  [ -z "$MY_DBSU_PASS" ] || ! mysql --host="$MY_DBHOST" --port="$MY_DBPORT" --user="$MY_DBSU" --password="$MY_DBSU_PASS"  -e ";" ; do
@@ -49,9 +57,6 @@ echo "Let's build a site!"
 ## Make the parent directory
 sudo -u apache mkdir -p "$SITEPATH"
 sudo -u apache chmod 775 "$SITEPATH"
-
-## Grab the basename of the site to use in a few places.
-SITE=$(basename "$SITEPATH")
 
 ## Build from drush make
 sudo -u apache drush @none -y dl drupal --drupal-project-rename=drupal --destination="$SITEPATH" || exit 1;
@@ -88,7 +93,7 @@ read -r -d '' SETTINGSPHP <<- EOF
 
 ## Set public-facing hostname.
 \$base_url = 'https://${SITE}.${MY_HOST_SUFFIX}';
-\$cookie_domain = '${SITE}.${MY_HOST_SUFFIX}';
+\$cookie_domain = '${MY_COOKIE_DOMAIN}';
 
 ## Include reverse proxy config (empty if no proxy)
 include '/opt/d7/etc/d7_proxy.inc.php';
