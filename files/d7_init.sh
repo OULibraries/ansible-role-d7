@@ -7,15 +7,25 @@ if [  -z "$1" ]; then
   cat <<USAGE
 d7_init.sh builds a Drupal site.
 
-Usage: d7_init.sh \$SITEPATH
+Usage: d7_init.sh \$SITEPATH [\$SITE_TYPE]
             
 \$SITEPATH  Destination for Drupal site (eg. /srv/example).
+\$SITE_TYPE  optional argument, standalone (default), master, or sub. 
+
 USAGE
 
   exit 1;
 fi
 
 SITEPATH=$1
+
+if [ ! -z "$2" ]; then
+  if [ "$2" == "standalone" ] || [ "$2" == "master" ] || [ "$2" == "sub" ]; then
+    SITE_TYPE=$2 
+  fi
+else
+    SITE_TYPE=standalone
+fi
 
 ## Grab the basename of the site to use in a few places.
 SITE=$(basename "$SITEPATH")
@@ -113,7 +123,7 @@ sudo -u apache drush -y sql-create --db-su="${MY_DBSU}" --db-su-pw="$MY_DBSU_PAS
 sudo -u apache drush -y -r "$SITEPATH/drupal" site-install --site-name="$SITE" || exit 1;
 
 ## Apply the apache config
-d7_httpd_conf.sh "$SITEPATH" || exit 1;
+d7_httpd_conf.sh "$SITEPATH" "$SITE_TYPE" || exit 1;
 
 ## Apply security updates and clear caches.
 d7_update.sh "$SITEPATH" || exit 1;
