@@ -13,7 +13,7 @@ d7_httpd_conf.sh generates the Apache config for a site.
 Usage: d7_httpd_conf.sh \$SITEPATH [\$SITE_TYPE]
 
 \$SITEPATH  Drupal site.
-\$SITE_TYPE  optional argument, standalone (default), master, or sub. 
+\$SITE_TYPE  optional argument, standalone (default), master, or sub.
 
 USAGE
 
@@ -23,18 +23,18 @@ fi
 
 SITEPATH=$1
 
-if [ ! -z "$2" ]; then
-  if [ "$2" == "standalone" ] || [ "$2" == "master" ] || [ "$2" == "sub" ]; then
-    SITE_TYPE=$2 
-  fi
-else
-    SITE_TYPE=standalone
-fi
-
 ## Site should already be there
 if [[ ! -e $SITEPATH ]]; then
     echo "$SITEPATH doesn't exist!"
-    exit 1
+#    exit 1
+fi
+
+if [ ! -z "$2" ]; then
+  if [ "$2" == "standalone" ] || [ "$2" == "master" ] || [ "$2" == "sub" ]; then
+    SITE_TYPE=$2
+  fi
+else
+    SITE_TYPE=standalone
 fi
 
 ## Grab the basename of the site to use in conf.
@@ -53,6 +53,8 @@ if [ "$SITE_TYPE" == "standalone" ]; then
 
 elif [ "$SITE_TYPE" == "master" ]; then
   echo "Generating ${SITEPATH}/etc/srv_${SITE}.conf with additional subsite information."
+
+  # Start off normally
   read -r -d '' SRV_SITE_CONF <<- EOF
 <VirtualHost *:443>
 
@@ -71,6 +73,29 @@ elif [ "$SITE_TYPE" == "master" ]; then
     Allow from all
     Require all granted
   </Directory>
+EOF
+  ## Ask for a list of sub sites and do some config for each of them
+  # list of subsites
+  read -r -e -p "Enter comma-separated list of subsite paths: " SUBSITEPATHS
+  for SUBSITEPATH in $( echo ${SUBSITEPATHS} | tr "," "\n" ); do
+    SUBSITE=$(basename "$SUBSITEPATH")
+    read -r -d '' SRV_SITE_CONF <<- EOF
+${SRV_SITE_CONF}
+
+  Alias /${SUBSITE} /srv/${SUBSITE}/drupal
+
+  <Directory "/srv/${SUBSITE}/drupal">
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+    Require all granted
+  </Directory>
+EOF
+  done
+  ## Finish normally
+  read -r -d '' SRV_SITE_CONF <<- EOF
+${SRV_SITE_CONF}
 
 </VirtualHost>
 EOF
@@ -79,9 +104,9 @@ EOF
 
 # Subsite gets an empty configuration
 elif [ "$SITE_TYPE" == "sub" ]; then
-  sudo -u apache sh -c "echo \# > "$SITEPATH/etc/srv_$SITE.conf" || exit 1;
+  sudo -u apache sh -c "echo \# > ${SITEPATH}/etc/srv_$SITE.conf" || exit 1;
 fi
-  
+
 ## Allow apache to read its config
 sudo semanage fcontext -a -t httpd_sys_rw_content_t  "$SITEPATH/etc(/.*)?" || exit 1;
 sudo restorecon -R "$SITEPATH/etc" || exit 1;
