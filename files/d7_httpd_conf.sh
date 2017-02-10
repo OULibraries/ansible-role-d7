@@ -85,7 +85,8 @@ ${SRV_SITE_CONF}
   Alias /${SUBSITE} /srv/${SUBSITE}/drupal
 
   <Directory "/srv/${SUBSITE}/drupal">
-    Options Indexes FollowSymLinks
+    Options -Indexes
+    Options +FollowSymLinks
     AllowOverride All
     Order allow,deny
     Allow from all
@@ -102,9 +103,10 @@ EOF
 
   sudo -u apache echo "$SRV_SITE_CONF"| sudo -u apache tee -a "$SITEPATH/etc/srv_$SITE.conf" >/dev/null
 
-# Subsite gets an empty configuration
+# Subsite gets an empty configuration and a modified .htaccess
 elif [ "$SITE_TYPE" == "sub" ]; then
-  sudo -u apache sh -c "echo \# > ${SITEPATH}/etc/srv_$SITE.conf" || exit 1;
+  sudo -u apache sh -c "echo \# > ${SITEPATH}/etc/srv_${SITE}.conf" || exit 1;
+  sudo -u apache sh -c "sed -i 's/# RewriteBase \/drupal/RewriteBase\/${SITE}/g' ${SITE}/drupal/.htaccess" || exit 1;
 fi
 
 ## Allow apache to read its config
