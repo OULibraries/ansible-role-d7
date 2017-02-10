@@ -106,7 +106,7 @@ EOF
 # Subsite gets an empty configuration and a modified .htaccess
 elif [ "$SITE_TYPE" == "sub" ]; then
   sudo -u apache sh -c "echo \# > ${SITEPATH}/etc/srv_${SITE}.conf" || exit 1;
-  sudo -u apache sh -c "sed -i 's/# RewriteBase \/drupal/RewriteBase\/${SITE}/g' ${SITE}/drupal/.htaccess" || exit 1;
+  sudo -u apache sh -c "sed -i 's/# RewriteBase \/drupal/RewriteBase\/${SITE}/g' ${SITEPATH}/drupal/.htaccess" || exit 1;
 fi
 
 ## Allow apache to read its config
