@@ -21,10 +21,10 @@ SITEPATH=$1
 MASTERPATH=$1
 
 if [ ! -z "$2" ]; then
-    SITE_TYPE="sub"
+    SITETYPE="sub"
     MASTERPATH="$2"
 else
-    SITE_TYPE=standalone
+    SITETYPE=master
 fi
 
 ## Grab the basename of the site to use in a few places.
@@ -33,6 +33,8 @@ SITE=$(basename "$SITEPATH")
 ## Sanitize the DB slug by excluding everything that MySQL doesn't like from $SITE
 DBSLUG=$(echo -n  "${SITE}" | tr -C '_A-Za-z0-9' '_')
 
+# By default, we're operating at the root for a domain
+SUBPATH=""
 
 ## Don't blow away existing sites
 if [[ -e "$SITEPATH" ]]; then
@@ -45,17 +47,17 @@ echo "Initializing site at ${SITEPATH}."
 # Get external host suffix (rev proxy, ngrok, etc)
 read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
 
-# Register subsite with master and override $SITE for url-related settings
-if [ "$SITE_TYPE" == "sub" ]; then
+# For subsites, register with master and override url-related settings
+if [ "$SITETYPE" == "sub" ]; then
+    SUBPATH="/${SITE}"
     SITE=$(basename "$MASTERPATH")
     echo "Register with master at ${MASTERPATH}."
     echo "${SITEPATH}" >> "${MASTERPATH}/etc/subsites"
 fi
 
-## Set some defaults
-BASE_URL="https://${SITE}.${MY_HOST_SUFFIX}"
+## Set some URL-related setings
+BASE_URL="https://${SITE}.${MY_HOST_SUFFIX}${SUBPATH}"
 COOKIE_DOMAIN="${SITE}.${MY_HOST_SUFFIX}"
-
 
 # Get base URL. Default is the root of the sitename over HTTPS.
 read -r -e -p "Enter base URL without trailing slash: " -i "${BASE_URL}" MY_BASE_URL
@@ -136,7 +138,7 @@ sudo -u apache drush -y sql-create --db-su="${MY_DBSU}" --db-su-pw="$MY_DBSU_PAS
 sudo -u apache drush -y -r "$SITEPATH/drupal" site-install --site-name="$SITE" || exit 1;
 
 ## Apply the apache config
-d7_httpd_conf.sh "$SITEPATH" "SITE_TYPE" || exit 1;
+d7_httpd_conf.sh "$SITEPATH" "SITETYPE" || exit 1;
 
 ## Apply security updates and clear caches.
 d7_update.sh "$SITEPATH" || exit 1;
