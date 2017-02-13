@@ -10,10 +10,10 @@ if [  -z "$1" ]; then
 
 d7_httpd_conf.sh generates the Apache config for a site.
 
-Usage: d7_httpd_conf.sh \$SITEPATH [\$MASTERPATH]
+Usage: d7_httpd_conf.sh \$SITEPATH [\$SITETYPE]
 
 \$SITEPATH  Drupal site.
-\$MASTERPATH  Optional master site for subsite
+\$SITETYPE  Should be "master" or "sub"
 
 USAGE
 
@@ -22,6 +22,7 @@ USAGE
 fi
 
 SITEPATH=$1
+SITETYPE=master
 
 ## Site should already be there
 if [[ ! -e $SITEPATH ]]; then
@@ -30,11 +31,12 @@ if [[ ! -e $SITEPATH ]]; then
 fi
 
 if [ ! -z "$2" ]; then
-    SITE_TYPE="sub"
-    MASTERPATH="$2"
-else
-    SITE_TYPE=master
+    SITETYPE="$2"
 fi
+
+
+echo "Appling configuration type $SITETYPE at $SITEPATH"
+
 
 ## Grab the basename of the site to use in conf.
 SITE=$(basename "$SITEPATH")
@@ -43,7 +45,7 @@ SITE=$(basename "$SITEPATH")
 echo "Generating Apache config for ${SITEPATH}."
 sudo -u apache mkdir -p "$SITEPATH/etc"
 
-if [ "$SITE_TYPE" == "master" ]; then
+if [ "$SITETYPE" == "master" ]; then
   echo "Generating ${SITEPATH}/etc/srv_${SITE}.conf with additional subsite information."
 
   # Start off normally
@@ -80,6 +82,9 @@ ${SRV_SITE_CONF}
     Allow from all
     Require all granted
     AllowOverride None
+     
+    RewriteEngine on
+    RewriteBase /${SUBSITE}
     Include /etc/httpd/conf.d/drupal.include
   </Directory>
 EOF
@@ -92,10 +97,10 @@ ${SRV_SITE_CONF}
 </VirtualHost>
 EOF
 
-sudo -u apache echo "$SRV_SITE_CONF"| sudo -u apache tee -a "$SITEPATH/etc/srv_$SITE.conf" >/dev/null
+  sudo -u apache echo "$SRV_SITE_CONF"| sudo -u apache tee "$SITEPATH/etc/srv_$SITE.conf" >/dev/null
 
 # Subsite gets an empty configuration
-elif [ "$SITE_TYPE" == "sub" ]; then
+elif [ "$SITETYPE" == "sub" ]; then
   sudo -u apache sh -c "echo \# > ${SITEPATH}/etc/srv_${SITE}.conf" || exit 1;
 fi
 
