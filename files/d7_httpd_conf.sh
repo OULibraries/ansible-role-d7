@@ -13,7 +13,7 @@ d7_httpd_conf.sh generates the Apache config for a site.
 Usage: d7_httpd_conf.sh \$SITEPATH [\$SITETYPE]
 
 \$SITEPATH  Drupal site.
-\$SITETYPE  Should be "master" or "sub"
+\$SITETYPE  Should be "master" or "sub". Default is master. 
 
 USAGE
 
@@ -31,7 +31,13 @@ if [[ ! -e $SITEPATH ]]; then
 fi
 
 if [ ! -z "$2" ]; then
-    SITETYPE="$2"
+
+    if [ ! "$2" == "master"  -o  "$2" == "sub"  ]; then
+	  echo "Bad site type:  $2"
+	  exit 1
+    fi
+
+    SITETYPE="$2"    
 fi
 
 
