@@ -7,10 +7,10 @@ if [  -z "$1" ]; then
   cat <<USAGE
 d7_init.sh builds a Drupal site.
 
-Usage: d7_init.sh \$SITEPATH [\$SITE_TYPE]
+Usage: d7_init.sh \$SITEPATH [\$MASTERPATH]
             
 \$SITEPATH  Destination for Drupal site (eg. /srv/example).
-\$SITE_TYPE  optional argument, standalone (default), master, or sub. 
+\$MASTERPATH  Optional argument specifying a master site for this site. 
 
 USAGE
 
@@ -18,17 +18,21 @@ USAGE
 fi
 
 SITEPATH=$1
+MASTERPATH=$1
 
 if [ ! -z "$2" ]; then
-  if [ "$2" == "standalone" ] || [ "$2" == "master" ] || [ "$2" == "sub" ]; then
-    SITE_TYPE=$2 
-  fi
+    SITE_TYPE="sub"
+    MASTERPATH="$2"
 else
     SITE_TYPE=standalone
 fi
 
 ## Grab the basename of the site to use in a few places.
 SITE=$(basename "$SITEPATH")
+
+## Sanitize the DB slug by excluding everything that MySQL doesn't like from $SITE
+DBSLUG=$(echo -n  "${SITE}" | tr -C '_A-Za-z0-9' '_')
+
 
 ## Don't blow away existing sites
 if [[ -e "$SITEPATH" ]]; then
@@ -41,19 +45,17 @@ echo "Initializing site at ${SITEPATH}."
 # Get external host suffix (rev proxy, ngrok, etc)
 read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
 
+# Register subsite with master and override $SITE for url-related settings
+if [ "$SITE_TYPE" == "sub" ]; then
+    SITE=$(basename "$MASTERPATH")
+    echo "Register with master at ${MASTERPATH}."
+    echo "${SITEPATH}" >> "${MASTERPATH}/etc/subsites"
+fi
+
 ## Set some defaults
 BASE_URL="https://${SITE}.${MY_HOST_SUFFIX}"
 COOKIE_DOMAIN="${SITE}.${MY_HOST_SUFFIX}"
 
-if [ "$SITE_TYPE" == "sub" ]; then
-  # Get master sitepath
-  read -r -e -p "Enter sitepath for master site: " MASTER_SITEPATH
-  MASTER_SITE=$(basename "$MASTER_SITEPATH")
-  
-  # Set some smarter defaults
-  BASE_URL="https://${MASTER_SITE}.${MY_HOST_SUFFIX}/${SITE}"
-  COOKIE_DOMAIN="${MASTER_SITE}.${MY_HOST_SUFFIX}"
-fi
 
 # Get base URL. Default is the root of the sitename over HTTPS.
 read -r -e -p "Enter base URL without trailing slash: " -i "${BASE_URL}" MY_BASE_URL
@@ -97,9 +99,6 @@ sudo -u apache mv "$SITEPATH/drupal/sites/default" "$SITEPATH"/
 echo "Linking default site into build."
 sudo -u apache ln -s "$SITEPATH/default" "$SITEPATH/drupal/sites/default" || exit 1;
 
-## Sanitize the DB slug by excluding everything that MySQL doesn't like
-DBSLUG=$(echo -n  "${SITE}" | tr -C '_A-Za-z0-9' '_')
-
 echo "Generating settings.php with database ${DBSLUG}."
 read -r -d '' SETTINGSPHP <<- EOF
 \$databases = array (
@@ -137,7 +136,7 @@ sudo -u apache drush -y sql-create --db-su="${MY_DBSU}" --db-su-pw="$MY_DBSU_PAS
 sudo -u apache drush -y -r "$SITEPATH/drupal" site-install --site-name="$SITE" || exit 1;
 
 ## Apply the apache config
-d7_httpd_conf.sh "$SITEPATH" "$SITE_TYPE" || exit 1;
+d7_httpd_conf.sh "$SITEPATH" "SITE_TYPE" || exit 1;
 
 ## Apply security updates and clear caches.
 d7_update.sh "$SITEPATH" || exit 1;
