@@ -18,23 +18,20 @@ USAGE
 fi
 
 SITEPATH=$1
-MASTERPATH=$1
+MASTERPATH=${SITEPATH}
+SITETYPE=master
 
 if [ ! -z "$2" ]; then
     SITETYPE="sub"
     MASTERPATH="$2"
 else
-    SITETYPE=master
-fi
+
 
 ## Grab the basename of the site to use in a few places.
 SITE=$(basename "$SITEPATH")
 
 ## Sanitize the DB slug by excluding everything that MySQL doesn't like from $SITE
 DBSLUG=$(echo -n  "${SITE}" | tr -C '_A-Za-z0-9' '_')
-
-# By default, we're operating at the root for a domain
-SUBPATH=""
 
 ## Don't blow away existing sites
 if [[ -e "$SITEPATH" ]]; then
@@ -47,12 +44,12 @@ echo "Initializing site at ${SITEPATH}."
 # Get external host suffix (rev proxy, ngrok, etc)
 read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
 
-# For subsites, register with master and override url-related settings
+SITE=$(basename "$MASTERPATH")
+
+# By default, we're operating at the root for a domain
+SUBPATH="";
 if [ "$SITETYPE" == "sub" ]; then
     SUBPATH="/${SITE}"
-    SITE=$(basename "$MASTERPATH")
-    echo "Register with master at ${MASTERPATH}."
-    echo "${SITEPATH}" >> "${MASTERPATH}/etc/subsites"
 fi
 
 ## Set some URL-related setings
@@ -88,6 +85,13 @@ echo "Let's build a site!"
 ## Make the parent directory
 sudo -u apache mkdir -p "$SITEPATH"
 sudo -u apache chmod 775 "$SITEPATH"
+
+# Let master site know about subsite
+if [ "$SITETYPE" == "sub" ]; then
+    echo "Register with master at ${MASTERPATH}."
+    echo "${SITEPATH}" >> "${MASTERPATH}/etc/subsites"
+fi
+
 
 ## Build from drush make
 sudo -u apache drush @none -y dl drupal --drupal-project-rename=drupal --destination="$SITEPATH" || exit 1;
