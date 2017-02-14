@@ -24,20 +24,19 @@ SITETYPE=master
 if [ ! -z "$2" ]; then
     SITETYPE="sub"
     MASTERPATH="$2"
-else
-
-
-## Grab the basename of the site to use in a few places.
-SITE=$(basename "$SITEPATH")
-
-## Sanitize the DB slug by excluding everything that MySQL doesn't like from $SITE
-DBSLUG=$(echo -n  "${SITE}" | tr -C '_A-Za-z0-9' '_')
+fi
 
 ## Don't blow away existing sites
 if [[ -e "$SITEPATH" ]]; then
     echo "$SITEPATH already exists!"
     exit 1
 fi
+
+## Grab the basename of the site to use in a few places
+SITE=$(basename "$SITEPATH")
+
+## Sanitize the DB slug by excluding everything that MySQL doesn't like from $SITE
+DBSLUG=$(echo -n  "${SITE}" | tr -C '_A-Za-z0-9' '_')
 
 echo "Initializing site at ${SITEPATH}."
 
