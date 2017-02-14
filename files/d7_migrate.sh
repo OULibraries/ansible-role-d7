@@ -19,7 +19,7 @@ USAGE
 fi
 
 SITEPATH=$1
-MASTERPATH=${SITEPATH}
+MASTERSITE=${SITEPATH}
 SITETYPE=master
 
 SRCHOST=$2
@@ -27,7 +27,7 @@ ORIGIN_SITEPATH=$3
 
 if [ ! -z "$4" ]; then
     SITETYPE="sub"
-    MASTERPATH="$4"
+    MASTERSITE="$4"
 fi
 
 if [  -e "$SITEPATH" ]; then
