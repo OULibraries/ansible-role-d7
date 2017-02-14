@@ -21,7 +21,7 @@ SITEPATH=$1
 MASTERPATH=${SITEPATH}
 SITETYPE=master
 
-if [ ! -z "$2" ] && [ ! "${SITEPATH}" == "${MASTERPATH}" ]; then
+if [ ! -z "$2" ] && [ ! "${SITEPATH}" == "$2" ]; then
     SITETYPE="sub"
     MASTERPATH="$2"
 fi
@@ -43,12 +43,13 @@ echo "Initializing site at ${SITEPATH}."
 # Get external host suffix (rev proxy, ngrok, etc)
 read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
 
-SITE=$(basename "$MASTERPATH")
-
 # By default, we're operating at the root for a domain
 SUBPATH="";
+
+# Override for subsite
 if [ "$SITETYPE" == "sub" ]; then
     SUBPATH="/${SITE}"
+    SITE=$(basename "$MASTERPATH")
 fi
 
 ## Set some URL-related setings
