@@ -32,8 +32,8 @@ fi
 
 if [ ! -z "$2" ]; then
 
-    if [ ! "$2" == "master"  -o  "$2" == "sub"  ]; then
-	  echo "Bad site type:  $2"
+    if [  "$2" != "master"  -a  "$2" != "sub"  ]; then
+	  echo "Bad site type: $2"
 	  exit 1
     fi
 

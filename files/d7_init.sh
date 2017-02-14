@@ -21,7 +21,7 @@ SITEPATH=$1
 MASTERPATH=${SITEPATH}
 SITETYPE=master
 
-if [ ! -z "$2" ]; then
+if [ ! -z "$2" ] && [ ! "${SITEPATH}" == "${MASTERPATH}" ]; then
     SITETYPE="sub"
     MASTERPATH="$2"
 fi
