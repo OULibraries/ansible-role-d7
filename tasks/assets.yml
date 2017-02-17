@@ -36,7 +36,7 @@
   copy:
     src: drupal.include
     dest: /etc/httpd/conf.d/
-    mode: 0755
+    mode: 0644
     owner: root
     group: wheel
 
