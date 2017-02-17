@@ -8,9 +8,9 @@ if [  -z "$1" ]; then
 d7_init.sh builds a Drupal site.
 
 Usage: d7_init.sh \$SITEPATH [\$MASTERPATH]
-            
+
 \$SITEPATH  Destination for Drupal site (eg. /srv/example).
-\$MASTERPATH  Optional argument specifying a master site for this site. 
+\$MASTERPATH  Optional argument specifying a master site for this site.
 
 USAGE
 
@@ -18,9 +18,10 @@ USAGE
 fi
 
 SITEPATH=$1
-MASTERPATH=${SITEPATH}
+MASTERPATH=${SITEPATH}  # default to site being it's own master
 SITETYPE=master
 
+# some sites are subsites
 if [ ! -z "$2" ] && [ ! "${SITEPATH}" == "$2" ]; then
     SITETYPE="sub"
     MASTERPATH="$2"
@@ -32,29 +33,29 @@ if [[ -e "$SITEPATH" ]]; then
     exit 1
 fi
 
-## Grab the basename of the site to use in a few places
+## Grab the base for SITEPATH and MASTERPATH to use as slugs
 SITE=$(basename "$SITEPATH")
+MASTERSITE=$(basename "$MASTERPATH")
 
 ## Sanitize the DB slug by excluding everything that MySQL doesn't like from $SITE
 DBSLUG=$(echo -n  "${SITE}" | tr -C '_A-Za-z0-9' '_')
 
-echo "Initializing site at ${SITEPATH}."
+echo "Initializing ${SITETYPE} site at ${SITEPATH}."
 
 # Get external host suffix (rev proxy, ngrok, etc)
-read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
+read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX
 
 # By default, we're operating at the root for a domain
 SUBPATH="";
 
-# Override for subsite
+# Set subpath for subsites
 if [ "$SITETYPE" == "sub" ]; then
     SUBPATH="/${SITE}"
-    SITE=$(basename "$MASTERPATH")
 fi
 
 ## Set some URL-related setings
-BASE_URL="https://${SITE}.${MY_HOST_SUFFIX}${SUBPATH}"
-COOKIE_DOMAIN="${SITE}.${MY_HOST_SUFFIX}"
+BASE_URL="https://${MASTERSITE}.${MY_HOST_SUFFIX}${SUBPATH}"
+COOKIE_DOMAIN="${MASTERSITE}.${MY_HOST_SUFFIX}"
 
 # Get base URL. Default is the root of the sitename over HTTPS.
 read -r -e -p "Enter base URL without trailing slash: " -i "${BASE_URL}" MY_BASE_URL
@@ -62,7 +63,7 @@ read -r -e -p "Enter base URL without trailing slash: " -i "${BASE_URL}" MY_BASE
 # Get cookie domain. Default is site name, but may need to be changed for SSO.
 read -r -e -p "Enter cookie domain: " -i "${COOKIE_DOMAIN}" MY_COOKIE_DOMAIN
 
-# Get mysql host 
+# Get mysql host
 read -r -e -p "Enter MYSQL host name: " -i "$D7_DBHOST" MY_DBHOST
 
 # Get mysql port
@@ -134,7 +135,7 @@ EOF
 
 sudo -u apache cp "$SITEPATH/default/default.settings.php" "$SITEPATH/default/settings.php"
 sudo -u apache echo "$SETTINGSPHP"| sudo -u apache tee -a "$SITEPATH/default/settings.php" >/dev/null
-   
+
 ## Create the Drupal database
 sudo -u apache drush -y sql-create --db-su="${MY_DBSU}" --db-su-pw="$MY_DBSU_PASS" -r "$SITEPATH/drupal" || exit 1;
 
