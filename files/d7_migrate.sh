@@ -4,16 +4,16 @@
 source /opt/d7/etc/d7_conf.sh
 
 ## Require arguments
-if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ] ; then 
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ] ; then
     cat <<USAGE
 d7_migrate.sh migrates a site between hosts.
 
-Usage: d7_migrate.sh \$SITEPATH \$SRCHOST \$ORIGIN_SITEPATH [\$MASTERSITE]
+Usage: d7_migrate.sh \$SITEPATH \$SRCHOST \$ORIGIN_SITEPATH [\$MASTERPATH]
 
-\$SITEPATH          local Drupal path for new migrated site
-\$SRCHOST           host of site to migrate    
-\$ORIGIN_SITEPATH   path of site to migrate on \$SRCHOST  
-\$MASTERSITE        optional argument.  master (default), or sub. 
+\$SITEPATH          local path for Drupal site (eg. /srv/example).
+\$SRCHOST           host of site to migrate
+\$ORIGIN_SITEPATH   remote path of site to migrate on \$SRCHOST
+\$MASTERPATH        (optional) local path to master site
 USAGE
     exit 1;
 fi
@@ -37,7 +37,7 @@ fi
 
 echo "Migrating site to ${SITEPATH} from ${SRCHOST} path ${ORIGIN_SITEPATH}."
 
-# Build an empty site 
+# Build an empty site
 d7_init.sh "$SITEPATH" "$MASTERSITE" || exit 1
 
 echo "Copying makefiles!"

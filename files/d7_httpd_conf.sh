@@ -8,12 +8,12 @@ if [  -z "$1" ]; then
 
   cat <<USAGE
 
-d7_httpd_conf.sh generates the Apache config for a site.
+d7_httpd_conf.sh generates or updates the Apache config for a site.
 
 Usage: d7_httpd_conf.sh \$SITEPATH [\$SITETYPE]
 
-\$SITEPATH  Drupal site.
-\$SITETYPE  Should be "master" or "sub". Default is master. 
+\$SITEPATH  local path for Drupal site (eg. /srv/example).
+\$SITETYPE  (optional) site type: "master" or "sub". Default is master.
 
 USAGE
 
@@ -36,13 +36,10 @@ if [ ! -z "$2" ]; then
 	  echo "Bad site type: $2"
 	  exit 1
     fi
-
-    SITETYPE="$2"    
+    SITETYPE="$2"
 fi
 
-
 echo "Appling configuration type $SITETYPE at $SITEPATH"
-
 
 ## Grab the basename of the site to use in conf.
 SITE=$(basename "$SITEPATH")
@@ -88,7 +85,7 @@ ${SRV_SITE_CONF}
     Allow from all
     Require all granted
     AllowOverride None
-     
+
     RewriteEngine on
     RewriteBase /${SUBSITE}
     Include /etc/httpd/conf.d/drupal.include

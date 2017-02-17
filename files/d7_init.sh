@@ -9,8 +9,8 @@ d7_init.sh builds a Drupal site.
 
 Usage: d7_init.sh \$SITEPATH [\$MASTERPATH]
 
-\$SITEPATH  Destination for Drupal site (eg. /srv/example).
-\$MASTERPATH  Optional argument specifying a master site for this site.
+\$SITEPATH    local path for Drupal site (eg. /srv/example).
+\$MASTERPATH  (optional) local path to master site
 
 USAGE
 
