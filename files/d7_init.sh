@@ -17,14 +17,14 @@ USAGE
   exit 1;
 fi
 
-SITEPATH=$1
+SITEPATH="$(realpath  --canonicalize-missing --no-symlinks $1)"
 MASTERPATH=${SITEPATH}  # default to site being it's own master
 SITETYPE=master
 
 # some sites are subsites
 if [ ! -z "$2" ] && [ ! "${SITEPATH}" == "$2" ]; then
     SITETYPE="sub"
-    MASTERPATH="$2"
+    MASTERPATH="$(realpath  --canonicalize-missing --no-symlinks $2)"
 fi
 
 ## Don't blow away existing sites
