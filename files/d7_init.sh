@@ -8,9 +8,9 @@ if [  -z "$1" ]; then
 d7_init.sh builds a Drupal site.
 
 Usage: d7_init.sh \$SITEPATH [\$SITE_TYPE]
-            
+
 \$SITEPATH  Destination for Drupal site (eg. /srv/example).
-\$SITE_TYPE  optional argument, standalone (default), master, or sub. 
+\$SITE_TYPE  optional argument, standalone (default), master, or sub.
 
 USAGE
 
@@ -21,7 +21,7 @@ SITEPATH=$1
 
 if [ ! -z "$2" ]; then
   if [ "$2" == "standalone" ] || [ "$2" == "master" ] || [ "$2" == "sub" ]; then
-    SITE_TYPE=$2 
+    SITE_TYPE=$2
   fi
 else
     SITE_TYPE=standalone
@@ -39,7 +39,7 @@ fi
 echo "Initializing site at ${SITEPATH}."
 
 # Get external host suffix (rev proxy, ngrok, etc)
-read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX 
+read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX
 
 ## Set some defaults
 BASE_URL="https://${SITE}.${MY_HOST_SUFFIX}"
@@ -49,7 +49,7 @@ if [ "$SITE_TYPE" == "sub" ]; then
   # Get master sitepath
   read -r -e -p "Enter sitepath for master site: " MASTER_SITEPATH
   MASTER_SITE=$(basename "$MASTER_SITEPATH")
-  
+
   # Set some smarter defaults
   BASE_URL="https://${MASTER_SITE}.${MY_HOST_SUFFIX}/${SITE}"
   COOKIE_DOMAIN="${MASTER_SITE}.${MY_HOST_SUFFIX}"
@@ -61,7 +61,7 @@ read -r -e -p "Enter base URL without trailing slash: " -i "${BASE_URL}" MY_BASE
 # Get cookie domain. Default is site name, but may need to be changed for SSO.
 read -r -e -p "Enter cookie domain: " -i "${COOKIE_DOMAIN}" MY_COOKIE_DOMAIN
 
-# Get mysql host 
+# Get mysql host
 read -r -e -p "Enter MYSQL host name: " -i "$D7_DBHOST" MY_DBHOST
 
 # Get mysql port
@@ -85,7 +85,7 @@ echo "Let's build a site!"
 sudo -u apache mkdir -p "$SITEPATH"
 sudo -u apache chmod 775 "$SITEPATH"
 
-## Build from drush make
+## Install drupal core
 sudo -u apache drush @none -y dl drupal --drupal-project-rename=drupal --destination="$SITEPATH" || exit 1;
 
 ##  Move the default site out of the build. This makes updates easier later.
@@ -129,7 +129,7 @@ EOF
 
 sudo -u apache cp "$SITEPATH/default/default.settings.php" "$SITEPATH/default/settings.php"
 sudo -u apache echo "$SETTINGSPHP"| sudo -u apache tee -a "$SITEPATH/default/settings.php" >/dev/null
-   
+
 ## Create the Drupal database
 sudo -u apache drush -y sql-create --db-su="${MY_DBSU}" --db-su-pw="$MY_DBSU_PASS" -r "$SITEPATH/drupal" || exit 1;
 
@@ -139,8 +139,8 @@ sudo -u apache drush -y -r "$SITEPATH/drupal" site-install --site-name="$SITE" |
 ## Apply the apache config
 d7_httpd_conf.sh "$SITEPATH" "$SITE_TYPE" || exit 1;
 
-## Apply security updates and clear caches.
-d7_update.sh "$SITEPATH" || exit 1;
+## Clear caches.
+d7_cc.sh "$SITEPATH" || exit 1;
 
 # Apply our standard permissions to the new site
 d7_perms_fix.sh "$SITEPATH"
