@@ -8,18 +8,27 @@ if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ] ; then
     cat <<USAGE
 d7_migrate.sh migrates a site between hosts.
 
-Usage: d7_migrate.sh \$SITEPATH \$SRCHOST \$ORIGIN_SITEPATH
+Usage: d7_migrate.sh \$SITEPATH \$SRCHOST \$ORIGIN_SITEPATH [\$SITE_TYPE]
 
 \$SITEPATH          local Drupal path for new migrated site
 \$SRCHOST           host of site to migrate    
 \$ORIGIN_SITEPATH   path of site to migrate on \$SRCHOST  
+\$SITE_TYPE  optional argument, standalone (default), master, or sub. 
 USAGE
     exit 1;
 fi
 
 SITEPATH=$1
 SRCHOST=$2
-ORIGIN_SITEPATH=$3 
+ORIGIN_SITEPATH=$3
+
+if [ ! -z "$4" ]; then
+  if [ "$4" == "standalone" ] || [ "$4" == "master" ] || [ "$4" == "sub" ]; then
+    SITE_TYPE=$4
+  fi
+else
+    SITE_TYPE=standalone
+fi
 
 if [  -e "$SITEPATH" ]; then
     echo "A site alreay exists at $SITEPATH, try using sync."
@@ -29,7 +38,7 @@ fi
 echo "Migrating site to ${SITEPATH} from ${SRCHOST} path ${ORIGIN_SITEPATH}."
 
 # Build an empty site 
-d7_init.sh "$SITEPATH"  || exit 1
+d7_init.sh "$SITEPATH" "$SITE_TYPE" || exit 1
 
 echo "Copying makefiles!"
 for file in "site.make" "site.make.uri" ; do
