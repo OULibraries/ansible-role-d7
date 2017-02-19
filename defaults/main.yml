@@ -39,3 +39,6 @@ apc_enabled: "1"
 ## test and prod at aws
 # d7_proxies:
 #  - 127.0.0.1
+
+# Memory needed for Drupal sites
+d7_memory_limit: "128M"
