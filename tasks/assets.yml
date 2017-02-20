@@ -113,6 +113,14 @@
     group: wheel
     mode: 0444
 
+- name: Install php.ini
+  template:
+    src: drush.ini.j2
+    dest: /etc/php.ini
+    mode: 0644
+    owner: root
+    group: wheel    
+
 - name: Ensure /etc/drush exists
   file:
     path: /etc/drush

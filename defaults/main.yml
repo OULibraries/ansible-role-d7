@@ -42,3 +42,6 @@ apc_enabled: "1"
 
 # Memory needed for Drupal sites
 d7_memory_limit: "128M"
+d7_max_filesize: "64M"
+d7_post_max_size: "70M"
+d7_date_timezone: "America/Chicago"
