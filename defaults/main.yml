@@ -40,14 +40,13 @@ apc_enabled: "1"
 # d7_proxies:
 #  - 127.0.0.1
 
-# Memory needed for Drupal sites
+# Drupal related settings
 d7_memory_limit: "128M"
-
 d7_max_filesize: "64M"
 d7_post_max_size: "70M"
-
 d7_date_timezone: "America/Chicago"
 
+# Control of PHP session expiration
 d7_session_cookie_lifetime: "2000000"
 d7_session_gc_probability: "1"
 d7_session_gc_divisor: "100"
