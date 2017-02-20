@@ -42,7 +42,7 @@ apc_enabled: "1"
 
 # Drupal related settings
 d7_memory_limit: "128M"
-d7_max_filesize: "64M"
+d7_upload_max_filesize: "64M"
 d7_post_max_size: "70M"
 d7_date_timezone: "America/Chicago"
 
