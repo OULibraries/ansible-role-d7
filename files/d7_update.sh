@@ -8,7 +8,7 @@ if [  -z "$1" ]; then
 d7_update.sh applies security (only) updates to a drupal site.
 
 Usage: d7_update.sh \$SITEPATH
-            
+
 \$SITEPATH   Drupal site to update.
 USAGE
 
@@ -19,7 +19,16 @@ SITEPATH=$1
 
 echo "Processing $SITEPATH"
 
-## Dump DB before touching anything
+
+# Check for available updates
+UPDATELIST=$(drush -r "${SITEPATH}/drupal" pm-updatestatus --security-only --pipe)
+if [ "" == "${UPDATELIST}" ] ; then
+    echo "No security updates available"
+    exit 0
+fi
+
+
+## dump DB before touching anything
 d7_dump.sh "$SITEPATH" || exit 1;
 
 ## Enable update manager.
@@ -31,12 +40,11 @@ sudo -u apache drush up -y --security-only -r "$SITEPATH/drupal"  --no-backup  |
 ## Disable update manager; no need to leave it phoning home.
 sudo -u apache drush -y dis update -r "$SITEPATH/drupal" || exit 1;
 
-## Clear the caches
+## Make sure any updated php is readable
+d7_perms.sh "$SITEPATH/drupal"
+
+## Make sure new code is loaded
 d7_cc.sh "$SITEPATH"
 
 ## Avoid a known performance-crusher in our environment
 sudo -u apache drush eval 'variable_set('drupal_http_request_fails', 0)' -r "$SITEPATH/drupal" || exit 1;
-
-## settings.php is protected.
-sudo -u apache chmod ug=r,o= "$SITEPATH/default/settings.php" 2>/dev/null || \
-chmod ug=r,o= "$SITEPATH/default/settings.php"

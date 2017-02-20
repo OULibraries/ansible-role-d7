@@ -21,6 +21,7 @@ SITEPATH="$(realpath  --canonicalize-missing --no-symlinks $1)"
 MASTERPATH=${SITEPATH}  # default to site being it's own master
 SITETYPE=master
 
+
 # some sites are subsites
 if [ ! -z "$2" ] && [ ! "${SITEPATH}" == "$2" ]; then
     SITETYPE="sub"
@@ -44,6 +45,7 @@ echo "Initializing ${SITETYPE} site at ${SITEPATH}."
 
 # Get external host suffix (rev proxy, ngrok, etc)
 read -r -e -p "Enter host suffix: " -i "$D7_HOST_SUFFIX" MY_HOST_SUFFIX
+
 
 # By default, we're operating at the root for a domain
 SUBPATH="";
@@ -93,8 +95,7 @@ if [ "$SITETYPE" == "sub" ]; then
     echo "${SITEPATH}" >> "${MASTERPATH}/etc/subsites"
 fi
 
-
-## Build from drush make
+## Install drupal core
 sudo -u apache drush @none -y dl drupal --drupal-project-rename=drupal --destination="$SITEPATH" || exit 1;
 
 ##  Move the default site out of the build. This makes updates easier later.
@@ -145,8 +146,8 @@ sudo -u apache drush -y -r "$SITEPATH/drupal" site-install --site-name="$SITE" |
 ## Apply the apache config
 d7_httpd_conf.sh "$SITEPATH" "$SITETYPE" || exit 1;
 
-## Apply security updates and clear caches.
-d7_update.sh "$SITEPATH" || exit 1;
+## Clear caches.
+d7_cc.sh "$SITEPATH" || exit 1;
 
 # Apply our standard permissions to the new site
 d7_perms_fix.sh "$SITEPATH"
