@@ -90,6 +90,9 @@ ${SRV_SITE_CONF}
     RewriteBase /${SUBSITE}
     Include /etc/httpd/conf.d/drupal.include
   </Directory>
+
+  Include /etc/httpd/conf.d/drupal-files.include
+
 EOF
   done
 
