@@ -32,13 +32,16 @@
     - d7_sync.sh
     - d7_update.sh
 
-- name: Install Drupal Apache include
+- name: Install Drupal Apache includes
   copy:
-    src: drupal.include
+    src: "{{ item }}"
     dest: /etc/httpd/conf.d/
     mode: 0644
     owner: root
     group: wheel
+  with_items:
+    - drupal.include
+    - drupal-files.include
 
 - name: Install cron scripts
   copy:
