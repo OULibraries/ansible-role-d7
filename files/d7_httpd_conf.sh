@@ -70,6 +70,9 @@ if [ "$SITETYPE" == "master" ]; then
     AllowOverride None
     Include /etc/httpd/conf.d/drupal.include
   </Directory>
+
+  Include /etc/httpd/conf.d/drupal-files.include
+
 EOF
 
   for SUBSITEPATH in $( cat "${SITEPATH}/etc/subsites" ); do
