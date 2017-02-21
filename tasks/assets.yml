@@ -115,7 +115,7 @@
 
 - name: Install php.ini
   template:
-    src: drush.ini.j2
+    src: php.ini.j2
     dest: /etc/php.ini
     mode: 0644
     owner: root
