@@ -4,30 +4,30 @@
 source /opt/d7/etc/d7_conf.sh
 
 ## Require arguments
-if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ] ; then 
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ] ; then
     cat <<USAGE
 d7_migrate.sh migrates a site between hosts.
 
-Usage: d7_migrate.sh \$SITEPATH \$SRCHOST \$ORIGIN_SITEPATH [\$SITE_TYPE]
+Usage: d7_migrate.sh \$SITEPATH \$SRCHOST \$ORIGIN_SITEPATH [\$MASTERPATH]
 
-\$SITEPATH          local Drupal path for new migrated site
-\$SRCHOST           host of site to migrate    
-\$ORIGIN_SITEPATH   path of site to migrate on \$SRCHOST  
-\$SITE_TYPE  optional argument, standalone (default), master, or sub. 
+\$SITEPATH          local path for Drupal site (eg. /srv/example).
+\$SRCHOST           host of site to migrate
+\$ORIGIN_SITEPATH   remote path of site to migrate on \$SRCHOST
+\$MASTERPATH        (optional) local path to master site
 USAGE
     exit 1;
 fi
 
 SITEPATH=$1
+MASTERSITE=${SITEPATH}
+SITETYPE=master
+
 SRCHOST=$2
 ORIGIN_SITEPATH=$3
 
 if [ ! -z "$4" ]; then
-  if [ "$4" == "standalone" ] || [ "$4" == "master" ] || [ "$4" == "sub" ]; then
-    SITE_TYPE=$4
-  fi
-else
-    SITE_TYPE=standalone
+    SITETYPE="sub"
+    MASTERSITE="$4"
 fi
 
 if [  -e "$SITEPATH" ]; then
@@ -37,8 +37,8 @@ fi
 
 echo "Migrating site to ${SITEPATH} from ${SRCHOST} path ${ORIGIN_SITEPATH}."
 
-# Build an empty site 
-d7_init.sh "$SITEPATH" "$SITE_TYPE" || exit 1
+# Build an empty site
+d7_init.sh "$SITEPATH" "$MASTERSITE" || exit 1
 
 echo "Copying makefiles!"
 for file in "site.make" "site.make.uri" ; do

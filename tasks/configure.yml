@@ -16,32 +16,6 @@
     state: present
     dest: /etc/httpd/conf/httpd.conf
     line: "IncludeOptional \"/srv/*/etc/*.conf\""
-- name: Set upload_max_filesize
-  replace:
-    dest: /etc/php.ini
-    regexp: >
-      ^upload_max_filesize = 2M$
-    replace: "upload_max_filesize = 64M"
-- name: Set post_max_size
-  replace:
-    dest: /etc/php.ini
-    regexp: >
-      ^post_max_size = 8M$
-    replace: "post_max_size = 70M"
-
-- name: Set php.ini memory_limit
-  replace:
-    dest: /etc/php.ini
-    regexp: >
-      ^memory_limit = .*$
-    replace: "memory_limit = {{ d7_memory_limit }}"
-    
-- name: Set PHP timezone
-  replace:
-    dest: /etc/php.ini
-    regexp: >
-      ^;date.timezone =$
-    replace: "date.timezone = America/Chicago"
 
 - name: Ensure /etc/profile.d/d7-ops.sh exists
   file:
