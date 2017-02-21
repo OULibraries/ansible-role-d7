@@ -50,3 +50,6 @@ d7_date_timezone: "America/Chicago"
 d7_session_cookie_lifetime: "2000000"
 d7_session_gc_probability: "1"
 d7_session_gc_divisor: "100"
+
+# D7 CAS Host
+d7_cas: ""
