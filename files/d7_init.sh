@@ -65,6 +65,9 @@ read -r -e -p "Enter base URL without trailing slash: " -i "${BASE_URL}" MY_BASE
 # Get cookie domain. Default is site name, but may need to be changed for SSO.
 read -r -e -p "Enter cookie domain: " -i "${COOKIE_DOMAIN}" MY_COOKIE_DOMAIN
 
+# Get CAS host.
+read -r -e -p "Enter CAS server: " -i "${D7_CAS}" MY_CAS
+
 # Get mysql host
 read -r -e -p "Enter MYSQL host name: " -i "$D7_DBHOST" MY_DBHOST
 
@@ -131,6 +134,9 @@ read -r -d '' SETTINGSPHP <<- EOF
 
 ## Include reverse proxy config (empty if no proxy)
 include '/opt/d7/etc/d7_proxy.inc.php';
+
+## Set CAS config
+\$conf['cas_server'] = '${MY_CAS}';
 
 EOF
 
