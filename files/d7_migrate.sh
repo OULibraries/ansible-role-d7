@@ -35,6 +35,12 @@ if [  -e "$SITEPATH" ]; then
     exit 1;
 fi
 
+if [[ ! "$ORIGIN_SITEPATH" == $(ssh "${SRCHOST}" "ls -d  ${ORIGIN_SITEPATH}") ]]; then
+    echo "Can't find remote site at ${ORIGIN_SITEPATH} on ${SRCHOST}."
+    echo "Verify the hostname and remote site."
+    exit 1;
+fi
+
 echo "Migrating site to ${SITEPATH} from ${SRCHOST} path ${ORIGIN_SITEPATH}."
 
 # Build an empty site
