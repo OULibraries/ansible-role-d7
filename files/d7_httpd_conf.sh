@@ -49,7 +49,7 @@ echo "Generating Apache config for ${SITEPATH}."
 sudo -u apache mkdir -p "$SITEPATH/etc"
 
 if [ "$SITETYPE" == "master" ]; then
-  echo "Generating ${SITEPATH}/etc/srv_${SITE}.conf with additional subsite information."
+  echo "Generating master site config ${SITEPATH}/etc/srv_${SITE}.conf ."
 
   # Start off normally
   read -r -d '' SRV_SITE_CONF <<- EOF
@@ -75,8 +75,20 @@ if [ "$SITETYPE" == "master" ]; then
 
 EOF
 
-  for SUBSITEPATH in $( cat "${SITEPATH}/etc/subsites" ); do
-      SUBSITE=$(basename "$SUBSITEPATH")
+
+  [ -e "${SITEPATH}/etc/subsites" ] && SUBSITEPATHS=$( find "${SITEPATH}/etc/subsites" -print )
+
+  for SUBSITEPATH in $SUBSITEPATHS ; do
+
+      SUBSITE=$(basename "${SUBSITEPATH}")
+      echo "Adding subsite ${SUBSITE}"
+
+      if [ ! -e "${SUBSITEPATH}" ]; then
+	  echo "... no site found at ${SUBSITEPATH}, removing."
+	  unlink "${SITEPATH}/etc/subsites/${SUBSITE}"
+	  continue;
+      fi
+
       read -r -d '' SRV_SITE_CONF <<- EOF
 
 ${SRV_SITE_CONF}
