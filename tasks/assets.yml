@@ -97,7 +97,7 @@
 - name: Install httpd template file
   copy:
     src: d7_init_httpd_template
-    dest: /opt/d7/etc
+    dest: /opt/d7/etc/
     owner: apache
     group: wheel
     mode: 0444
@@ -108,7 +108,7 @@
     dest: /opt/d7/etc/
     owner: apache
     group: wheel
-    mode: 0444
+    mode: 0644
 
 
 - name: Install d7 config
