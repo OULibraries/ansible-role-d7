@@ -96,7 +96,7 @@ sudo -u apache chmod 775 "$SITEPATH"
 if [ "$SITETYPE" == "sub" ]; then
     echo "Register with master at ${MASTERPATH}."
     mkdir -v -p "${MASTERPATH}/etc/subsites"
-    ln -v -s "${SITEPATH}" "${MASTERPATH}/etc/subsites/${SITE}"
+    touch "${MASTERPATH}/etc/subsites/${SITE}"
 fi
 
 ## Install drupal core

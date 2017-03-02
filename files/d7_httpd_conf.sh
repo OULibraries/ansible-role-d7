@@ -76,16 +76,15 @@ if [ "$SITETYPE" == "master" ]; then
 EOF
 
 
-  [ -e "${SITEPATH}/etc/subsites" ] && SUBSITEPATHS=$( find "${SITEPATH}/etc/subsites" -print )
+  [ -e "${SITEPATH}/etc/subsites" ] && SUBSITES=$( ls "${SITEPATH}/etc/subsites" )
 
-  for SUBSITEPATH in $SUBSITEPATHS ; do
+  for SUBSITE in $SUBSITES ; do
 
-      SUBSITE=$(basename "${SUBSITEPATH}")
       echo "Adding subsite ${SUBSITE}"
 
-      if [ ! -e "${SUBSITEPATH}" ]; then
-	  echo "... no site found at ${SUBSITEPATH}, removing."
-	  unlink "${SITEPATH}/etc/subsites/${SUBSITE}"
+      if [ ! -d "/srv/${SUBSITE}" ]; then
+	  echo "... no site found at /srv/${SUBSITE}, removing from config."
+	  rm "${SITEPATH}/etc/subsites/${SUBSITE}"
 	  continue;
       fi
 
