@@ -141,7 +141,7 @@ include '/opt/d7/etc/d7_proxy.inc.php';
 
 EOF
 
-sudo -u apache cp "$SITEPATH/default/default.settings.php" "$SITEPATH/default/settings.php"
+sudo -u apache cp "/opt/d7/etc/default.settings.php" "$SITEPATH/default/settings.php"
 sudo -u apache echo "$SETTINGSPHP"| sudo -u apache tee -a "$SITEPATH/default/settings.php" >/dev/null
 
 ## Create the Drupal database
