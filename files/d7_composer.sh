@@ -8,7 +8,7 @@ if [  -z "$1" ]; then
 d7_composer.sh runs composer for a site
 
 Usage: d7_composer.sh \$SITEPATH
-            
+
 \$SITEPATH  Drupal site  (eg. /srv/example).
 
 USAGE
@@ -22,8 +22,6 @@ if [[ ! -e "$SITEPATH" ]] ;then
     exit 0
 fi
 
-
-
 echo "Verify vendor folder for ${SITEPATH}"
 mkdir -p "${SITEPATH}/vendor" || exit 0
 
@@ -34,9 +32,11 @@ if [[ ! -d "$SITEPATH/drupal/sites/all/modules/composer_manager" ]] ;then
     exit 0
 fi
 
-drush -r "${SITEPATH}/drupal" composer-json-rebuild
+# update site composer.json
+sudo -u apache drush -r "${SITEPATH}/drupal" composer-json-rebuild
 
+# Install php dependencies
 (cd "${SITEPATH}/etc" && /opt/php/bin/composer.phar install)
 
-
+# Strict permissions for php code
 d7_perms.sh "$SITEPATH/vendor"
