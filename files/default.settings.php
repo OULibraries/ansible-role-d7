@@ -628,3 +628,9 @@ $conf['404_fast_html'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
  * @see drupal_clean_css_identifier()
  */
 # $conf['allow_css_double_underscores'] = TRUE;
+
+# Set recommended Composer Manager default settings
+# See https://www.drupal.org/node/2405805
+$conf['composer_manager_vendor_dir'] = '../vendor';
+$conf['composer_manager_file_dir'] = '../etc';
+

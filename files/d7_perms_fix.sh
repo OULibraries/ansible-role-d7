@@ -19,9 +19,10 @@ SITEPATH=$1
 
 echo "Fixing permissions for ${SITEPATH}."
 
-# Set strict perms for drupal code in prod
+# Set strict perms for code in prod
 d7_perms.sh "$SITEPATH/drupal"
 d7_perms.sh "$SITEPATH/drupal_bak"
+d7_perms.sh "$SITEPATH/vendor"
 
 # Set more liberal perms for config and content 
 d7_perms.sh --sticky "$SITEPATH/db"
