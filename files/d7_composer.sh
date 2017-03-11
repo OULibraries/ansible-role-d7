@@ -5,7 +5,7 @@ source /opt/d7/etc/d7_conf.sh
 
 if [  -z "$1" ]; then
   cat <<USAGE
-d7_composer.sh runs composer for a site
+d7_composer.sh installs or updates composer-managed dependencies for a site.
 
 Usage: d7_composer.sh \$SITEPATH
 
