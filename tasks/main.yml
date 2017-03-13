@@ -1,17 +1,17 @@
 ---
 - include: yum.yml
-  sudo: yes
+  become: true
 
 - include: pear.yml
-  sudo: yes
+  become: true
 
 - include: configure.yml
-  sudo: yes
+  become: true
 
 - include: composer.yml
-  sudo: yes
+  become: true
   tags: composer
 
 - include: assets.yml
-  sudo: yes
+  become: true
   tags: assets
