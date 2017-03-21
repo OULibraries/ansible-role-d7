@@ -18,6 +18,7 @@
   with_items:
     - d7_cc.sh
     - d7_clean.sh
+    - d7_composer.sh
     - d7_dump.sh
     - d7_httpd_conf.sh
     - d7_importdb.sh

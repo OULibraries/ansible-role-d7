@@ -21,6 +21,16 @@ Usage: d7_clean.sh $SITEPATH
 $SITEPATH  Drupal site to remove (eg. /srv/example).
 ```
 
+### d7_composer.sh
+
+```
+d7_composer.sh installs or updates composer-managed dependencies for a site.
+
+Usage: d7_composer.sh $SITEPATH
+            
+$SITEPATH  Drupal site  (eg. /srv/example).
+```
+
 ### d7_dump.sh
 
 
