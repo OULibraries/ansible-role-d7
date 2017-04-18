@@ -19,7 +19,7 @@ fi
 SITEPATH=$1
 DOW=$2
 SITE=$(basename "$SITEPATH")
-SNAPSHOTFILE="${SITEPATH}/snapshots/${SITE}.${DOW}.tar"
+SNAPSHOTFILE="${SITEPATH}/snapshots/${SITE}.${DOW}.tar.gz"
 
 if [ ! -d "$SITEPATH" ]; then
     echo "${SITEPATH} doesn't exist, nothing to restore."
@@ -42,7 +42,7 @@ echo "Restoring ${DOW} snapshot of ${SITEPATH}."
 
 # Tarballs include the $SITE folder, so we need to strip that off
 # whene extracting
-sudo -u apache tar -xvf  "${SNAPSHOTFILE}" -C "${SITEPATH}" --strip-components=1 --no-overwrite-dir
+sudo -u apache tar -xvzf  "${SNAPSHOTFILE}" -C "${SITEPATH}" --strip-components=1 --no-overwrite-dir
 
 echo "Files from snapshot restored." 
 echo "Now run d7_importdb.sh ${SITEPATH} to restore the db for the site."

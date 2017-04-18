@@ -5,13 +5,13 @@ source /opt/d7/etc/d7_conf.sh
 
 if [  -z "$1" ]; then
     cat <<USAGE
-d7_snapshot.sh creates a db dump and tar backup for a site.
+d7_snapshot.sh creates a db dump and tar GZip backup for a site.
 
 Usage: d7_snapshot.sh \$SITEPATH
             
-\$SITEPATH   Drupal site to tar (eg. /srv/example).
+\$SITEPATH   Drupal site to tar GZip (eg. /srv/example).
 
-Backups will be stored at $SITEPATH/snapshots/$SITE.$DOW.tar. $DOW is
+Backups will be stored at $SITEPATH/snapshots/$SITE.$DOW.tar.gz. $DOW is
 the lowercase day-of-week abbreviation for the current day.
 
 USAGE
@@ -39,6 +39,6 @@ sudo -u apache mkdir -p "$SNAPSHOTDIR"
 d7_perms.sh "$SNAPSHOTDIR"
 
 # Tar files required to rebuild, with $SITE as TLD inside tarball. 
-sudo -u apache tar -cf "$SNAPSHOTDIR/$SITE.$DOW.tar" -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files"
+sudo -u apache tar -czf "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files"
 
-echo "Snapshot created at ${SNAPSHOTDIR}/${SITE}.${DOW}.tar"
+echo "Snapshot created at ${SNAPSHOTDIR}/${SITE}.${DOW}.tar.gz"

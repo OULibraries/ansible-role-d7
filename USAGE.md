@@ -150,7 +150,7 @@ Usage: d7_snapshot.sh $SITEPATH
             
 $SITEPATH   Drupal site to tar (eg. /srv/example).
 
-Backups will be stored at /snapshots/..tar.  is
+Backups will be stored at /snapshots/..tar.gz.  is
 the lowercase day-of-week abbreviation for the current day.
 ```
 
