@@ -34,11 +34,12 @@ echo "Making ${DOW} snapshot for $SITEPATH"
 d7_dump.sh $SITEPATH
 
 # Make sure we have a place to stick snapshots
-sudo -u apache mkdir -p "$SNAPSHOTDIR"
+#sudo -u apache mkdir -p "$SNAPSHOTDIR"
 
-d7_perms.sh "$SNAPSHOTDIR"
+#d7_perms.sh "$SNAPSHOTDIR"
 
 # Tar files required to rebuild, with $SITE as TLD inside tarball. 
-sudo -u apache tar -czf "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files"
+#sudo -u apache tar -czf "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files"
+sudo -u apache tar -cf - -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files" | gzip --stdout --best | aws s3 cp - "$SNAPSHOTDIR/$SITE.${D7_HOST_SUFFIX}.$DOW.tar.gz" --sse
 
-echo "Snapshot created at ${SNAPSHOTDIR}/${SITE}.${DOW}.tar.gz"
+echo "Snapshot created at ${SNAPSHOTDIR}/${SITE}.${D7_HOST_SUFFIX}.${DOW}.tar.gz"
