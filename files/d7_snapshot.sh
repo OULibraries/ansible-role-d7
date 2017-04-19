@@ -20,7 +20,8 @@ fi
 
 SITEPATH=$1
 SITE=$(basename "$SITEPATH")
-SNAPSHOTDIR="$SITEPATH/snapshots"
+#SNAPSHOTDIR="$SITEPATH/snapshots"
+SNAPSHOTDIR=${D7_S3_SNAPSHOT_DIR}
 DOW=$( date +%a | awk '{print tolower($0)}')
 
 if [[ ! -e "$SITEPATH" ]]; then 
