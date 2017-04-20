@@ -4,8 +4,10 @@ PATH=/opt/d7/bin:/opt/php/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 # tag for drupal boxes
 ENV_NAME="{{ environment_name }}"
 
+{% if ((d7_s3_snapshot_base_dir is defined) and (d7_s3_snapshot_base_dir is not none)) %}
 # Directory for S3 snapshots
-D7_S3_SNAPSHOT_DIR="{{ d7_s3_snapshot_base_dir }}/$(/opt/oulib/aws/bin/ec2_get_arn.sh)"
+D7_S3_SNAPSHOT_DIR="{{ d7_s3_snapshot_base_dir }}$(/opt/oulib/aws/bin/ec2_get_arn.sh)"
+{% endif %}
 
 # Public facing host name
 D7_HOST_SUFFIX="{{httpd_dn_suffix}}"
