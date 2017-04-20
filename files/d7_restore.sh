@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 ## Deploy drupal site from drush make
 
+source /opt/d7/etc/d7_conf.sh
+
 ## Require arguments
 if [  -z "$1" ]; then
     cat <<USAGE
@@ -20,7 +22,7 @@ SITEPATH=$1
 DOW=$2
 SITE=$(basename "$SITEPATH")
 #SNAPSHOTFILE="${SITEPATH}/snapshots/${SITE}.${DOW}.tar.gz"
-SNAPSHOTFILE="${D7_S3_SNAPSHOT_DIR}/${SITE}.${DOW}.${D7_HOST_SUFFIX}.tar.gz"
+SNAPSHOTFILE="${D7_S3_SNAPSHOT_DIR}${SITE}.${D7_HOST_SUFFIX}.${DOW}.tar.gz"
 
 if [ ! -d "$SITEPATH" ]; then
     echo "${SITEPATH} doesn't exist, nothing to restore."
@@ -31,21 +33,21 @@ if [ -z "${DOW}" ]; then
     echo "No snapshot specified."
     echo "The following snapshots exist:"
 #    ls "${SITEPATH}/snapshots/"
-    aws s3 ls '${D7_S3_SNAPSHOT_DIR}'
+    aws s3 ls "${D7_S3_SNAPSHOT_DIR}"
     exit 0
 fi
 
-if [ ! -f "$SNAPSHOTFILE" ]; then
-    echo "No snapshot at ${SNAPSHOTFILE}"
-    exit 0
-fi
+#if [ ! -f "$SNAPSHOTFILE" ]; then
+#    echo "No snapshot at ${SNAPSHOTFILE}"
+#    exit 0
+#fi
 
 echo "Restoring ${DOW} snapshot of ${SITEPATH}."
 
 # Tarballs include the $SITE folder, so we need to strip that off
 # whene extracting
 #sudo -u apache tar -xvzf  "${SNAPSHOTFILE}" -C "${SITEPATH}" --strip-components=1 --no-overwrite-dir
-sudo -u apache bash -c "aws s3 cp '${SNAPSHOTFILE}' - | tar -xvzf - -C '${SITEPATH}' --strip-components=1 --no-overwrite-dir"
+sudo -u apache bash -c "aws s3 cp '${SNAPSHOTFILE}' - | tar -xvzf - -C '${SITEPATH}' --strip-components=1 --no-overwrite-dir" || exit 1;
 
 echo "Files from snapshot restored." 
 echo "Now run d7_importdb.sh ${SITEPATH} to restore the db for the site."

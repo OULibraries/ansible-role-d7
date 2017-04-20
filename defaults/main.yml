@@ -52,7 +52,7 @@ d7_session_gc_probability: "1"
 d7_session_gc_divisor: "100"
 d7_session_gc_maxlifetime: "1440"
 
-# Target aws s3 bucket and prefix for d7 site snapshots
+# Target aws s3 bucket and prefix for d7 site snapshots. Should end with /
 d7_s3_snapshot_base_dir: !!null
 
 # D7 CAS Host
