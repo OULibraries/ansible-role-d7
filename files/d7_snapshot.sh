@@ -20,8 +20,6 @@ fi
 
 SITEPATH=$1
 SITE=$(basename "$SITEPATH")
-#SNAPSHOTDIR="$SITEPATH/snapshots"
-SNAPSHOTDIR=${D7_S3_SNAPSHOT_DIR}
 DOW=$( date +%a | awk '{print tolower($0)}')
 
 if [[ ! -e "$SITEPATH" ]]; then 
@@ -34,13 +32,20 @@ echo "Making ${DOW} snapshot for $SITEPATH"
 # Make a db backup in case the latest one is old
 d7_dump.sh $SITEPATH
 
-# Make sure we have a place to stick snapshots
-#sudo -u apache mkdir -p "$SNAPSHOTDIR"
+# If we don't have a target s3 bucket, use the local filesystem.
+if [ -z ${D7_S3_SNAPSHOT_DIR+x} ]; then
+    SNAPSHOTDIR="$SITEPATH/snapshots"
 
-#d7_perms.sh "$SNAPSHOTDIR"
+    # Make sure we have a place to stick snapshots
+    sudo -u apache mkdir -p "$SNAPSHOTDIR"
+    d7_perms.sh "$SNAPSHOTDIR"
 
-# Tar files required to rebuild, with $SITE as TLD inside tarball. 
-#sudo -u apache tar -czf "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files"
-sudo -u apache tar -cf - -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files" | gzip --stdout --best | aws s3 cp - "$SNAPSHOTDIR/$SITE.${D7_HOST_SUFFIX}.$DOW.tar.gz" --sse
+    # Tar files required to rebuild, with $SITE as TLD inside tarball. 
+    sudo -u apache tar -czf "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files"
+# Otherwise use aws s3
+else
+    SNAPSHOTDIR=${D7_S3_SNAPSHOT_DIR}
+    sudo -u apache tar -cf - -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files" | gzip --stdout --best | aws s3 cp - "$SNAPSHOTDIR/$SITE.${D7_HOST_SUFFIX}.$DOW.tar.gz" --sse
+fi
 
 echo "Snapshot created at ${SNAPSHOTDIR}/${SITE}.${D7_HOST_SUFFIX}.${DOW}.tar.gz"

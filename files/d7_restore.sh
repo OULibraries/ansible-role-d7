@@ -21,33 +21,59 @@ fi
 SITEPATH=$1
 DOW=$2
 SITE=$(basename "$SITEPATH")
-#SNAPSHOTFILE="${SITEPATH}/snapshots/${SITE}.${DOW}.tar.gz"
-SNAPSHOTFILE="${D7_S3_SNAPSHOT_DIR}${SITE}.${D7_HOST_SUFFIX}.${DOW}.tar.gz"
 
 if [ ! -d "$SITEPATH" ]; then
     echo "${SITEPATH} doesn't exist, nothing to restore."
     exit 0
 fi
 
+
+# If we don't have a target s3 bucket, use the local filesystem.
+if [ -z ${D7_S3_SNAPSHOT_DIR+x} ]; then
+    SNAPSHOTFILE="${SITEPATH}/snapshots/${SITE}.${DOW}.tar.gz"
+
+    # Verify the file is there
+    if [ ! -f "$SNAPSHOTFILE" ]; then
+      echo "No snapshot at ${SNAPSHOTFILE}"
+      exit 0
+    fi
+
+# Otherwise use aws s3
+else
+  SNAPSHOTFILE="${D7_S3_SNAPSHOT_DIR}/${SITE}.${D7_HOST_SUFFIX}.${DOW}.tar.gz"
+fi
+
 if [ -z "${DOW}" ]; then
     echo "No snapshot specified."
     echo "The following snapshots exist:"
-#    ls "${SITEPATH}/snapshots/"
-    aws s3 ls "${D7_S3_SNAPSHOT_DIR}"
+
+    # If we don't have a target s3 bucket, use the local filesystem.
+    if [ -z ${D7_S3_SNAPSHOT_DIR+x} ]; then
+        ls "${SITEPATH}/snapshots/"
+    # Otherwise use aws s3
+		else
+        aws s3 ls "${D7_S3_SNAPSHOT_DIR}"
+		fi
+
     exit 0
 fi
 
-#if [ ! -f "$SNAPSHOTFILE" ]; then
-#    echo "No snapshot at ${SNAPSHOTFILE}"
-#    exit 0
-#fi
-
 echo "Restoring ${DOW} snapshot of ${SITEPATH}."
 
+# If we don't have a target s3 bucket, use the local filesystem.
+if [ -z ${D7_S3_SNAPSHOT_DIR+x} ]; then
+
 # Tarballs include the $SITE folder, so we need to strip that off
-# whene extracting
-#sudo -u apache tar -xvzf  "${SNAPSHOTFILE}" -C "${SITEPATH}" --strip-components=1 --no-overwrite-dir
-sudo -u apache bash -c "aws s3 cp '${SNAPSHOTFILE}' - | tar -xvzf - -C '${SITEPATH}' --strip-components=1 --no-overwrite-dir" || exit 1;
+    # when extracting
+    sudo -u apache tar -xvzf  "${SNAPSHOTFILE}" -C "${SITEPATH}" --strip-components=1 --no-overwrite-dir
+# Otherwise use aws s3
+else
+
+    # Tarballs include the $SITE folder, so we need to strip that off
+    # when extracting
+    sudo -u apache bash -c "aws s3 cp '${SNAPSHOTFILE}' - | tar -xvzf - -C '${SITEPATH}' --strip-components=1 --no-overwrite-dir" || exit 1;
+fi
+
 
 echo "Files from snapshot restored." 
 echo "Now run d7_importdb.sh ${SITEPATH} to restore the db for the site."
