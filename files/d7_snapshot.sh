@@ -11,7 +11,7 @@ Usage: d7_snapshot.sh \$SITEPATH
             
 \$SITEPATH   Drupal site to tar GZip (eg. /srv/example).
 
-Backups will be stored at $SITEPATH/snapshots/$SITE.$DOW.tar.gz. $DOW is
+Backups will be stored at $SITEPATH/snapshots/$SITE.${D7_HOST_SUFFIX}.$DOW.tar.gz. $DOW is
 the lowercase day-of-week abbreviation for the current day.
 
 USAGE
@@ -41,7 +41,7 @@ if [ -z ${D7_S3_SNAPSHOT_DIR+x} ]; then
     d7_perms.sh "$SNAPSHOTDIR"
 
     # Tar files required to rebuild, with $SITE as TLD inside tarball. 
-    sudo -u apache tar -czf "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files"
+    sudo -u apache tar -czf "$SNAPSHOTDIR/$SITE.${D7_HOST_SUFFIX}.${DOW}.tar.gz" -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files"
 # Otherwise use aws s3
 else
     SNAPSHOTDIR=${D7_S3_SNAPSHOT_DIR}
