@@ -30,7 +30,7 @@ fi
 
 # If we don't have a target s3 bucket, use the local filesystem.
 if [ -z ${D7_S3_SNAPSHOT_DIR+x} ]; then
-    SNAPSHOTFILE="${SITEPATH}/snapshots/${SITE}.${DOW}.tar.gz"
+    SNAPSHOTFILE="${SITEPATH}/snapshots/${SITE}.${D7_HOST_SUFFIX}.${DOW}.tar.gz"
 
     # Verify the file is there
     if [ ! -f "$SNAPSHOTFILE" ]; then
