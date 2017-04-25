@@ -33,10 +33,10 @@ if [ -z "${DOW}" ]; then
 
   # If we don't have a target s3 bucket, use the local filesystem.
   if [ -z "${D7_S3_SNAPSHOT_DIR}" ]; then
-    ls "${SITEPATH}/snapshots/"
+    ls --human-readable --full-time -t --reverse "${SITEPATH}/snapshots/" | cut -d ' ' -f 5,6,7,9
   # Otherwise use aws s3. Trailing slash required.
   else
-    aws s3 ls "${D7_S3_SNAPSHOT_DIR}/"
+    aws s3 ls --human-readable "${D7_S3_SNAPSHOT_DIR}/" | grep "${SITE}" | sort
   fi
 
   exit 0
