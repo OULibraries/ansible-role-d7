@@ -23,45 +23,44 @@ DOW=$2
 SITE=$(basename "$SITEPATH")
 
 if [ ! -d "$SITEPATH" ]; then
-    echo "${SITEPATH} doesn't exist, nothing to restore."
-    exit 0
+  echo "${SITEPATH} doesn't exist, nothing to restore."
+  exit 0
 fi
 
+if [ -z "${DOW}" ]; then
+  echo "No snapshot specified."
+  echo "The following snapshots exist:"
+
+  # If we don't have a target s3 bucket, use the local filesystem.
+  if [ -z "${D7_S3_SNAPSHOT_DIR}" ]; then
+    ls "${SITEPATH}/snapshots/"
+  # Otherwise use aws s3
+  else
+    aws s3 ls "${D7_S3_SNAPSHOT_DIR}"
+  fi
+
+  exit 0
+fi
 
 # If we don't have a target s3 bucket, use the local filesystem.
-if [ -z ${D7_S3_SNAPSHOT_DIR+x} ]; then
-    SNAPSHOTFILE="${SITEPATH}/snapshots/${SITE}.${D7_HOST_SUFFIX}.${DOW}.tar.gz"
+if [ -z "${D7_S3_SNAPSHOT_DIR}" ]; then
+  SNAPSHOTFILE="${SITEPATH}/snapshots/${SITE}.${D7_HOST_SUFFIX}.${DOW}.tar.gz"
 
-    # Verify the file is there
-    if [ ! -f "$SNAPSHOTFILE" ]; then
-      echo "No snapshot at ${SNAPSHOTFILE}"
-      exit 0
-    fi
+  # Verify the file is there
+  if [ ! -f "$SNAPSHOTFILE" ]; then
+    echo "No snapshot at ${SNAPSHOTFILE}"
+    exit 0
+  fi
 
 # Otherwise use aws s3
 else
   SNAPSHOTFILE="${D7_S3_SNAPSHOT_DIR}/${SITE}.${D7_HOST_SUFFIX}.${DOW}.tar.gz"
 fi
 
-if [ -z "${DOW}" ]; then
-    echo "No snapshot specified."
-    echo "The following snapshots exist:"
-
-    # If we don't have a target s3 bucket, use the local filesystem.
-    if [ -z ${D7_S3_SNAPSHOT_DIR+x} ]; then
-        ls "${SITEPATH}/snapshots/"
-    # Otherwise use aws s3
-		else
-        aws s3 ls "${D7_S3_SNAPSHOT_DIR}"
-		fi
-
-    exit 0
-fi
-
 echo "Restoring ${DOW} snapshot of ${SITEPATH}."
 
 # If we don't have a target s3 bucket, use the local filesystem.
-if [ -z ${D7_S3_SNAPSHOT_DIR+x} ]; then
+if [ -z "${D7_S3_SNAPSHOT_DIR}" ]; then
 
 # Tarballs include the $SITE folder, so we need to strip that off
     # when extracting

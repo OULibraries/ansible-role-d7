@@ -33,7 +33,7 @@ echo "Making ${DOW} snapshot for $SITEPATH"
 d7_dump.sh $SITEPATH
 
 # If we don't have a target s3 bucket, use the local filesystem.
-if [ -z ${D7_S3_SNAPSHOT_DIR+x} ]; then
+if [ -z "${D7_S3_SNAPSHOT_DIR}" ]; then
     SNAPSHOTDIR="$SITEPATH/snapshots"
 
     # Make sure we have a place to stick snapshots
