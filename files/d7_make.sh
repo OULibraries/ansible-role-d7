@@ -7,7 +7,7 @@ if [  -z "$1" ]; then
   cat <<USAGE
 d7_make.sh applies a Drupal makefile to a Drupal site. 
 
-Usage: d7_init.sh \$SITEPATH [$MAKEURI]
+Usage: d7_init.sh \$SITEPATH [\$MAKEURI]
             
 \$SITEPATH  Drupal site (eg. /srv/example).
 \$MAKEFILE  URI of Drupal makefike. Can be a file:// uri.

@@ -39,3 +39,21 @@ apc_enabled: "1"
 ## test and prod at aws
 # d7_proxies:
 #  - 127.0.0.1
+
+# Drupal related settings
+d7_memory_limit: "128M"
+d7_upload_max_filesize: "64M"
+d7_post_max_size: "70M"
+d7_date_timezone: "America/Chicago"
+
+# Control of PHP session expiration
+d7_session_cookie_lifetime: "0"
+d7_session_gc_probability: "1"
+d7_session_gc_divisor: "100"
+d7_session_gc_maxlifetime: "1440"
+
+# Target aws s3 bucket and prefix for d7 site snapshots. Should end with /
+d7_s3_snapshot_base_dir: !!null
+
+# D7 CAS Host
+d7_cas: ""

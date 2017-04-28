@@ -21,6 +21,16 @@ Usage: d7_clean.sh $SITEPATH
 $SITEPATH  Drupal site to remove (eg. /srv/example).
 ```
 
+### d7_composer.sh
+
+```
+d7_composer.sh installs or updates composer-managed dependencies for a site.
+
+Usage: d7_composer.sh $SITEPATH
+            
+$SITEPATH  Drupal site  (eg. /srv/example).
+```
+
 ### d7_dump.sh
 
 
@@ -140,7 +150,7 @@ Usage: d7_snapshot.sh $SITEPATH
             
 $SITEPATH   Drupal site to tar (eg. /srv/example).
 
-Backups will be stored at /snapshots/..tar.  is
+Backups will be stored at /snapshots/..tar.gz.  is
 the lowercase day-of-week abbreviation for the current day.
 ```
 

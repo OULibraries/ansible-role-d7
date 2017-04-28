@@ -13,6 +13,7 @@
     - php-gd
     - php-soap
     - php-mbstring
+    - php-pear-CAS
     - mariadb
     - gcc
 

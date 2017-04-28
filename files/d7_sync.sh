@@ -10,12 +10,12 @@ d7_synch.sh syncs content files and database from a remote site to a
 local Drupal site, creating it if it doesn't exist.
 
 Usage: d7_sync.sh \$SITEPATH \$SRCHOST [\$ORIGIN_SITEPATH]
-    
+
 \$SITEPATH         local target of the sync
-\$SRCHOST          host from which to sync  
-\$ORIGIN_SITEPATH  optional argument, path to sync on the remote host. 
-                   \$SITEPATH will be used if a different $ORIGIN_SITEPATH 
-                   is not specified. 
+\$SRCHOST          host from which to sync
+\$ORIGIN_SITEPATH  optional argument, path to sync on the remote host.
+		   \$SITEPATH will be used if a different $ORIGIN_SITEPATH
+		   is not specified.
 USAGE
 
   exit 1;
@@ -24,7 +24,7 @@ fi
 SITEPATH=$1
 SRCHOST=$2
 if [ ! -z "$3" ]; then
-    ORIGIN_SITEPATH=$3 
+    ORIGIN_SITEPATH=$3
 else
     ORIGIN_SITEPATH=$SITEPATH
 fi
@@ -40,22 +40,22 @@ if [[ ! -e $SITEPATH ]]; then
     d7_init.sh "$SITEPATH" || exit 1;
 fi
 
-
 ## Drupal default site dir is ~ 6770
 d7_perms.sh --sticky "$SITEPATH/default"
 
 ## Make the sync directory
+echo "Prepare sync destination."
 sudo -u apache mkdir -p "$SITEPATH/default/files_sync"
-echo "Setting permissions for synced files."
 d7_perms.sh --sticky "$SITEPATH/default/files_sync"
 
 ## Sync Files to writable directory (sudo would break ssh)
+echo "Begin syncing."
 RSOPTS="--verbose --recursive --links  --compress"
-rsync  $RSOPTS  "$SRCHOST:$ORIGIN_SITEPATH/default/files/" "$SITEPATH/default/files_sync" | while read $RSFILE; do printf "."; done; 
+rsync  $RSOPTS  "$SRCHOST:$ORIGIN_SITEPATH/default/files/" "$SITEPATH/default/files_sync" | while read $RSFILE; do printf "."; done;
 echo "Files synced."
 
 ## Set perms for sync directory
-echo "Setting permissions for synced files."
+echo "Set permissions for synced files."
 d7_perms.sh --sticky "$SITEPATH/default/files_sync"
 
 ## Now that everything is ready, swap in the synced files
