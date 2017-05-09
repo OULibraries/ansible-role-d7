@@ -46,7 +46,7 @@ See the full [USAGE](./USAGE.md) file for more usage information.
 License
 -------
 
-TBD
+[MIT](https://github.com/OULibraries/ansible-role-d7/blob/master/LICENSE)
 
 Author Information
 ------------------
