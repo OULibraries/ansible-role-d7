@@ -3,6 +3,7 @@
   become: yes
   become_user: composer
   shell: |
+    source scl_source enable rh-php56
     /opt/php/bin/composer.phar init --require=drush/drush:7.* -n
     /opt/php/bin/composer.phar config bin-dir /opt/php/bin
     /opt/php/bin/composer.phar install

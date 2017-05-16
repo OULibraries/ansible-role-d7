@@ -5,6 +5,7 @@
     - httpd_can_connect_ldap
     - httpd_can_network_connect
     - httpd_can_sendmail
+
 - name: Allow apache group to view httpd log files
   file:
     path: /var/log/httpd
@@ -29,3 +30,16 @@
     state: present
     dest: /etc/profile.d/d7-ops.sh
     line: "export PATH=/opt/d7/bin:$PATH"
+
+- name: Configure Apache for PHP-FPM
+  copy:
+    src: php-fpm.conf
+    dest: /etc/httpd/conf.d/php-fpm.conf
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Restart PHP-FPM service to detect new libraries, config
+  service:
+    name: rh-php56-php-fpm
+    state: restarted

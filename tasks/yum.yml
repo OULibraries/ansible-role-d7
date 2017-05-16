@@ -1,25 +1,31 @@
 ---
+# Software Collections PHP packages required to make our Drupal
+# install happy.
 - name: Install yum packages
   yum:
     name: "{{ item }}"
     state: present
   with_items:
-    - php
-    - mod_php
-    - php-devel
-    - php-mysql
-    - php-ldap
-    - php-pear
-    - php-gd
-    - php-soap
-    - php-mbstring
-    - php-pear-CAS
-    - mariadb
     - gcc
+    - mariadb
+    - php-pear-CAS
+    - rh-php56-php-devel
+    - rh-php56-php-gd
+    - rh-php56-php-ldap
+    - rh-php56-php-mbstring
+    - rh-php56-php-mysqlnd
+    - rh-php56-php-pear
+    - rh-php56-php-pecl-jsonc
+    - rh-php56-php-soap
+    - rh-php56-php-xml
 
-- name: Make sure some packages are removed
+# We use composer to manage drush, the software collections php
+# installed above, so we'll explicitly remove some packages to make
+# sure we aren't accidentally mixing things up.
+- name: Make sure potentially conflicting packages are removed
   yum:
     name: "{{ item }}"
     state: absent
   with_items:
     - drush
+    - php
