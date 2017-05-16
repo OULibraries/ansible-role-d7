@@ -21,9 +21,5 @@ if [[ ! -e "$SITEPATH" ]] ;then
     exit 0
 fi
 
-curl --silent "http://localhost/apc_clear.php" || exit 1;
-echo""
-echo "Cleared APC cache"
-
 sudo -u apache drush -y cc all -r "$SITEPATH/drupal" || exit 1;
 echo "Cleared Drupal caches for ${SITEPATH}."

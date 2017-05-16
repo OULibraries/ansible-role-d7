@@ -54,38 +54,6 @@
   with_items:
     - d7_daily.cron
 
-- name: Install apc.ini
-  template:
-    src: apc.ini.j2
-    dest: /etc/php.d/apc.ini
-    mode: 0644
-    owner: root
-    group: root
-
-- name: Install apc.conf
-  copy:
-    mode: 0644
-    owner: root
-    group: root
-    src: apc.conf
-    dest: /etc/httpd/conf.d
-
-- name: Configure apc credentials.
-  template:
-    src: apc.php.j2
-    dest: /usr/share/pear/apc.php
-    mode: 0644
-    owner: root
-    group: root
-
-- name: Install apc_clear.php
-  copy:
-    src: apc_clear.php
-    dest: /usr/share/pear
-    mode: 0754
-    owner: root
-    group: wheel
-
 - name: Ensure /opt/d7/etc exists
   file:
     path: /opt/d7/etc
