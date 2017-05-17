@@ -39,6 +39,14 @@
     owner: root
     group: root
 
+- name: Configure Zend OpCache for SCL PHP
+  template:
+    src: 10-opcache.ini.j2
+    dest: /etc/opt/rh/rh-php56/php.d/10-opcache.ini
+    mode: 0644
+    owner: root
+    group: root
+
 - name: Restart PHP-FPM service to detect new libraries, config
   service:
     name: rh-php56-php-fpm
