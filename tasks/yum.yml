@@ -14,6 +14,7 @@
     - rh-php56-php-ldap
     - rh-php56-php-mbstring
     - rh-php56-php-mysqlnd
+    - rh-php56-php-opcache
     - rh-php56-php-pear
     - rh-php56-php-pecl-jsonc
     - rh-php56-php-soap
