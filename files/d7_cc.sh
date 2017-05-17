@@ -21,5 +21,9 @@ if [[ ! -e "$SITEPATH" ]] ;then
     exit 0
 fi
 
+
+sudo service php-fpm reload
+echo "Reload PHP-FPM to clear OpCache"
+
 sudo -u apache drush -y cc all -r "$SITEPATH/drupal" || exit 1;
 echo "Cleared Drupal caches for ${SITEPATH}."
