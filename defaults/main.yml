@@ -32,8 +32,12 @@ mariadb_root_user: 'root'
 # Setting secure path makes sudo work as desired
 users_secure_path: '/opt/php/bin:/opt/d7/bin:/sbin:/bin:/usr/sbin:/usr/bin'
 
-# Set to 0 to disable Zend OpCache
-d7_opcache_enable: "1"
+# Set to 1 to enable Zend OpCache for PHP
+d7_opcache_enable: "0"
+
+# Set to 1 to enable Zend OpCache for CLI PHP
+d7_opcache_enable_cli: "0"
+
 
 ## List of reverse proxies to feed to Drupal. Neccessary mainly in
 ## test and prod at aws
