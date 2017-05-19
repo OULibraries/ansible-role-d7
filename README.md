@@ -6,13 +6,19 @@ OU Libraries Drupal Ops.
 Role Variables
 --------------
 
-APC credentials, we don't set a default because security.
-```
-apc_username: apc
-apc_password: password
+The following variables control PHP caching:
+
+```yml
+# Set to 1 to enable Zend OpCache for PHP
+d7_opcache_enable: "0"
+
+# Set to 1 to enable Zend OpCache for CLI PHP
+d7_opcache_enable_cli: "0"
+
 ```
 
-For more, see defaults/main.yml
+For more variables, see defaults/main.yml
+
 
 Dependencies
 ------------
