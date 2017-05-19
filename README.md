@@ -6,9 +6,21 @@ OU Libraries Drupal Ops.
 Role Variables
 --------------
 
-The following variables control PHP caching:
+This role has quite a few variables. A few of the most frequently
+adjusted are listed below:
 
-```yml
+### General PHP Config
+
+```yaml
+# Drupal related settings
+d7_memory_limit: "128M"
+d7_upload_max_filesize: "64M"
+d7_post_max_size: "70M"
+d7_date_timezone: "America/Chicago"
+```
+### PHP caching:
+
+```yaml
 # Set to 1 to enable Zend OpCache for PHP
 d7_opcache_enable: "0"
 
@@ -17,7 +29,7 @@ d7_opcache_enable_cli: "0"
 
 ```
 
-For more variables, see defaults/main.yml
+For more variables, see `defaults/main.yml`.
 
 
 Dependencies
