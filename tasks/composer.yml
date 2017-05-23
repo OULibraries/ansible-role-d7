@@ -58,6 +58,8 @@
   args:
     chdir: /opt/php
     creates: /opt/php/bin/drush
+  retries: 10
+  delay: 1
 
 - name: Ensure /etc/profile.d/drush.sh exists
   file:
