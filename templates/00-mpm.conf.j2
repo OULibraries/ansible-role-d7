@@ -6,18 +6,23 @@
 LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
 
 # Allow multiple requests per connection
+# but only wait 5sm for subsequent requests
 KeepAlive On
-# Only wait 5s for subsequent requests
 KeepAliveTimeout 5
 
+# Default is 511, but was throttled down by kernel settings
+# Adding value here as documentation
+ListenBackLog 511
+
 <IfModule prefork.c>
-   # always have at least 30 processes
-   StartServers        30
-   MinSpareServers     30
-   # Don't let more than 10 unused processes exist
-   MaxSpareServers     10
-   # don't have more than 100 processes
-   MaxRequestWorkers   100
+   # Start with worker XX processes
+   StartServers        25
+   # Try to keep worker XX processes free
+   MinSpareServers     25
+   # Don't let more than XX unused processes exist
+   MaxSpareServers     60
+   # don't have more than XX processes
+   MaxRequestWorkers   200
    # recycle procs after 3000 requests
    MaxRequestsPerChild 3000
 </IfModule>
