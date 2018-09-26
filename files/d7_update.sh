@@ -44,7 +44,7 @@ sudo -u apache drush -y dis update -r "$SITEPATH/drupal" || exit 1;
 d7_perms.sh "$SITEPATH/drupal"
 
 ## Make sure new code is loaded
-d7_cc.sh "$SITEPATH"
+## d7_cc.sh "$SITEPATH"
 
 ## Avoid a known performance-crusher in our environment
 sudo -u apache drush eval 'variable_set('drupal_http_request_fails', 0)' -r "$SITEPATH/drupal" || exit 1;
