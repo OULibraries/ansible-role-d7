@@ -96,11 +96,3 @@
     group: wheel
     mode: 0444
 
-- name: Install php.ini
-  template:
-    src: php.ini.j2
-    dest: /etc/php.ini
-    mode: 0644
-    owner: root
-    group: wheel
-
