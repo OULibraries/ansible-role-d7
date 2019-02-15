@@ -1,7 +1,0 @@
-<?php
-{% if d7_proxies is defined %}
-## Configure Drupal reverse proxy
-$conf['reverse_proxy'] = TRUE;
-$conf['reverse_proxy_addresses'] = array('{{ d7_proxies|join('\',\'') }}');
-$conf['reverse_proxy_header'] = 'HTTP_X_FORWARDED_FOR';
-{% endif %}

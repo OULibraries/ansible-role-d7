@@ -57,4 +57,4 @@ echo "Deleting site files."
 sudo -u apache  rm -rf "$SITEPATH"
 
 echo "Restarting web server."
-sudo systemctl restart httpd
+sudo systemctl restart httpd24-httpd
