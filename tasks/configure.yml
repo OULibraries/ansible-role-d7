@@ -14,7 +14,7 @@
 - name: Add /srv config include to http.conf
   lineinfile:
     state: present
-    dest: /etc/httpd/conf/httpd.conf
+    dest: /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf
     line: "IncludeOptional \"/srv/*/etc/*.conf\""
 
 - name: Ensure /etc/profile.d/d7-ops.sh exists

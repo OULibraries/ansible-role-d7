@@ -36,7 +36,7 @@
 - name: Install Drupal Apache includes
   copy:
     src: "{{ item }}"
-    dest: /etc/httpd/conf.d/
+    dest: /opt/rh/httpd24/root/etc/httpd/conf.d/
     mode: 0644
     owner: root
     group: wheel
@@ -53,38 +53,6 @@
     group: wheel
   with_items:
     - d7_daily.cron
-
-- name: Install apc.ini
-  template:
-    src: apc.ini.j2
-    dest: /etc/php.d/apc.ini
-    mode: 0644
-    owner: root
-    group: root
-
-- name: Install apc.conf
-  copy:
-    mode: 0644
-    owner: root
-    group: root
-    src: apc.conf
-    dest: /etc/httpd/conf.d
-
-- name: Configure apc credentials.
-  template:
-    src: apc.php.j2
-    dest: /usr/share/pear/apc.php
-    mode: 0644
-    owner: root
-    group: root
-
-- name: Install apc_clear.php
-  copy:
-    src: apc_clear.php
-    dest: /usr/share/pear
-    mode: 0754
-    owner: root
-    group: wheel
 
 - name: Ensure /opt/d7/etc exists
   file:
@@ -136,19 +104,3 @@
     owner: root
     group: wheel
 
-- name: Ensure /etc/drush exists
-  file:
-    path: /etc/drush
-    state: directory
-    mode: 0655
-    owner: root
-    group: wheel
-    recurse: yes
-
-- name: Install drush.ini
-  copy:
-    src: drush.ini
-    dest: /etc/drush
-    mode: 0644
-    owner: root
-    group: wheel

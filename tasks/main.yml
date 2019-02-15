@@ -2,9 +2,6 @@
 - include: yum.yml
   become: true
 
-- include: pear.yml
-  become: true
-
 - include: configure.yml
   become: true
 

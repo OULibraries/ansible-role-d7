@@ -1,0 +1,51 @@
+---
+- name: Composer install Drush 7
+  become: yes
+  become_user: composer
+  shell: |
+    /opt/php/bin/composer.phar init --require=drush/drush:7.* -n
+    /opt/php/bin/composer.phar config bin-dir /opt/php/bin
+    /opt/php/bin/composer.phar install
+  args:
+    chdir: /opt/php
+    creates: /opt/php/bin/drush
+  retries: 10
+  delay: 1
+
+- name: Ensure /etc/profile.d/drush.sh exists
+  file:
+    path: /etc/profile.d/drush.sh
+    state: touch
+    mode: 0644
+    owner: root
+    group: wheel
+
+- name: Add drush scripts to path
+  lineinfile:
+    state: present
+    dest: /etc/profile.d/drush.sh
+    line: "export PATH=/opt/php/bin:$PATH"
+
+- name: Set up bash completion for drush
+  file:
+    src: /opt/php/vendor/drush/drush/drush.complete.sh
+    dest: /etc/bash_completion.d/drush.complete.sh
+    state: link
+    force: yes
+
+- name: Ensure /etc/drush exists
+  file:
+    path: /etc/drush
+    state: directory
+    mode: 0655
+    owner: root
+    group: wheel
+    recurse: yes
+
+- name: Install drush.ini
+  copy:
+    src: drush.ini
+    dest: /etc/drush
+    mode: 0644
+    owner: root
+    group: wheel

@@ -55,7 +55,7 @@ if [ "$SITETYPE" == "master" ]; then
   read -r -d '' SRV_SITE_CONF <<- EOF
 <VirtualHost *:443>
 
-  Include /etc/httpd/conf.d/00ssl.include
+  Include /opt/rh/httpd24/root/etc/httpd/conf.d/00ssl.include
   SSLCertificateFile \${HTTPD_CERT_PATH}/star.\${HTTPD_DN_SUFFIX}/cert.pem
   SSLCertificateKeyFile \${HTTPD_KEY_PATH}/star.\${HTTPD_DN_SUFFIX}/privkey.pem
   SSLCertificateChainFile \${HTTPD_CERT_PATH}/star.\${HTTPD_DN_SUFFIX}/chain.pem
@@ -68,10 +68,10 @@ if [ "$SITETYPE" == "master" ]; then
     Allow from all
     Require all granted
     AllowOverride None
-    Include /etc/httpd/conf.d/drupal.include
+    Include /opt/rh/httpd24/root/etc/httpd/conf.d/drupal.include
   </Directory>
 
-  Include /etc/httpd/conf.d/drupal-files.include
+  Include /opt/rh/httpd24/root/etc/httpd/conf.d/drupal-files.include
 
 EOF
 
@@ -102,10 +102,10 @@ ${SRV_SITE_CONF}
 
     RewriteEngine on
     RewriteBase /${SUBSITE}
-    Include /etc/httpd/conf.d/drupal.include
+    Include /opt/rh/httpd24/root/etc/httpd/conf.d/drupal.include
   </Directory>
 
-  Include /etc/httpd/conf.d/drupal-files.include
+  Include /opt/rh/httpd24/root/etc/httpd/conf.d/drupal-files.include
 
 EOF
   done
@@ -132,4 +132,4 @@ sudo restorecon -R "$SITEPATH/etc" || exit 1;
 echo "Setting permissions for config files."
 d7_perms.sh --sticky "$SITEPATH/etc"
 
-sudo systemctl restart httpd || exit 1;
+sudo systemctl restart httpd24-httpd || exit 1;
