@@ -5,7 +5,7 @@
 - include: configure.yml
   become: true
 
-- include: composer.yml
+- include: drush.yml
   become: true
   tags: composer
 
