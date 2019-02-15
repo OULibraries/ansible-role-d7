@@ -5,16 +5,11 @@
     - httpd_can_connect_ldap
     - httpd_can_network_connect
     - httpd_can_sendmail
-- name: Allow apache group to view httpd log files
-  file:
-    path: /var/log/httpd
-    owner: root
-    group: apache
-    mode: 0750
+
 - name: Add /srv config include to http.conf
   lineinfile:
     state: present
-    dest: /etc/httpd/conf/httpd.conf
+    dest: /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf
     line: "IncludeOptional \"/srv/*/etc/*.conf\""
 
 - name: Ensure /etc/profile.d/d7-ops.sh exists
@@ -29,3 +24,12 @@
     state: present
     dest: /etc/profile.d/d7-ops.sh
     line: "export PATH=/opt/d7/bin:$PATH"
+
+- name: Set permissions for /srv
+  file:
+    path: /srv
+    state: directory
+    mode: 0775
+    owner: apache
+    group: apache
+

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-## Clear Drupal and APC caches
+## Clear Drupal and PHP caches
 
 source /opt/d7/etc/d7_conf.sh
 
 if [  -z "$1" ]; then
   cat <<USAGE
-d7_cc.sh clears all Drupal caches for a site, and clears the localhost apc cache.
+d7_cc.sh clears all Drupal caches for a site, and clears the localhost PHP caches.
 
 Usage: d7_cc.sh \$SITEPATH
             
@@ -21,9 +21,9 @@ if [[ ! -e "$SITEPATH" ]] ;then
     exit 0
 fi
 
-curl --silent "http://localhost/apc_clear.php" || exit 1;
+curl --silent "http://localhost/cache_clear.php" || exit 1;
 echo""
-echo "Cleared APC cache"
+echo "Cleared PHP caches"
 
 sudo -u apache drush -y cc all -r "$SITEPATH/drupal" || exit 1;
 echo "Cleared Drupal caches for ${SITEPATH}."

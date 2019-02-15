@@ -51,4 +51,4 @@ License
 Author Information
 ------------------
 
-Jason Sherman
+OU Libraries

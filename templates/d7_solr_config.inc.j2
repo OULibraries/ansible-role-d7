@@ -1,0 +1,7 @@
+<?php
+{% if d7_solr_url is defined %}
+## Configure Apachesolr target solr server url
+#
+$conf['apachesolr_environments']['solr']['url'] ='{{d7_solr_url}}';
+{% endif %}
+

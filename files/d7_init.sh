@@ -133,12 +133,19 @@ read -r -d '' SETTINGSPHP <<- EOF
 \$base_url = '${MY_BASE_URL}';
 \$cookie_domain = '${MY_COOKIE_DOMAIN}';
 
-## Include reverse proxy config (empty if no proxy)
-include '/opt/d7/etc/d7_proxy.inc.php';
-
 ## Set CAS config
 \$conf['cas_server'] = '${MY_CAS}';
 
+## Include site-wide settings file 
+include '/opt/d7/etc/d7_host_config.inc.php';
+
+
+# Include site-wide Solr config for Apachesolr
+# Uncomment to enable
+# include '/opt/d7/etc/d7_solr_config.inc.php';
+
+# Add additional manually configured settings below
+#
 EOF
 
 sudo -u apache cp "/opt/d7/etc/default.settings.php" "$SITEPATH/default/settings.php"

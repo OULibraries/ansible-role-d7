@@ -32,9 +32,6 @@ mariadb_root_user: 'root'
 # Setting secure path makes sudo work as desired
 users_secure_path: '/opt/php/bin:/opt/d7/bin:/sbin:/bin:/usr/sbin:/usr/bin'
 
-# Set to 0 to disable APC
-apc_enabled: "1"
-
 ## List of reverse proxies to feed to Drupal. Neccessary mainly in
 ## test and prod at aws
 # d7_proxies:
@@ -57,3 +54,9 @@ d7_s3_snapshot_base_dir: !!null
 
 # D7 CAS Host
 d7_cas: ""
+
+d7_ssl_reneg_buffer: 10000000
+
+# D7 solr server for Apachesolr module        
+d7_solr_url: "http://localhost:8983/solr"
+
