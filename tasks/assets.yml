@@ -34,9 +34,9 @@
     - d7_update.sh
 
 - name: Install Drupal Apache includes
-  copy:
-    src: "{{ item }}"
-    dest: /opt/rh/httpd24/root/etc/httpd/conf.d/
+  template:
+    src: "{{ item }}.j2"
+    dest: "/opt/rh/httpd24/root/etc/httpd/conf.d/{{ item }}"
     mode: 0644
     owner: root
     group: wheel
