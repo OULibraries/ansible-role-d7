@@ -54,3 +54,7 @@ d7_s3_snapshot_base_dir: !!null
 
 # D7 CAS Host
 d7_cas: ""
+
+
+d7_ssl_reneg_buffer: 10000000
+
