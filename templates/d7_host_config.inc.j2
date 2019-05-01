@@ -15,3 +15,6 @@ $conf['drupal_ssl_context_options'] = array(
   'allow_self_signed' => TRUE ,
 );
 
+
+// Sometimes Drupal thinks it can't make web requests
+$conf['drupal_http_request_fails'] = FALSE;

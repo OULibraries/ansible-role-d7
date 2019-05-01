@@ -133,12 +133,11 @@ read -r -d '' SETTINGSPHP <<- EOF
 \$base_url = '${MY_BASE_URL}';
 \$cookie_domain = '${MY_COOKIE_DOMAIN}';
 
-## Include reverse proxy config (empty if no proxy)
-include '/opt/d7/etc/d7_host_config.inc.php';
-
 ## Set CAS config
 \$conf['cas_server'] = '${MY_CAS}';
 
+## Include site-wide settings file 
+include '/opt/d7/etc/d7_host_config.inc.php';
 EOF
 
 sudo -u apache cp "/opt/d7/etc/default.settings.php" "$SITEPATH/default/settings.php"
