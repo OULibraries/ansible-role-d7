@@ -134,7 +134,7 @@ read -r -d '' SETTINGSPHP <<- EOF
 \$cookie_domain = '${MY_COOKIE_DOMAIN}';
 
 ## Include reverse proxy config (empty if no proxy)
-include '/opt/d7/etc/d7_proxy.inc.php';
+include '/opt/d7/etc/d7_host_config.inc.php';
 
 ## Set CAS config
 \$conf['cas_server'] = '${MY_CAS}';

@@ -5,3 +5,13 @@ $conf['reverse_proxy'] = TRUE;
 $conf['reverse_proxy_addresses'] = array('{{ d7_proxies|join('\',\'') }}');
 $conf['reverse_proxy_header'] = 'HTTP_X_FORWARDED_FOR';
 {% endif %}
+
+$conf['drupal_http_request_function'] = 'alt_drupal_http_request';
+
+// Disable SSL cert validation.
+$conf['drupal_ssl_context_options'] = array(
+  'verify_peer' => FALSE,
+  'verify_peer_name' => FALSE,
+  'allow_self_signed' => TRUE ,
+);
+

@@ -90,8 +90,8 @@
 
 - name: Install reverse proxy config
   template:
-    src: d7_proxy.inc.j2
-    dest: /opt/d7/etc/d7_proxy.inc.php
+    src: d7_host_config.inc.j2
+    dest: /opt/d7/etc/d7_host_config.inc.php
     owner: apache
     group: wheel
     mode: 0444
