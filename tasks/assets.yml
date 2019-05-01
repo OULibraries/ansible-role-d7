@@ -88,7 +88,7 @@
     group: wheel
     mode: 0444
 
-- name: Install reverse proxy config
+- name: Install site wide config
   template:
     src: d7_host_config.inc.j2
     dest: /opt/d7/etc/d7_host_config.inc.php
@@ -96,3 +96,10 @@
     group: wheel
     mode: 0444
 
+- name: Install solr config
+  template:
+    src: d7_solr_config.inc.j2
+    dest: /opt/d7/etc/d7_solr_config.inc.php
+    owner: apache
+    group: wheel
+    mode: 0444

@@ -138,6 +138,14 @@ read -r -d '' SETTINGSPHP <<- EOF
 
 ## Include site-wide settings file 
 include '/opt/d7/etc/d7_host_config.inc.php';
+
+
+# Include site-wide Solr config for Apachesolr
+# Uncomment to enable
+# include '/opt/d7/etc/d7_solr_config.inc.php';
+
+# Add additional manually configured settings below
+#
 EOF
 
 sudo -u apache cp "/opt/d7/etc/default.settings.php" "$SITEPATH/default/settings.php"
