@@ -87,7 +87,6 @@
     group: wheel
     mode: 0644
 
-
 - name: Install d7 config
   template:
     src: d7_conf.sh.j2
