@@ -44,6 +44,14 @@
     - drupal.include
     - drupal-files.include
 
+- name:  Configure Apache MPM settings
+  template:
+    src:  00-mpm.conf.j2
+    dest: /etc/httpd/conf.modules.d/00-mpm.conf
+    mode: 0644
+    owner: root
+    group: root
+
 - name: Install cron scripts
   copy:
     src: "{{ item }}"
