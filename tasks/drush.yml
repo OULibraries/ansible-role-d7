@@ -4,7 +4,9 @@
   become_user: composer
   shell: |
     .  /etc/profile.d/enablephp.sh
-    /opt/php/bin/composer.phar init --require=drush/drush:7.* -n
+    /opt/php/bin/composer.phar init -n
+    /opt/php/bin/composer.phar require "pear/console_table:1.3.1 as 1.2.1"
+    /opt/php/bin/composer.phar require "drush/drush:7.*"
     /opt/php/bin/composer.phar config bin-dir /opt/php/bin
     /opt/php/bin/composer.phar install
   args:
