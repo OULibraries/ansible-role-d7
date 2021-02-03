@@ -67,16 +67,10 @@ done < <(find "${INPUTDIR}" -type d -print0 2>/dev/null)
 
 ## Loop through the DIRs, setting appropriate perms.
 for DIR in "${DIRS[@]}"; do
-  printf "." 
-
-  ## Set group to apache.
-  sudo -u apache chgrp apache "${DIR}" 2>/dev/null || \
-  chgrp apache "${DIR}" 
-
-  ## Set dir perms.
-  sudo -u apache chmod ${DIRPERMS} "${DIR}" 2>/dev/null || \
-  chmod ${DIRPERMS} "${DIR}" 
+  PERMS_CMD="${PERMS_CMD} chgrp -v  apache ${DIR} ;" 
+  PERMS_CMD="${PERMS_CMD} chmod -v ${DIRPERMS} ${DIR} ;"  
 done
+echo ${PERMS_CMD} | sudo -s -- 
 
 ## Find all of the files.
 declare -a FILES
@@ -86,16 +80,11 @@ done < <(find "${INPUTDIR}" -mindepth 1 -type f -print0 2>/dev/null)
 
 ## Loop through the files, setting appropriate perms.
 for FILE in "${FILES[@]}"; do
-  printf "." 
-
-  ## Set group to apache.
-  sudo -u apache chgrp apache "${FILE}" 2>/dev/null || \
-  chgrp apache "${FILE}"
-
-  ## Set file perms.
-  sudo -u apache chmod ${FILEPERMS} "${FILE}" 2>/dev/null || \
-  chmod ${FILEPERMS} "${FILE}"
+  PERMS_CMD="${PERMS_CMD} chgrp -v  apache ${FILE} ;" 
+  PERMS_CMD="${PERMS_CMD} chmod -v ${FILEPERMS} ${FILE} ;"  
 done
+echo ${PERMS_CMD} | sudo -s -- 
+
 
 echo "Done!"
 
